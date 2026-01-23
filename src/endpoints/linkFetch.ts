@@ -63,7 +63,8 @@ export class LinkFetch extends OpenAPIRoute {
 			);
 		}
 
-		// TODO: add optional 'isPermanent' field and use 302 if it is
+		// NOTE: old shorter used 302 redirects over 301 so replicating that here
+		// We could change this, 301 is for permanent redirects and enables browser caching
 		return c.redirect(url, 302)
 	}
 }
