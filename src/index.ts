@@ -18,7 +18,7 @@ const openapi = fromHono(app, {
 openapi.post("/links", LinkCreate);
 // openapi.put("/links/:slug", LinkUpdate);
 openapi.get("/links", LinkList);
-openapi.get("/links/:slug", LinkFetch);
+openapi.get(":slug", LinkFetch);
 openapi.delete("/links/:slug", LinkDelete);
 
 // You may also register routes for non OpenAPI directly on Hono

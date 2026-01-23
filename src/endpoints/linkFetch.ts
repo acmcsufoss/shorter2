@@ -51,28 +51,19 @@ export class LinkFetch extends OpenAPIRoute {
 		const { slug } = data.params;
 
 		// Implement your own object fetch here
+		const url = await c.env.KV_SHORTLINKS.get(slug)
 
-		const exists = true;
-
-		// @ts-ignore: check if the object exists
-		if (exists === false) {
-			return Response.json(
+		if (url === null) {
+			return c.json(
 				{
 					success: false,
 					error: "Object not found",
 				},
-				{
-					status: 404,
-				},
+				404
 			);
 		}
 
-		return {
-			success: true,
-			link: {
-				name: "my task",
-				slug: slug,
-			},
-		};
+		// TODO: add optional 'isPermanent' field and use 302 if it is
+		return c.redirect(url, 302)
 	}
 }
