@@ -6,6 +6,6 @@ export type AppContext = Context<{ Bindings: Env }>;
 
 export const Link = z.object({
 	slug: Str({ required: false }),
-	url: Str(),
+	url: z.string().url(),
 	isPermanent: Bool({ required: false }).default(false),
 });
