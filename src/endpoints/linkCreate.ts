@@ -69,13 +69,15 @@ export class LinkCreate extends OpenAPIRoute {
 				409,
 			);
 		}
-		await c.env.KV_SHORTLINKS.put(linkToCreate.slug, linkToCreate.url);
+		const url = JSON.stringify({url: linkToCreate.url, isPermanent: linkToCreate.isPermanent})
+		await c.env.KV_SHORTLINKS.put(linkToCreate.slug, url);
 
 		return c.json({
 			success: true,
 			link: {
 				slug: linkToCreate.slug,
 				url: linkToCreate.url,
+				isPermanent: linkToCreate.isPermanent,
 			},
 		});
 	}

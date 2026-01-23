@@ -50,9 +50,9 @@ export class LinkFetch extends OpenAPIRoute {
 		// Retrieve the validated slug
 		const { slug } = data.params;
 
-		const url = await c.env.KV_SHORTLINKS.get(slug);
+		const value = await c.env.KV_SHORTLINKS.get(slug);
 
-		if (url === null) {
+		if (value === null) {
 			return c.json(
 				{
 					success: false,
@@ -62,8 +62,8 @@ export class LinkFetch extends OpenAPIRoute {
 			);
 		}
 
-		// NOTE: old shorter used 302 redirects over 301 so replicating that here
-		// We could change this, 301 is for permanent redirects and enables browser caching
-		return c.redirect(url, 302);
+		const {url, isPermanent} = JSON.parse(value)
+		const redirectCode = isPermanent ? 301 : 302;
+		return c.redirect(url, redirectCode);
 	}
 }
