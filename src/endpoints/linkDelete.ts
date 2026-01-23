@@ -19,9 +19,7 @@ export class LinkDelete extends OpenAPIRoute {
 						schema: z.object({
 							series: z.object({
 								success: Bool(),
-								result: z.object({
-									link: Link,
-								}),
+								slug: Str(),
 							}),
 						}),
 					},
@@ -37,20 +35,14 @@ export class LinkDelete extends OpenAPIRoute {
 		// Retrieve the validated slug
 		const { slug } = data.params;
 
-		// Implement your own object deletion here
+		await c.env.KV_SHORTLINKS.delete(slug)
 
 		// Return the deleted link for confirmation
-		return {
-			result: {
-				link: {
-					name: "Build something awesome with Cloudflare Workers",
-					slug: slug,
-					description: "Lorem Ipsum",
-					completed: true,
-					due_date: "2022-12-24",
-				},
-			},
-			success: true,
-		};
+		return c.json(
+			{
+				success: true,
+				slug: slug,
+			}
+		)
 	}
 }
