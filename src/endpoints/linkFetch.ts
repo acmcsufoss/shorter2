@@ -58,12 +58,12 @@ export class LinkFetch extends OpenAPIRoute {
 					success: false,
 					error: "Slug not found",
 				},
-				404
+				404,
 			);
 		}
 
 		// NOTE: old shorter used 302 redirects over 301 so replicating that here
 		// We could change this, 301 is for permanent redirects and enables browser caching
-		return c.redirect(url, 302)
+		return c.redirect(url, 302);
 	}
 }

@@ -1,4 +1,4 @@
-import { Str, Bool } from "chanfana";
+import { Bool, Str } from "chanfana";
 import type { Context } from "hono";
 import { z } from "zod";
 

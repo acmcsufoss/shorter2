@@ -1,6 +1,6 @@
 import { Bool, OpenAPIRoute, Str } from "chanfana";
 import { z } from "zod";
-import { type AppContext, Link } from "../types";
+import type { AppContext } from "../types";
 
 export class LinkDelete extends OpenAPIRoute {
 	schema = {
@@ -35,14 +35,12 @@ export class LinkDelete extends OpenAPIRoute {
 		// Retrieve the validated slug
 		const { slug } = data.params;
 
-		await c.env.KV_SHORTLINKS.delete(slug)
+		await c.env.KV_SHORTLINKS.delete(slug);
 
 		// Return the deleted link for confirmation
-		return c.json(
-			{
-				success: true,
-				slug: slug,
-			}
-		)
+		return c.json({
+			success: true,
+			slug: slug,
+		});
 	}
 }

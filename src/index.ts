@@ -1,10 +1,10 @@
 import { fromHono } from "chanfana";
 import { Hono } from "hono";
 import { LinkCreate } from "./endpoints/linkCreate";
-import { LinkUpdate } from "./endpoints/linkUpdate";
 import { LinkDelete } from "./endpoints/linkDelete";
 import { LinkFetch } from "./endpoints/linkFetch";
 import { LinkList } from "./endpoints/linkList";
+import { LinkUpdate } from "./endpoints/linkUpdate";
 
 // Start a Hono app
 const app = new Hono<{ Bindings: Env }>();

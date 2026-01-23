@@ -40,11 +40,9 @@ export class LinkList extends OpenAPIRoute {
 	async handle(c: AppContext) {
 		const allKeys = await c.env.KV_SHORTLINKS.list();
 
-		return c.json(
-			{
-				success: true,
-				allKeys: allKeys,
-			}
-		);
+		return c.json({
+			success: true,
+			allKeys: allKeys,
+		});
 	}
 }

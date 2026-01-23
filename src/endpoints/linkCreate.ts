@@ -35,9 +35,10 @@ export class LinkCreate extends OpenAPIRoute {
 	};
 
 	generateRandomSlug(length: number = 5) {
-		const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-		let slug = '';
-		const randomValues = crypto.getRandomValues(new Uint8Array(length))
+		const chars =
+			"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		let slug = "";
+		const randomValues = crypto.getRandomValues(new Uint8Array(length));
 
 		for (let i = 0; i < length; i++) {
 			slug += chars[randomValues[i] % chars.length];
@@ -54,30 +55,28 @@ export class LinkCreate extends OpenAPIRoute {
 		const linkToCreate = data.body;
 
 		if (!linkToCreate.slug) {
-			linkToCreate.slug = this.generateRandomSlug()
+			linkToCreate.slug = this.generateRandomSlug();
 		}
 
 		// Existence check before insertion
-		const value = await c.env.KV_SHORTLINKS.get(linkToCreate.slug)
+		const value = await c.env.KV_SHORTLINKS.get(linkToCreate.slug);
 		if (value) {
 			return c.json(
 				{
 					success: false,
-					error: "Slug already exists"
+					error: "Slug already exists",
 				},
-				409
-			)
+				409,
+			);
 		}
-		await c.env.KV_SHORTLINKS.put(linkToCreate.slug, linkToCreate.url)
+		await c.env.KV_SHORTLINKS.put(linkToCreate.slug, linkToCreate.url);
 
-		return c.json(
-			{
-				success: true,
-				link: {
-					slug: linkToCreate.slug,
-					url: linkToCreate.url,
-				}
+		return c.json({
+			success: true,
+			link: {
+				slug: linkToCreate.slug,
+				url: linkToCreate.url,
 			},
-		);
+		});
 	}
 }
