@@ -16,6 +16,12 @@
 			"id": "e941f6969dad41c8bd4caf4a46c4ad8d",
 			"remote": true
 		}
+	],
+	"routes": [
+		{
+			"pattern": "s.acmcsuf.com",
+			"custom_domain": true
+		}
 	]
 	/**
 	 * Smart Placement
