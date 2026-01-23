@@ -1,11 +1,11 @@
 import { Bool, Num, OpenAPIRoute } from "chanfana";
 import { z } from "zod";
-import { type AppContext, Task } from "../types";
+import { type AppContext, Link } from "../types";
 
-export class TaskList extends OpenAPIRoute {
+export class LinkList extends OpenAPIRoute {
 	schema = {
-		tags: ["Tasks"],
-		summary: "List Tasks",
+		tags: ["Links"],
+		summary: "List Shortlinks",
 		request: {
 			query: z.object({
 				page: Num({
@@ -20,14 +20,14 @@ export class TaskList extends OpenAPIRoute {
 		},
 		responses: {
 			"200": {
-				description: "Returns a list of tasks",
+				description: "Returns a list of shortlinks",
 				content: {
 					"application/json": {
 						schema: z.object({
 							series: z.object({
 								success: Bool(),
 								result: z.object({
-									tasks: Task.array(),
+									tasks: Link.array(),
 								}),
 							}),
 						}),
