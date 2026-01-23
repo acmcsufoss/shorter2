@@ -56,7 +56,7 @@ export class LinkFetch extends OpenAPIRoute {
 			return c.json(
 				{
 					success: false,
-					error: "Object not found",
+					error: "Slug not found",
 				},
 				404
 			);
