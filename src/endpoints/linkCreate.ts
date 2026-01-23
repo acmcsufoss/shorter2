@@ -34,6 +34,18 @@ export class LinkCreate extends OpenAPIRoute {
 		},
 	};
 
+	generateRandomSlug(length: number = 5) {
+		const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+		let slug = '';
+		const randomValues = crypto.getRandomValues(new Uint8Array(length))
+
+		for (let i = 0; i < length; i++) {
+			slug += chars[randomValues[i] % chars.length];
+		}
+
+		return slug;
+	}
+
 	async handle(c: AppContext) {
 		// Get validated data
 		const data = await this.getValidatedData<typeof this.schema>();
@@ -41,16 +53,19 @@ export class LinkCreate extends OpenAPIRoute {
 		// Retrieve the validated request body
 		const linkToCreate = data.body;
 
-		// Implement your own object insertion here
+		if (!linkToCreate.slug) {
+			linkToCreate.slug = this.generateRandomSlug()
+		}
 		await c.env.KV_SHORTLINKS.put(linkToCreate.slug, linkToCreate.url)
 
-		// return the new link
-		return {
-			success: true,
-			link: {
-				slug: linkToCreate.slug,
-				url: linkToCreate.url,
+		return c.json(
+			{
+				success: true,
+				link: {
+					slug: linkToCreate.slug,
+					url: linkToCreate.url,
+				}
 			},
-		};
+		);
 	}
 }
