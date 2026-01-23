@@ -42,6 +42,7 @@ export class LinkCreate extends OpenAPIRoute {
 		const linkToCreate = data.body;
 
 		// Implement your own object insertion here
+		await c.env.KV_SHORTLINKS.put(linkToCreate.slug, linkToCreate.url)
 
 		// return the new link
 		return {
