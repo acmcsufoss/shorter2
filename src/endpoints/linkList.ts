@@ -12,10 +12,6 @@ export class LinkList extends OpenAPIRoute {
 					description: "Page number",
 					default: 0,
 				}),
-				isCompleted: Bool({
-					description: "Filter by completed flag",
-					required: false,
-				}),
 			}),
 		},
 		responses: {
