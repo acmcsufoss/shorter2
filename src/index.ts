@@ -1,7 +1,7 @@
 import { fromHono } from "chanfana";
 import { Hono } from "hono";
 import { LinkCreate } from "./endpoints/linkCreate";
-// import { LinkUpdate } from "./endpoints/linkUpdate";
+import { LinkUpdate } from "./endpoints/linkUpdate";
 import { LinkDelete } from "./endpoints/linkDelete";
 import { LinkFetch } from "./endpoints/linkFetch";
 import { LinkList } from "./endpoints/linkList";
@@ -16,7 +16,7 @@ const openapi = fromHono(app, {
 
 // Register OpenAPI endpoints
 openapi.post("/links", LinkCreate);
-// openapi.put("/links/:slug", LinkUpdate);
+openapi.put("/links/:slug", LinkUpdate);
 openapi.get("/links", LinkList);
 openapi.get(":slug", LinkFetch);
 openapi.delete("/links/:slug", LinkDelete);
