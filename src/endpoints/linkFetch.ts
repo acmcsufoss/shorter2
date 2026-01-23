@@ -50,8 +50,7 @@ export class LinkFetch extends OpenAPIRoute {
 		// Retrieve the validated slug
 		const { slug } = data.params;
 
-		// Implement your own object fetch here
-		const url = await c.env.KV_SHORTLINKS.get(slug)
+		const url = await c.env.KV_SHORTLINKS.get(slug);
 
 		if (url === null) {
 			return c.json(
