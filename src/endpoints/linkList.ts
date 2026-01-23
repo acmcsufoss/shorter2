@@ -38,32 +38,13 @@ export class LinkList extends OpenAPIRoute {
 	};
 
 	async handle(c: AppContext) {
-		// Get validated data
-		const data = await this.getValidatedData<typeof this.schema>();
+		const allKeys = await c.env.KV_SHORTLINKS.list();
 
-		// Retrieve the validated parameters
-		const { page, isCompleted } = data.query;
-
-		// Implement your own object list here
-
-		return {
-			success: true,
-			tasks: [
-				{
-					name: "Clean my room",
-					slug: "clean-room",
-					description: null,
-					completed: false,
-					due_date: "2025-01-05",
-				},
-				{
-					name: "Build something awesome with Cloudflare Workers",
-					slug: "cloudflare-workers",
-					description: "Lorem Ipsum",
-					completed: true,
-					due_date: "2022-12-24",
-				},
-			],
-		};
+		return c.json(
+			{
+				success: true,
+				allKeys: allKeys,
+			}
+		);
 	}
 }
