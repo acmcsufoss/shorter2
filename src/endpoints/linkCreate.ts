@@ -56,7 +56,18 @@ export class LinkCreate extends OpenAPIRoute {
 		if (!linkToCreate.slug) {
 			linkToCreate.slug = this.generateRandomSlug()
 		}
-		// NOTE: Is it even worth checking for collisions?
+
+		// Existence check before insertion
+		const value = await c.env.KV_SHORTLINKS.get(linkToCreate.slug)
+		if (value) {
+			return c.json(
+				{
+					success: false,
+					error: "Slug already exists"
+				},
+				409
+			)
+		}
 		await c.env.KV_SHORTLINKS.put(linkToCreate.slug, linkToCreate.url)
 
 		return c.json(
