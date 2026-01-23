@@ -44,7 +44,7 @@ export class LinkUpdate extends OpenAPIRoute {
 		const { slug } = data.params;
 		const { url } = data.body;
 
-		const existing = c.env.KV_SHORTLINKS.get(slug);
+		const existing = await c.env.KV_SHORTLINKS.get(slug);
 		if (existing === null) {
 			return c.json({ success: false, error: "Slug not found" }, 404);
 		}
