@@ -4,7 +4,7 @@ import type { AppContext } from "../types";
 
 export class LinkDelete extends OpenAPIRoute {
 	schema = {
-		tags: ["Link"],
+		tags: ["Links"],
 		summary: "Delete a shortlink",
 		request: {
 			params: z.object({

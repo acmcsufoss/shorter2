@@ -4,7 +4,7 @@ import { type AppContext, Link } from "../types";
 
 export class LinkUpdate extends OpenAPIRoute {
 	schema = {
-		tags: ["Link"],
+		tags: ["Links"],
 		summary: "Update an existing shortlink",
 		request: {
 			params: z.object({

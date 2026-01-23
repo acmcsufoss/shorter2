@@ -4,7 +4,7 @@ import { type AppContext, Link } from "../types";
 
 export class LinkCreate extends OpenAPIRoute {
 	schema = {
-		tags: ["Link"],
+		tags: ["Links"],
 		summary: "Create a new shortlink",
 		request: {
 			body: {
