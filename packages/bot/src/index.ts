@@ -52,13 +52,12 @@ app.post("/", async (c) => {
 	if (interaction.type === InteractionType.APPLICATION_COMMAND) {
 		switch (interaction.data.name.toLowerCase()) {
 			case ADD_COMMAND.name.toLowerCase(): {
-				// NOTE: If you capture the resp and try to read it this shi won't work
 				const url = interaction.data.options?.find(
 					(opt: any) => opt.name === "url",
 				)?.value as string;
 
 				const slug = interaction.data.options?.find(
-					(opt: any) => opt.name === "slug",
+					(opt: any) => opt.name === "shortlink",
 				)?.value as string | undefined;
 
 				const isPermanent = interaction.data.options?.find(
@@ -66,6 +65,7 @@ app.post("/", async (c) => {
 				)?.value as boolean | undefined;
 
 				try {
+					// NOTE: If you capture the resp and try to read it this shi won't work
 					await addLink({ slug: slug, url: url, isPermanent: isPermanent });
 					return c.json({
 						type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
