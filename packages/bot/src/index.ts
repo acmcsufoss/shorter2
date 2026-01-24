@@ -66,6 +66,10 @@ app.post("/", async (c) => {
 					(opt: any) => opt.name === "destination",
 				)?.value as string;
 
+				if (!isValidUrl(url)) {
+					return sendChannelMessage("Error: invalid URL. Does your URL start with http:// or https:// ?")
+				}
+
 				const slug = interaction.data.options?.find(
 					(opt: any) => opt.name === "alias",
 				)?.value as string | undefined;
@@ -101,6 +105,10 @@ app.post("/", async (c) => {
 					(opt: any) => opt.name === "destination",
 				)?.value as string | undefined;
 
+				if (url && !isValidUrl(url)) {
+					return sendChannelMessage("Error: invalid URL. Does your URL start with http:// or https:// ?")
+				}
+
 				const isPermanent = interaction.data.options?.find(
 					(opt: any) => opt.name === "is_permanent",
 				)?.value as boolean | undefined;
@@ -125,6 +133,15 @@ app.post("/", async (c) => {
 	console.error("Unknown command type");
 	return c.json({ error: "Unknown command type" }, 400);
 });
+
+function isValidUrl(url: string): boolean {
+	try {
+		const parsed = new URL(url);
+		return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+	} catch {
+		return false
+	}
+}
 
 
 app.all("*", (c) => c.text("Not Found.", 404));
