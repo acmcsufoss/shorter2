@@ -1,6 +1,6 @@
 interface Link {
 	slug?: string;
-	url: string;
+	url?: string;
 	isPermanent?: boolean;
 }
 
@@ -34,4 +34,20 @@ export async function deleteLink(slug: string): Promise<void> {
 	if (!response.ok) {
 		throw new Error(`HTTP error. Status: ${response.status}`);
 	}
+}
+
+export async function updateLink(link: Link): Promise<Link> {
+	const response = await fetch(endpoint, {
+		method: "PUT",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(link),
+	});
+
+	if (!response.ok) {
+		throw new Error(`HTTP error. Status: ${response.status}`);
+	}
+
+	return await response.json();
 }

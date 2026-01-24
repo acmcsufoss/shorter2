@@ -9,21 +9,21 @@ export const ADD_COMMAND = {
 	type: 1,
 	options: [
 		{
-			name: "url",
+			name: "destination",
 			description: "url to redirect to",
 			required: true,
 			type: 3, // string
 		},
 		{
-			name: "shortlink",
-			description: "string to map redirect link to",
+			name: "alias",
+			description: "[OPTIONAL] custom slug to use in shortlink URL",
 			required: false,
 			type: 3, // string
 		},
 		{
 			name: "is_permanent",
 			description:
-				"whether to use 301 permanent redirect or 302 temporary redirect",
+				"[OPTIONAL] whether to use 301 permanent redirect or 302 temporary redirect",
 			required: false,
 			type: 5, // bool
 		},
@@ -36,10 +36,37 @@ export const DELETE_COMMAND = {
 	type: 1,
 	options: [
 		{
-			name: "shortlink",
+			name: "alias",
 			description: "shortlink to delete",
 			required: true,
 			type: 3, // string
+		},
+	],
+};
+
+export const UPDATE_COMMAND = {
+	name: "add",
+	description: "change an existing shortlink",
+	type: 1,
+	options: [
+		{
+			name: "alias",
+			description: "an existing shortlink slug",
+			required: true,
+			type: 3, // string
+		},
+		{
+			name: "destination",
+			description: "[OPTIONAL] new url to redirect to",
+			required: false,
+			type: 3, // string
+		},
+		{
+			name: "is_permanent",
+			description:
+				"[OPTIONAL] change to 301 permanent redirect or 302 temporary redirect",
+			required: false,
+			type: 5, // bool
 		},
 	],
 };

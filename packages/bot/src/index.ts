@@ -4,8 +4,8 @@ import {
 	InteractionType,
 	verifyKey,
 } from "discord-interactions";
-import { ADD_COMMAND, DELETE_COMMAND } from "./commands";
-import { addLink, deleteLink } from "./client";
+import { ADD_COMMAND, DELETE_COMMAND, UPDATE_COMMAND } from "./commands";
+import { addLink, deleteLink, updateLink } from "./client";
 
 interface Env {
 	DISCORD_APPLICATION_ID: string;
@@ -48,16 +48,26 @@ app.post("/", async (c) => {
 		});
 	}
 
+	// Helper function
+	const sendChannelMessage = (message: string) => {
+		return c.json({
+			type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+			data: {
+				content: message,
+			},
+		})
+	}
+
 	// ==== Our Application Commands ====
 	if (interaction.type === InteractionType.APPLICATION_COMMAND) {
 		switch (interaction.data.name.toLowerCase()) {
 			case ADD_COMMAND.name.toLowerCase(): {
 				const url = interaction.data.options?.find(
-					(opt: any) => opt.name === "url",
+					(opt: any) => opt.name === "destination",
 				)?.value as string;
 
 				const slug = interaction.data.options?.find(
-					(opt: any) => opt.name === "shortlink",
+					(opt: any) => opt.name === "alias",
 				)?.value as string | undefined;
 
 				const isPermanent = interaction.data.options?.find(
@@ -67,34 +77,45 @@ app.post("/", async (c) => {
 				try {
 					// NOTE: If you capture the resp and try to read it this shi won't work
 					await addLink({ slug: slug, url: url, isPermanent: isPermanent });
-					return c.json({
-						type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-						data: {
-							content: `Shortlink created: https://s.acmcsuf.com/${slug} -> ${url}`,
-						},
-					});
+					return sendChannelMessage(`Shortlink created: https://s.acmcsuf.com/${slug} -> ${url}`)
 				} catch (error: any) {
-					return c.json({
-						type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-						data: {
-							content: `Failed to create shortlink: ${error instanceof Error ? error.message : "Unknown error"}`,
-						},
-					});
+					return sendChannelMessage(`Failed to create shortlink: ${error instanceof Error ? error.message : "Unknown error"}`)
 				}
 			}
 
 			case DELETE_COMMAND.name.toLowerCase(): {
 				const slug = interaction.data.options?.find(
-					(opt: any) => opt.name === "slug",
+					(opt: any) => opt.name === "alias",
 				)?.value as string;
 
 				await deleteLink(slug);
-				return c.json({
-					type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-					data: {
-						content: "Shortlink deleted successfully",
-					},
-				});
+				return sendChannelMessage(`Shortlink https://s.acmcsuf.com/${slug} deleted successfully`)
+			}
+
+			case UPDATE_COMMAND.name.toLowerCase(): {
+				const slug = interaction.data.options?.find(
+					(opt: any) => opt.name === "alias",
+				)?.value as string;
+
+				const url = interaction.data.options?.find(
+					(opt: any) => opt.name === "destination",
+				)?.value as string | undefined;
+
+				const isPermanent = interaction.data.options?.find(
+					(opt: any) => opt.name === "is_permanent",
+				)?.value as boolean | undefined;
+
+				if (!url && !isPermanent) {
+					return sendChannelMessage("Error: no modifications to shortlink provided")
+				}
+
+				try {
+					// NOTE: If you capture the resp and try to read it this shi won't work
+					await updateLink({ slug: slug, url: url, isPermanent: isPermanent });
+					return sendChannelMessage(`Shortlink created: https://s.acmcsuf.com/${slug} -> ${url}`)
+				} catch (error: any) {
+					return sendChannelMessage(`Failed to create shortlink: ${error instanceof Error ? error.message : "Unknown error"}`)
+				}
 			}
 			default:
 				return c.json({ error: "Unknown command type" }, 400);
@@ -104,6 +125,7 @@ app.post("/", async (c) => {
 	console.error("Unknown command type");
 	return c.json({ error: "Unknown command type" }, 400);
 });
+
 
 app.all("*", (c) => c.text("Not Found.", 404));
 
