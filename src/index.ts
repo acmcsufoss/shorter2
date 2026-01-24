@@ -24,5 +24,6 @@ openapi.delete("/links/:slug", LinkDelete);
 // You may also register routes for non OpenAPI directly on Hono
 // app.get('/test', (c) => c.text('Hono!'))
 
+export type AppType = typeof app;
 // Export the Hono app
 export default app;
