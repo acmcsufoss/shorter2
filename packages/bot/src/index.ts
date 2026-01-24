@@ -70,7 +70,7 @@ app.post("/", async (c) => {
 					return c.json({
 						type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 						data: {
-							content: "Shortlink created successfully",
+							content: `Shortlink created: https://s.acmcsuf.com/${slug} -> ${url}`,
 						},
 					});
 				} catch (error: any) {
