@@ -4,7 +4,7 @@ import {
 	InteractionType,
 	verifyKey,
 } from "discord-interactions";
-import { ADD_COMMAND, DELETE_COMMAND, UPDATE_COMMAND } from "./commands";
+import { BASE_COMMAND } from "./commands";
 import { addLink, deleteLink, updateLink } from "./client";
 
 interface Env {
@@ -60,7 +60,42 @@ app.post("/", async (c) => {
 
 	// ==== Our Application Commands ====
 	if (interaction.type === InteractionType.APPLICATION_COMMAND) {
+		if (interaction.data.name.toLowerCase() !== BASE_COMMAND.name.toLowerCase()) {
+			return c.json({ error: "Unknown command type" }, 400);
+		}
+
+		const subcommand: string = interaction.data.options.name.toLowerCase();
+		const subcommandOpts: Array<any> = interaction.data.options.options;
+		switch (subcommand) {
+			case "add": {
+
+				const url = subcommandOpts?.find(
+					(opt: any) => opt.name === "destination",
+				)?.value as string;
+
+				if (!isValidUrl(url)) {
+					return sendChannelMessage("Error: invalid URL. Does your URL start with http:// or https:// ?")
+				}
+
+				const slug = subcommandOpts?.find(
+					(opt: any) => opt.name === "alias",
+				)?.value as string | undefined;
+
+				const isPermanent = subcommandOpts?.find(
+					(opt: any) => opt.name === "is_permanent",
+				)?.value as boolean | undefined;
+			}
+			case "delete": {
+
+			}
+			case "update": {
+
+			}
+		}
+
+
 		switch (interaction.data.name.toLowerCase()) {
+
 			case ADD_COMMAND.name.toLowerCase(): {
 				const url = interaction.data.options?.find(
 					(opt: any) => opt.name === "destination",
@@ -129,9 +164,6 @@ app.post("/", async (c) => {
 				return c.json({ error: "Unknown command type" }, 400);
 		}
 	}
-
-	console.error("Unknown command type");
-	return c.json({ error: "Unknown command type" }, 400);
 });
 
 function isValidUrl(url: string): boolean {
