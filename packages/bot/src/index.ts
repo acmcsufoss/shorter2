@@ -7,10 +7,11 @@ import {
 import { ADD_COMMAND, DELETE_COMMAND, UPDATE_COMMAND } from "./commands";
 import { addLink, deleteLink, updateLink } from "./client";
 
-interface Env {
-	DISCORD_APPLICATION_ID: string;
-	DISCORD_PUBLIC_KEY: string;
-}
+// interface Env {
+// 	DISCORD_APPLICATION_ID: string;
+// 	DISCORD_PUBLIC_KEY: string;
+// 	SHORTER_API_KEY: string;
+// }
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -55,8 +56,8 @@ app.post("/", async (c) => {
 			data: {
 				content: message,
 			},
-		})
-	}
+		});
+	};
 
 	// ==== Our Application Commands ====
 	if (interaction.type === InteractionType.APPLICATION_COMMAND) {
@@ -67,7 +68,9 @@ app.post("/", async (c) => {
 				)?.value as string;
 
 				if (!isValidUrl(url)) {
-					return sendChannelMessage("Error: invalid URL. Does your URL start with http:// or https:// ?")
+					return sendChannelMessage(
+						"Error: invalid URL. Does your URL start with http:// or https:// ?",
+					);
 				}
 
 				const slug = interaction.data.options?.find(
@@ -80,10 +83,17 @@ app.post("/", async (c) => {
 
 				try {
 					// NOTE: If you capture the resp and try to read it this shi won't work
-					await addLink({ slug: slug, url: url, isPermanent: isPermanent });
-					return sendChannelMessage(`Shortlink created: https://s.acmcsuf.com/${slug} -> ${url}`)
+					await addLink(
+						{ slug: slug, url: url, isPermanent: isPermanent },
+						c.env.SHORTER_API_KEY,
+					);
+					return sendChannelMessage(
+						`Shortlink created: https://s.acmcsuf.com/${slug} -> ${url}`,
+					);
 				} catch (error: any) {
-					return sendChannelMessage(`Failed to create shortlink: ${error instanceof Error ? error.message : "Unknown error"}`)
+					return sendChannelMessage(
+						`Failed to create shortlink: ${error instanceof Error ? error.message : "Unknown error"}`,
+					);
 				}
 			}
 
@@ -92,8 +102,10 @@ app.post("/", async (c) => {
 					(opt: any) => opt.name === "alias",
 				)?.value as string;
 
-				await deleteLink(slug);
-				return sendChannelMessage(`Shortlink https://s.acmcsuf.com/${slug} deleted successfully`)
+				await deleteLink(slug, c.env.SHORTER_API_KEY);
+				return sendChannelMessage(
+					`Shortlink https://s.acmcsuf.com/${slug} deleted successfully`,
+				);
 			}
 
 			case UPDATE_COMMAND.name.toLowerCase(): {
@@ -106,7 +118,9 @@ app.post("/", async (c) => {
 				)?.value as string | undefined;
 
 				if (url && !isValidUrl(url)) {
-					return sendChannelMessage("Error: invalid URL. Does your URL start with http:// or https:// ?")
+					return sendChannelMessage(
+						"Error: invalid URL. Does your URL start with http:// or https:// ?",
+					);
 				}
 
 				const isPermanent = interaction.data.options?.find(
@@ -114,15 +128,24 @@ app.post("/", async (c) => {
 				)?.value as boolean | undefined;
 
 				if (!url && !isPermanent) {
-					return sendChannelMessage("Error: no modifications to shortlink provided")
+					return sendChannelMessage(
+						"Error: no modifications to shortlink provided",
+					);
 				}
 
 				try {
 					// NOTE: If you capture the resp and try to read it this shi won't work
-					await updateLink({ slug: slug, url: url, isPermanent: isPermanent });
-					return sendChannelMessage(`Shortlink created: https://s.acmcsuf.com/${slug} -> ${url}`)
+					await updateLink(
+						{ slug: slug, url: url, isPermanent: isPermanent },
+						c.env.SHORTER_API_KEY,
+					);
+					return sendChannelMessage(
+						`Shortlink created: https://s.acmcsuf.com/${slug} -> ${url}`,
+					);
 				} catch (error: any) {
-					return sendChannelMessage(`Failed to create shortlink: ${error instanceof Error ? error.message : "Unknown error"}`)
+					return sendChannelMessage(
+						`Failed to create shortlink: ${error instanceof Error ? error.message : "Unknown error"}`,
+					);
 				}
 			}
 			default:
@@ -137,12 +160,11 @@ app.post("/", async (c) => {
 function isValidUrl(url: string): boolean {
 	try {
 		const parsed = new URL(url);
-		return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+		return parsed.protocol === "http:" || parsed.protocol === "https:";
 	} catch {
-		return false
+		return false;
 	}
 }
-
 
 app.all("*", (c) => c.text("Not Found.", 404));
 

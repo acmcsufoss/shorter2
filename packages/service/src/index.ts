@@ -7,6 +7,10 @@ import { LinkFetch } from "./endpoints/linkFetch";
 import { LinkList } from "./endpoints/linkList";
 import { LinkUpdate } from "./endpoints/linkUpdate";
 
+// interface Env {
+// 	SHORTER_API_KEY: string
+// }
+
 // Start a Hono app
 const app = new Hono<{ Bindings: Env }>();
 
