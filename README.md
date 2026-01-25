@@ -5,12 +5,12 @@ This is a rewrite of our link shortening app, shorter.
 ## Architecture
 
 ### Link Shortening Service
-Located in `./service`, this contains a simple REST API written with Hono + Workers,
+Located in `./packages/service`, this contains a simple REST API written with Hono + Workers,
 and uses Workers KV for storing shortlinks.  
 Endpoint: `https://s.acmcsuf.com`
 
 ### Discord Bot
-Located in `./bot`, this contains the Discord bot that will interact with the
+Located in `./packages/bot`, this contains the Discord bot that will interact with the
 service. Also written with Hono + Workers.  
 Endpoint: `https://shorter-bot.acmcsuf.com` (not important for end users)
 
