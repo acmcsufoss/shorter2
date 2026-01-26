@@ -50,9 +50,13 @@ export class LinkFetch extends OpenAPIRoute {
 		// Retrieve the validated slug
 		const { slug } = data.params;
 
-		const value = await c.env.KV_SHORTLINKS.get(slug);
+		interface ValueType {
+			url: string;
+			isPermanent: boolean;
+		}
+		const value = await c.env.KV_SHORTLINKS.get<ValueType>(slug, "json");
 
-		if (value === null) {
+		if (!value) {
 			return c.json(
 				{
 					success: false,
@@ -62,7 +66,7 @@ export class LinkFetch extends OpenAPIRoute {
 			);
 		}
 
-		const {url, isPermanent} = JSON.parse(value)
+		const { url, isPermanent } = value;
 		const redirectCode = isPermanent ? 301 : 302;
 		return c.redirect(url, redirectCode);
 	}
