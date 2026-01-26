@@ -1,4 +1,4 @@
-import { Bool, Num, OpenAPIRoute } from "chanfana";
+import { Bool, OpenAPIRoute } from "chanfana";
 import { z } from "zod";
 import { type AppContext, Link } from "../types";
 
@@ -6,14 +6,6 @@ export class LinkList extends OpenAPIRoute {
 	schema = {
 		tags: ["Links"],
 		summary: "List Shortlinks",
-		request: {
-			query: z.object({
-				page: Num({
-					description: "Page number",
-					default: 0,
-				}),
-			}),
-		},
 		responses: {
 			"200": {
 				description: "Returns a list of shortlinks",
