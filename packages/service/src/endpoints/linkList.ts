@@ -1,6 +1,6 @@
 import { Bool, OpenAPIRoute } from "chanfana";
 import { z } from "zod";
-import { type AppContext, Link } from "../types";
+import { type AppContext, Link, KvEntry } from "../types";
 
 export class LinkList extends OpenAPIRoute {
 	schema = {
@@ -26,12 +26,11 @@ export class LinkList extends OpenAPIRoute {
 	};
 
 	async handle(c: AppContext) {
-		const allKeys = await c.env.KV_SHORTLINKS.list();
-		// const allLinks = await c.env.KV_SHORTLINKS.get()
+		const allLinks = await c.env.KV_SHORTLINKS.get<KvEntry[]>("list", "json")
 
 		return c.json({
 			success: true,
-			allKeys: allKeys,
+			links: allLinks,
 		});
 	}
 }
