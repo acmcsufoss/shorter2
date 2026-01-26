@@ -32,7 +32,7 @@ export class LinkList extends OpenAPIRoute {
 
 		// Return HTML if the client requesting wants html (e.g., browsers) and JSON otherwise
 		const accept = c.req.header("Accept");
-		if (accept && accept.includes("text/html")) {
+		if (accept?.includes("text/html")) {
 			return c.html(html`
 <html>
 	<head>
