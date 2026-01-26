@@ -2,7 +2,7 @@ import { Bool, OpenAPIRoute, Str } from "chanfana";
 import { z } from "zod";
 import type { AppContext, KvEntry } from "../types";
 
-const deleteEntryInCache = async (c: AppContext, slugToDelete: string) => {
+export const deleteEntryInCache = async (c: AppContext, slugToDelete: string) => {
 	const data = await c.env.KV_SHORTLINKS.get<KvEntry[]>("list", "json");
 	if (!data) return;
 	const updatedList = data.filter((entry) => entry.key !== slugToDelete);

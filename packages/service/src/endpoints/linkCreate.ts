@@ -19,7 +19,7 @@ const generateRandomSlug = (length: number = 5) => {
 	return slug;
 };
 
-const addEntryInCache = async (c: AppContext, newEntry: KvEntry) => {
+export const addEntryInCache = async (c: AppContext, newEntry: KvEntry) => {
 	const data = await c.env.KV_SHORTLINKS.get<KvEntry[]>("list", "json");
 	const currentList = data || [];
 	const updatedList = [...currentList, newEntry];
