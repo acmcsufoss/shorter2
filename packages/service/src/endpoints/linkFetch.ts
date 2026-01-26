@@ -1,6 +1,6 @@
 import { Bool, OpenAPIRoute, Str } from "chanfana";
 import { z } from "zod";
-import { type AppContext, Link, KvValue } from "../types";
+import { type AppContext, Link, type KvValue } from "../types";
 
 export class LinkFetch extends OpenAPIRoute {
 	schema = {

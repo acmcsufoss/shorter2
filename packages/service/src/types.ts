@@ -15,6 +15,11 @@ export interface KvValue {
 	isPermanent: boolean;
 }
 
+export interface KvEntry {
+	key: string; // slug
+	value: KvValue;
+}
+
 export interface ListOfLinks {
-	list: KvValue[];
+	list: KvEntry[];
 }

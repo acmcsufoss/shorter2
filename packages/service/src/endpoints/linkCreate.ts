@@ -1,6 +1,11 @@
 import { Bool, OpenAPIRoute } from "chanfana";
 import { z } from "zod";
-import { type AppContext, Link, KvValue, ListOfLinks } from "../types";
+import {
+	type AppContext,
+	Link,
+	type KvEntry,
+	type ListOfLinks,
+} from "../types";
 
 const generateRandomSlug = (length: number = 5) => {
 	const chars =
@@ -13,15 +18,15 @@ const generateRandomSlug = (length: number = 5) => {
 	}
 
 	return slug;
-}
+};
 
-const updateListOfLinks = async (c: AppContext, newValue: KvValue) => {
-	const value = await c.env.KV_SHORTLINKS.get<ListOfLinks>("list", "json");
-	const currentList = value?.list || [];
-	const updatedList = [...currentList, newValue]
+const addEntryInCache = async (c: AppContext, newEntry: KvEntry) => {
+	const data = await c.env.KV_SHORTLINKS.get<ListOfLinks>("list", "json");
+	const currentList = data?.list || [];
+	const updatedList = [...currentList, newEntry];
 
-	await c.env.KV_SHORTLINKS.put("list", JSON.stringify(updatedList))
-}
+	await c.env.KV_SHORTLINKS.put("list", JSON.stringify(updatedList));
+};
 
 export class LinkCreate extends OpenAPIRoute {
 	schema = {
@@ -92,8 +97,17 @@ export class LinkCreate extends OpenAPIRoute {
 			url: linkToCreate.url,
 			isPermanent: linkToCreate.isPermanent,
 		};
-		await c.env.KV_SHORTLINKS.put(linkToCreate.slug, JSON.stringify(value));
-		c.executionCtx.waitUntil(updateListOfLinks(c, value))
+		// await c.env.KV_SHORTLINKS.put(linkToCreate.slug, JSON.stringify(value));
+		c.executionCtx.waitUntil(
+			c.env.KV_SHORTLINKS.put(linkToCreate.slug, JSON.stringify(value)),
+		);
+
+		// Update cache
+		const entry = {
+			key: linkToCreate.slug,
+			value: value,
+		};
+		c.executionCtx.waitUntil(addEntryInCache(c, entry));
 
 		return c.json(
 			{
@@ -104,7 +118,7 @@ export class LinkCreate extends OpenAPIRoute {
 					isPermanent: linkToCreate.isPermanent,
 				},
 			},
-			202 // Accepted, processing may not be complete
+			202, // Accepted, processing may not be complete
 		);
 	}
 }
