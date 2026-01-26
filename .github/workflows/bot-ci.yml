@@ -1,16 +1,6 @@
 name: Bot CI
 
 on:
-  push:
-    branches:
-      - main
-      - 'feat/*'
-    paths:
-      - 'packages/bot/**'
-      - 'package.json'
-      - 'bun.lock'
-      - 'tsconfig.json'
-      - '.github/workflows/bot-ci.yml'
   pull_request:
     branches:
       - main

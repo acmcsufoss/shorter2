@@ -1,16 +1,6 @@
 name: Service CI
 
 on:
-  push:
-    branches:
-      - main
-      - 'feat/*'
-    paths:
-      - 'packages/service/**'
-      - 'package.json'
-      - 'bun.lock'
-      - 'tsconfig.json'
-      - '.github/workflows/service-ci.yml'
   pull_request:
     branches:
       - main
