@@ -1,11 +1,11 @@
-import { Hono } from "hono";
 import {
 	InteractionResponseType,
 	InteractionType,
 	verifyKey,
 } from "discord-interactions";
-import { ADD_COMMAND, DELETE_COMMAND, UPDATE_COMMAND } from "./commands";
+import { Hono } from "hono";
 import { addLink, deleteLink, updateLink } from "./client";
+import { ADD_COMMAND, DELETE_COMMAND, UPDATE_COMMAND } from "./commands";
 
 // interface Env {
 // 	DISCORD_APPLICATION_ID: string;
@@ -90,7 +90,7 @@ app.post("/", async (c) => {
 					return sendChannelMessage(
 						`Shortlink created: https://s.acmcsuf.com/${slug} -> ${url}`,
 					);
-				} catch (error: any) {
+				} catch (error) {
 					return sendChannelMessage(
 						`Failed to create shortlink: ${error instanceof Error ? error.message : "Unknown error"}`,
 					);
