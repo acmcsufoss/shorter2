@@ -1,25 +1,49 @@
-# Cloudflare Workers OpenAPI 3.1
+# Shortlink Service
 
-This is a Cloudflare Worker with OpenAPI 3.1 using [chanfana](https://github.com/cloudflare/chanfana) and [Hono](https://github.com/honojs/hono).
+REST API for creating and managing shortlinks. Built with Hono, Cloudflare Workers, and Workers KV.
 
-This is an example project made to be used as a quick start into building OpenAPI compliant Workers that generates the
-`openapi.json` schema automatically from code and validates the incoming request to the defined parameters or request body.
+## Features
 
-## Get started
+- Create, read, update, and delete shortlinks
+- Permanent and temporary link support
+- Bearer token authentication for write operations
+- OpenAPI documentation at root endpoint
+- Public list and redirect endpoints
 
-1. Sign up for [Cloudflare Workers](https://workers.dev). The free tier is more than enough for most use cases.
-2. Clone this project and install dependencies with `npm install`
-3. Run `wrangler login` to login to your Cloudflare account in wrangler
-4. Run `wrangler deploy` to publish the API to Cloudflare Workers
+## API Endpoints
 
-## Project structure
+### Public Endpoints
 
-1. Your main router is defined in `src/index.ts`.
-2. Each endpoint has its own file in `src/endpoints/`.
-3. For more information read the [chanfana documentation](https://chanfana.pages.dev/) and [Hono documentation](https://hono.dev/docs).
+- `GET /:slug` - Redirect to destination URL
+- `GET /list` - List all shortlinks (cached)
+- `GET /` - OpenAPI docs
+
+### Authenticated Endpoints
+
+Require `Authorization: Bearer <SHORTER_API_KEY>` header:
+
+- `POST /links` - Create shortlink
+- `PUT /links/:slug` - Update shortlink
+- `DELETE /links/:slug` - Delete shortlink
 
 ## Development
 
-1. Run `wrangler dev` to start a local instance of the API.
-2. Open `http://localhost:8787/` in your browser to see the Swagger interface where you can try the endpoints.
-3. Changes made in the `src/` folder will automatically trigger the server to reload, you only need to refresh the Swagger interface.
+```bash
+bun run dev          # Start dev server on localhost:8787
+bun run deploy       # Deploy to Cloudflare Workers
+bun run cf-typegen   # Generate Cloudflare types
+```
+
+## Configuration
+
+Set in Cloudflare dashboard or via `wrangler secret put`:
+
+- `SHORTER_API_KEY` - Bearer token for API authentication
+
+## Code Quality
+
+```bash
+bun run format   # Format with Biome
+bun run lint     # Lint with Biome
+bun run check    # Check formatting and linting
+```
