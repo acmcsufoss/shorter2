@@ -24,7 +24,7 @@ const addEntryInCache = async (c: AppContext, newEntry: KvEntry) => {
 	const currentList = data || [];
 	const updatedList = [...currentList, newEntry];
 
-	await c.env.KV_SHORTLINKS.put("list", JSON.stringify({ updatedList }));
+	await c.env.KV_SHORTLINKS.put("list", JSON.stringify(updatedList));
 };
 
 export class LinkCreate extends OpenAPIRoute {
