@@ -18,4 +18,6 @@ Endpoint: `https://shorter-bot.acmcsuf.com` (not important for end users)
 These two apps will share a secret key, allowing them to communicate and
 preventing the link shortening service from being accessed by anything other
 than the bot. The bot will handle permissions, which determines who is allowed
-to invoke it, and in what channel.
+to invoke it, and in what channel.  
+
+API Key generated with `openssl rand -hex 32`
