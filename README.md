@@ -1,23 +1,42 @@
 # Shorter V2
 
-This is a rewrite of our link shortening app, shorter.
+A link shortening service for ACM at CSUF, built with Cloudflare Workers.
 
-## Architecture
+## Overview
 
-### Link Shortening Service
-Located in `./packages/service`, this contains a simple REST API written with Hono + Workers,
-and uses Workers KV for storing shortlinks.  
-Endpoint: `https://s.acmcsuf.com`
+Shorter V2 consists of two services:
 
-### Discord Bot
-Located in `./packages/bot`, this contains the Discord bot that will interact with the
-service. Also written with Hono + Workers.  
-Endpoint: `https://shorter-bot.acmcsuf.com` (not important for end users)
+- **Service** (`./packages/service`) - REST API for managing shortlinks
+- **Bot** (`./packages/bot`) - Discord bot interface for creating/managing links
 
-### Authentication
-These two apps will share a secret key, allowing them to communicate and
-preventing the link shortening service from being accessed by anything other
-than the bot. The bot will handle permissions, which determines who is allowed
-to invoke it, and in what channel.  
+Both services are deployed as Cloudflare Workers and communicate via a shared API key.
 
-API Key generated with `openssl rand -hex 32`
+## Quick Start
+
+```bash
+# Install dependencies
+bun install
+
+# Development
+cd packages/service && bun run dev
+cd packages/bot && bun run dev
+
+# Deploy
+cd packages/service && bun run deploy
+cd packages/bot && bun run deploy
+```
+
+## Configuration
+
+Both services require environment variables (set in Cloudflare dashboard or via wrangler):
+
+- `SHORTER_API_KEY` - Shared secret for service authentication (generate with `openssl rand -hex 32`)
+- `DISCORD_APPLICATION_ID` - Discord app ID (bot only)
+- `DISCORD_PUBLIC_KEY` - Discord public key (bot only)
+- `DISCORD_TOKEN` - Discord bot secret token (bot only)
+
+## Links
+
+- Service: `https://s.acmcsuf.com`
+- Bot endpoint: `https://shorter-bot.acmcsuf.com`
+- API docs: `https://s.acmcsuf.com/` (OpenAPI)
