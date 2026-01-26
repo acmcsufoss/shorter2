@@ -1,6 +1,6 @@
 import { Bool, OpenAPIRoute } from "chanfana";
 import { z } from "zod";
-import { html } from 'hono/html';
+import { html } from "hono/html";
 import { type AppContext, Link, KvEntry } from "../types";
 
 export class LinkList extends OpenAPIRoute {
@@ -27,11 +27,12 @@ export class LinkList extends OpenAPIRoute {
 	};
 
 	async handle(c: AppContext) {
-		const allLinks = await c.env.KV_SHORTLINKS.get<KvEntry[]>("list", "json") || []; // null check
+		const allLinks =
+			(await c.env.KV_SHORTLINKS.get<KvEntry[]>("list", "json")) || []; // null check
 
 		// Return HTML if the client requesting wants html (e.g., browsers) and JSON otherwise
 		const accept = c.req.header("Accept");
-		if (accept && accept.includes('text/html')) {
+		if (accept && accept.includes("text/html")) {
 			return c.html(html`
 <html>
 	<head>
@@ -53,19 +54,20 @@ export class LinkList extends OpenAPIRoute {
 		<div class="container">
 			<h1>Shortlink Mappings</h1>
 			<ul>
-				${allLinks.map(link => html`
+				${allLinks.map(
+					(link) => html`
 					<li>
 						<a href="https://s.acmcsuf.com/${link.key}">${link.key}</a>
 						➫
 						<a href="${link.value.url}">${link.value.url}</a>
 					</li>
-				`)}
+				`,
+				)}
 			</ul>
 		</div>
 	</body>
 </html>
-`
-			);
+`);
 		}
 
 		return c.json({
