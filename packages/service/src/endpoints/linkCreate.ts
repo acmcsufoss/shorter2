@@ -62,7 +62,8 @@ export class LinkCreate extends OpenAPIRoute {
 			return c.json(
 				{
 					success: false,
-					error: "Custom slug cannot contain reserved alias. Reserved alias': `links`, `list`"
+					error:
+						"Custom slug cannot contain reserved alias. Reserved alias': `links`, `list`",
 				},
 				409,
 			);
@@ -79,7 +80,10 @@ export class LinkCreate extends OpenAPIRoute {
 				409,
 			);
 		}
-		const url = JSON.stringify({url: linkToCreate.url, isPermanent: linkToCreate.isPermanent})
+		const url = JSON.stringify({
+			url: linkToCreate.url,
+			isPermanent: linkToCreate.isPermanent,
+		});
 		await c.env.KV_SHORTLINKS.put(linkToCreate.slug, url);
 
 		return c.json({
