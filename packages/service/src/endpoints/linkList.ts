@@ -34,20 +34,38 @@ export class LinkList extends OpenAPIRoute {
 		if (accept && accept.includes('text/html')) {
 			return c.html(html`
 <html>
-	<head><title>acm@CSUF's Shortlinks</title></head>
+	<head>
+		<title>acm@CSUF's Shortlinks</title>
+		<style>
+			body {
+				display: grid;
+				place-items: center;
+				min-height: 100vh;
+				margin: 0;
+			}
+			.container = {
+				padding: 2rem;
+				border-radius: 8xp;
+			}
+		</style>
+	</head>
 	<body>
-		<div style="margin: auto;">
+		<div class="container">
 			<h1>Shortlink Mappings</h1>
 			<ul>
-				${allLinks.map(link => `
-					<li><a href="https://s.acmcsuf.com/${link.key}">${link.key}</a> => <a href="${link.value.url}">${link.value.url}</a></li>
-				`).join('')}
+				${allLinks.map(link => html`
+					<li>
+						<a href="https://s.acmcsuf.com/${link.key}">${link.key}</a>
+						=>
+						<a href="${link.value.url}">${link.value.url}</a>
+					</li>
+				`)}
 			</ul>
 		</div>
 	</body>
 </html>
 `
-			)
+			);
 		}
 
 		return c.json({
