@@ -19,7 +19,3 @@ export interface KvEntry {
 	key: string; // slug
 	value: KvValue;
 }
-
-export interface ListOfLinks {
-	list: KvEntry[];
-}

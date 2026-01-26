@@ -4,7 +4,6 @@ import {
 	type AppContext,
 	Link,
 	type KvEntry,
-	type ListOfLinks,
 } from "../types";
 
 const generateRandomSlug = (length: number = 5) => {
@@ -21,11 +20,11 @@ const generateRandomSlug = (length: number = 5) => {
 };
 
 const addEntryInCache = async (c: AppContext, newEntry: KvEntry) => {
-	const data = await c.env.KV_SHORTLINKS.get<ListOfLinks>("list", "json");
-	const currentList = data?.list || [];
+	const data = await c.env.KV_SHORTLINKS.get<KvEntry[]>("list", "json");
+	const currentList = data || [];
 	const updatedList = [...currentList, newEntry];
 
-	await c.env.KV_SHORTLINKS.put("list", JSON.stringify(updatedList));
+	await c.env.KV_SHORTLINKS.put("list", JSON.stringify({ updatedList }));
 };
 
 export class LinkCreate extends OpenAPIRoute {
