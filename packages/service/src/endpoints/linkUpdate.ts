@@ -1,13 +1,13 @@
 import { Bool, OpenAPIRoute, Str } from "chanfana";
 import { z } from "zod";
-import { type AppContext, Link, KvValue, KvEntry } from "../types";
+import { type AppContext, Link, type KvValue, type KvEntry } from "../types";
 import { deleteEntryInCache } from "./linkDelete";
 import { addEntryInCache } from "./linkCreate";
 
 const updateEntryInCache = async (c, entry: KvEntry) => {
-	await deleteEntryInCache(c, entry.key)
-	await addEntryInCache(c, entry)
-}
+	await deleteEntryInCache(c, entry.key);
+	await addEntryInCache(c, entry);
+};
 
 export class LinkUpdate extends OpenAPIRoute {
 	schema = {
@@ -62,16 +62,19 @@ export class LinkUpdate extends OpenAPIRoute {
 			isPermanent: isPermanent || existing.isPermanent,
 		};
 		await c.env.KV_SHORTLINKS.put(slug, JSON.stringify(updatedValue));
-		c.executionCtx.waitUntil(updateEntryInCache(c, { key: slug, value: updatedValue }));
+		c.executionCtx.waitUntil(
+			updateEntryInCache(c, { key: slug, value: updatedValue }),
+		);
 
-		return c.json({
-			success: true,
-			link: {
-				slug: slug,
-				url: url,
+		return c.json(
+			{
+				success: true,
+				link: {
+					slug: slug,
+					url: url,
+				},
 			},
-		},
-			202
+			202,
 		);
 	}
 }
