@@ -1,7 +1,7 @@
 import { Bool, OpenAPIRoute } from "chanfana";
 import { z } from "zod";
 import { html } from "hono/html";
-import { type AppContext, Link, KvEntry } from "../types";
+import { type AppContext, Link, type KvEntry } from "../types";
 
 export class LinkList extends OpenAPIRoute {
 	schema = {
