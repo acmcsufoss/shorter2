@@ -1,5 +1,5 @@
-import { ADD_COMMAND, DELETE_COMMAND } from "./commands";
 import dotenv from "dotenv";
+import { ADD_COMMAND, DELETE_COMMAND } from "./commands";
 
 /**
  * This file is meant to be run from the command line, and is not used by the
