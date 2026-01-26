@@ -9,3 +9,12 @@ export const Link = z.object({
 	url: z.string().url(),
 	isPermanent: Bool({ required: false }).default(false),
 });
+
+export interface KvValue {
+	url: string;
+	isPermanent: boolean;
+}
+
+export interface ListOfLinks {
+	list: KvValue[];
+}

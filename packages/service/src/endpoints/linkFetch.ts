@@ -1,6 +1,6 @@
 import { Bool, OpenAPIRoute, Str } from "chanfana";
 import { z } from "zod";
-import { type AppContext, Link } from "../types";
+import { type AppContext, Link, KvValue } from "../types";
 
 export class LinkFetch extends OpenAPIRoute {
 	schema = {
@@ -50,12 +50,7 @@ export class LinkFetch extends OpenAPIRoute {
 		// Retrieve the validated slug
 		const { slug } = data.params;
 
-		interface ValueType {
-			url: string;
-			isPermanent: boolean;
-		}
-		const value = await c.env.KV_SHORTLINKS.get<ValueType>(slug, "json");
-
+		const value = await c.env.KV_SHORTLINKS.get<KvValue>(slug, "json");
 		if (!value) {
 			return c.json(
 				{
@@ -65,8 +60,8 @@ export class LinkFetch extends OpenAPIRoute {
 				404,
 			);
 		}
-
 		const { url, isPermanent } = value;
+
 		const redirectCode = isPermanent ? 301 : 302;
 		return c.redirect(url, redirectCode);
 	}

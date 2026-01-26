@@ -1,6 +1,27 @@
 import { Bool, OpenAPIRoute } from "chanfana";
 import { z } from "zod";
-import { type AppContext, Link } from "../types";
+import { type AppContext, Link, KvValue, ListOfLinks } from "../types";
+
+const generateRandomSlug = (length: number = 5) => {
+	const chars =
+		"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	let slug = "";
+	const randomValues = crypto.getRandomValues(new Uint8Array(length));
+
+	for (let i = 0; i < length; i++) {
+		slug += chars[randomValues[i] % chars.length];
+	}
+
+	return slug;
+}
+
+const updateListOfLinks = async (c: AppContext, newValue: KvValue) => {
+	const value = await c.env.KV_SHORTLINKS.get<ListOfLinks>("list", "json");
+	const currentList = value?.list || [];
+	const updatedList = [...currentList, newValue]
+
+	await c.env.KV_SHORTLINKS.put("list", JSON.stringify(updatedList))
+}
 
 export class LinkCreate extends OpenAPIRoute {
 	schema = {
@@ -34,19 +55,6 @@ export class LinkCreate extends OpenAPIRoute {
 		},
 	};
 
-	generateRandomSlug(length: number = 5) {
-		const chars =
-			"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-		let slug = "";
-		const randomValues = crypto.getRandomValues(new Uint8Array(length));
-
-		for (let i = 0; i < length; i++) {
-			slug += chars[randomValues[i] % chars.length];
-		}
-
-		return slug;
-	}
-
 	async handle(c: AppContext) {
 		// Get validated data
 		const data = await this.getValidatedData<typeof this.schema>();
@@ -55,7 +63,7 @@ export class LinkCreate extends OpenAPIRoute {
 		const linkToCreate = data.body;
 
 		if (!linkToCreate.slug) {
-			linkToCreate.slug = this.generateRandomSlug();
+			linkToCreate.slug = generateRandomSlug();
 		}
 
 		if (linkToCreate.slug === "links" || linkToCreate.slug === "list") {
@@ -80,19 +88,23 @@ export class LinkCreate extends OpenAPIRoute {
 				409,
 			);
 		}
-		const value = JSON.stringify({
+		const value = {
 			url: linkToCreate.url,
 			isPermanent: linkToCreate.isPermanent,
-		});
-		await c.env.KV_SHORTLINKS.put(linkToCreate.slug, value);
+		};
+		await c.env.KV_SHORTLINKS.put(linkToCreate.slug, JSON.stringify(value));
+		c.executionCtx.waitUntil(updateListOfLinks(c, value))
 
-		return c.json({
-			success: true,
-			link: {
-				slug: linkToCreate.slug,
-				url: linkToCreate.url,
-				isPermanent: linkToCreate.isPermanent,
+		return c.json(
+			{
+				success: true,
+				link: {
+					slug: linkToCreate.slug,
+					url: linkToCreate.url,
+					isPermanent: linkToCreate.isPermanent,
+				},
 			},
-		});
+			202 // Accepted, processing may not be complete
+		);
 	}
 }
