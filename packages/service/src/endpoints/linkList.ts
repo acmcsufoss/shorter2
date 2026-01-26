@@ -1,19 +1,12 @@
-import { Bool, Num, OpenAPIRoute } from "chanfana";
+import { Bool, OpenAPIRoute } from "chanfana";
 import { z } from "zod";
-import { type AppContext, Link } from "../types";
+import { html } from 'hono/html';
+import { type AppContext, Link, KvEntry } from "../types";
 
 export class LinkList extends OpenAPIRoute {
 	schema = {
 		tags: ["Links"],
 		summary: "List Shortlinks",
-		request: {
-			query: z.object({
-				page: Num({
-					description: "Page number",
-					default: 0,
-				}),
-			}),
-		},
 		responses: {
 			"200": {
 				description: "Returns a list of shortlinks",
@@ -34,11 +27,50 @@ export class LinkList extends OpenAPIRoute {
 	};
 
 	async handle(c: AppContext) {
-		const allKeys = await c.env.KV_SHORTLINKS.list();
+		const allLinks = await c.env.KV_SHORTLINKS.get<KvEntry[]>("list", "json") || []; // null check
+
+		// Return HTML if the client requesting wants html (e.g., browsers) and JSON otherwise
+		const accept = c.req.header("Accept");
+		if (accept && accept.includes('text/html')) {
+			return c.html(html`
+<html>
+	<head>
+		<title>acm@CSUF's Shortlinks</title>
+		<style>
+			body {
+				display: grid;
+				place-items: center;
+				min-height: 100vh;
+				margin: 0;
+			}
+			.container = {
+				padding: 2rem;
+				border-radius: 8xp;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>Shortlink Mappings</h1>
+			<ul>
+				${allLinks.map(link => html`
+					<li>
+						<a href="https://s.acmcsuf.com/${link.key}">${link.key}</a>
+						➫
+						<a href="${link.value.url}">${link.value.url}</a>
+					</li>
+				`)}
+			</ul>
+		</div>
+	</body>
+</html>
+`
+			);
+		}
 
 		return c.json({
 			success: true,
-			allKeys: allKeys,
+			links: allLinks,
 		});
 	}
 }
