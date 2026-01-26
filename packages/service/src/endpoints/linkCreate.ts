@@ -58,6 +58,16 @@ export class LinkCreate extends OpenAPIRoute {
 			linkToCreate.slug = this.generateRandomSlug();
 		}
 
+		if (linkToCreate.slug === "links" || linkToCreate.slug === "list") {
+			return c.json(
+				{
+					success: false,
+					error: "Custom slug cannot contain reserved alias. Reserved alias': `links`, `list`"
+				},
+				409,
+			);
+		}
+
 		// Existence check before insertion
 		const value = await c.env.KV_SHORTLINKS.get(linkToCreate.slug);
 		if (value) {
