@@ -56,7 +56,7 @@ export class LinkList extends OpenAPIRoute {
 				${allLinks.map(link => html`
 					<li>
 						<a href="https://s.acmcsuf.com/${link.key}">${link.key}</a>
-						=>
+						➫
 						<a href="${link.value.url}">${link.value.url}</a>
 					</li>
 				`)}
