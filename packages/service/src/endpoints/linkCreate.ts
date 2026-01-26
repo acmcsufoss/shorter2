@@ -70,8 +70,8 @@ export class LinkCreate extends OpenAPIRoute {
 		}
 
 		// Existence check before insertion
-		const value = await c.env.KV_SHORTLINKS.get(linkToCreate.slug);
-		if (value) {
+		const exists = await c.env.KV_SHORTLINKS.get(linkToCreate.slug);
+		if (exists) {
 			return c.json(
 				{
 					success: false,
@@ -80,11 +80,11 @@ export class LinkCreate extends OpenAPIRoute {
 				409,
 			);
 		}
-		const url = JSON.stringify({
+		const value = JSON.stringify({
 			url: linkToCreate.url,
 			isPermanent: linkToCreate.isPermanent,
 		});
-		await c.env.KV_SHORTLINKS.put(linkToCreate.slug, url);
+		await c.env.KV_SHORTLINKS.put(linkToCreate.slug, value);
 
 		return c.json({
 			success: true,
