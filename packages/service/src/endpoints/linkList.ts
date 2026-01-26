@@ -34,6 +34,7 @@ export class LinkList extends OpenAPIRoute {
 		const accept = c.req.header("Accept");
 		if (accept?.includes("text/html")) {
 			return c.html(html`
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>acm@CSUF's Shortlinks</title>
