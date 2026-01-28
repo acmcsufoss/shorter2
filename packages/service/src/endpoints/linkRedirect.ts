@@ -1,6 +1,6 @@
 import { Bool, OpenAPIRoute, Str } from "chanfana";
 import { z } from "zod";
-import { type AppContext, Link, type KvValue } from "../types";
+import { type AppContext, type KvValue } from "../types";
 
 export class LinkRedirect extends OpenAPIRoute {
 	schema = {
