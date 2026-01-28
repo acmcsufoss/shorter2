@@ -46,8 +46,6 @@ export class LinkFetch extends OpenAPIRoute {
 	async handle(c: AppContext) {
 		// Get validated data
 		const data = await this.getValidatedData<typeof this.schema>();
-
-		// Retrieve the validated slug
 		const { slug } = data.params;
 
 		const value = await c.env.KV_SHORTLINKS.get<KvValue>(slug, "json");

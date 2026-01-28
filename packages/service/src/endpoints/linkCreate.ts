@@ -94,13 +94,8 @@ export class LinkCreate extends OpenAPIRoute {
 		};
 		await c.env.KV_SHORTLINKS.put(linkToCreate.slug, JSON.stringify(value));
 
-		// Update cache
-		const entry = {
-			key: linkToCreate.slug,
-			value: value,
-		};
 		// Can't just fire and forget this since workers is serverless
-		c.executionCtx.waitUntil(addEntryInCache(c, entry));
+		c.executionCtx.waitUntil(addEntryInCache(c, { key: linkToCreate.slug, value: value }));
 
 		return c.json(
 			{

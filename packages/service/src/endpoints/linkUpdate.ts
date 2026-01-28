@@ -62,6 +62,8 @@ export class LinkUpdate extends OpenAPIRoute {
 			isPermanent: isPermanent !== undefined ? isPermanent : existing.isPermanent,
 		};
 		await c.env.KV_SHORTLINKS.put(slug, JSON.stringify(updatedValue));
+
+		// Cannot fire and forget in serverless environment
 		c.executionCtx.waitUntil(
 			updateEntryInCache(c, { key: slug, value: updatedValue }),
 		);
