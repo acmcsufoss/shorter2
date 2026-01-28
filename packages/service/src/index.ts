@@ -7,10 +7,6 @@ import { LinkRedirect } from "./endpoints/linkRedirect";
 import { LinkFetchAll } from "./endpoints/linkFetchAll";
 import { LinkUpdate } from "./endpoints/linkUpdate";
 
-// interface Env {
-// 	SHORTER_API_KEY: string
-// }
-
 // Start a Hono app
 const app = new Hono<{ Bindings: Env }>();
 

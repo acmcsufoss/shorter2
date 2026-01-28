@@ -7,12 +7,6 @@ import {
 import { ADD_COMMAND, DELETE_COMMAND, UPDATE_COMMAND } from "./commands";
 import { addLink, deleteLink, updateLink } from "./client";
 
-// interface Env {
-// 	DISCORD_APPLICATION_ID: string;
-// 	DISCORD_PUBLIC_KEY: string;
-// 	SHORTER_API_KEY: string;
-// }
-
 const app = new Hono<{ Bindings: Env }>();
 
 // Used to check if worker is running
