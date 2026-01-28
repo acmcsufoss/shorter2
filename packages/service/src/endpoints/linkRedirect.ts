@@ -2,7 +2,7 @@ import { Bool, OpenAPIRoute, Str } from "chanfana";
 import { z } from "zod";
 import { type AppContext, Link, type KvValue } from "../types";
 
-export class LinkFetch extends OpenAPIRoute {
+export class LinkRedirect extends OpenAPIRoute {
 	schema = {
 		tags: ["Links"],
 		summary: "Get a single URL by slug",
@@ -12,20 +12,11 @@ export class LinkFetch extends OpenAPIRoute {
 			}),
 		},
 		responses: {
-			"200": {
-				description: "Returns a single URL if found",
-				content: {
-					"application/json": {
-						schema: z.object({
-							series: z.object({
-								success: Bool(),
-								result: z.object({
-									link: Link,
-								}),
-							}),
-						}),
-					},
-				},
+			"301": {
+				description: "Redirects client to mapped url (permanent redirect)",
+			},
+			"302": {
+				description: "Redirects client to mapped url (temporary redirect)",
 			},
 			"404": {
 				description: "Link not found",

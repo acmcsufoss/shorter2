@@ -3,8 +3,8 @@ import { Hono } from "hono";
 import { bearerAuth } from "hono/bearer-auth";
 import { LinkCreate } from "./endpoints/linkCreate";
 import { LinkDelete } from "./endpoints/linkDelete";
-import { LinkFetch } from "./endpoints/linkFetch";
-import { LinkList } from "./endpoints/linkList";
+import { LinkRedirect } from "./endpoints/linkRedirect";
+import { LinkFetchAll } from "./endpoints/linkFetchAll";
 import { LinkUpdate } from "./endpoints/linkUpdate";
 
 // interface Env {
@@ -30,8 +30,8 @@ const openapi = fromHono(app, {
 // Register OpenAPI endpoints
 openapi.post("/links", LinkCreate);
 openapi.put("/links/:slug", LinkUpdate);
-openapi.get("/list", LinkList); // public
-openapi.get("/:slug", LinkFetch); // public
+openapi.get("/list", LinkFetchAll); // public
+openapi.get("/:slug", LinkRedirect); // public
 openapi.delete("/links/:slug", LinkDelete);
 
 export type AppType = typeof app;
