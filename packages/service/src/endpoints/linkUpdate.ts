@@ -4,7 +4,7 @@ import { type AppContext, Link, type KvValue, type KvEntry } from "../types";
 import { deleteEntryInCache } from "./linkDelete";
 import { addEntryInCache } from "./linkCreate";
 
-const updateEntryInCache = async (c, entry: KvEntry) => {
+const updateEntryInCache = async (c: AppContext, entry: KvEntry) => {
 	await deleteEntryInCache(c, entry.key);
 	await addEntryInCache(c, entry);
 };
