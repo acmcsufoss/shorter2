@@ -20,7 +20,8 @@ export async function addLink(
 	});
 
 	if (!response.ok) {
-		throw new Error(`HTTP error. Status: ${response.status}`);
+		const errText = await response.text();
+		throw new Error(`HTTP ${response.status}: ${errText}`);
 	}
 
 	return await response.json();
@@ -37,7 +38,8 @@ export async function deleteLink(
 	});
 
 	if (!response.ok) {
-		throw new Error(`HTTP error. Status: ${response.status}`);
+		const errText = await response.text();
+		throw new Error(`HTTP ${response.status}: ${errText}`);
 	}
 }
 
@@ -54,7 +56,8 @@ export async function updateLink(
 	});
 
 	if (!response.ok) {
-		throw new Error(`HTTP error. Status: ${response.status}`);
+		const errText = await response.text();
+		throw new Error(`HTTP ${response.status}: ${errText}`);
 	}
 
 	return await response.json();
