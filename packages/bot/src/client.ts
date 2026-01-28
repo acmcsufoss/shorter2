@@ -43,7 +43,8 @@ export async function deleteLink(
 }
 
 export async function updateLink(link: Link, authToken: string): Promise<Link> {
-	const response = await fetch(endpoint, {
+	const updateUrl = `${endpoint}/${link.slug}`;
+	const response = await fetch(updateUrl, {
 		method: "PUT",
 		headers: setHeaders(authToken),
 		body: JSON.stringify(link),
