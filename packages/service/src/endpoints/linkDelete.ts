@@ -23,7 +23,7 @@ export class LinkDelete extends OpenAPIRoute {
 			}),
 		},
 		responses: {
-			"200": {
+			"202": {
 				description: "Returns if the shortlink was deleted successfully",
 				content: {
 					"application/json": {

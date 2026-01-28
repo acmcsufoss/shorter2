@@ -29,7 +29,7 @@ export class LinkUpdate extends OpenAPIRoute {
 			},
 		},
 		responses: {
-			"200": {
+			"202": {
 				description: "Returns the updated shortlink",
 				content: {
 					"application/json": {

@@ -37,7 +37,7 @@ export class LinkCreate extends OpenAPIRoute {
 			},
 		},
 		responses: {
-			"200": {
+			"202": {
 				description: "Returns the created shortlink",
 				content: {
 					"application/json": {
