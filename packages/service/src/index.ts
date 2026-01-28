@@ -31,7 +31,7 @@ const openapi = fromHono(app, {
 openapi.post("/links", LinkCreate);
 openapi.put("/links/:slug", LinkUpdate);
 openapi.get("/list", LinkList); // public
-openapi.get(":slug", LinkFetch); // public
+openapi.get("/:slug", LinkFetch); // public
 openapi.delete("/links/:slug", LinkDelete);
 
 export type AppType = typeof app;
