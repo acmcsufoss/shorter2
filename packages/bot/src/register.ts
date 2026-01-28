@@ -1,4 +1,4 @@
-import { ADD_COMMAND, DELETE_COMMAND } from "./commands";
+import { ADD_COMMAND, DELETE_COMMAND, UPDATE_COMMAND } from "./commands";
 import dotenv from "dotenv";
 
 /**
@@ -33,7 +33,7 @@ const response = await fetch(url, {
 		Authorization: `Bot ${token}`,
 	},
 	method: "PUT",
-	body: JSON.stringify([ADD_COMMAND, DELETE_COMMAND]),
+	body: JSON.stringify([ADD_COMMAND, DELETE_COMMAND, UPDATE_COMMAND]),
 });
 
 if (response.ok) {
