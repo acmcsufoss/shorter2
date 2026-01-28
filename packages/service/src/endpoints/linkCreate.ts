@@ -67,8 +67,7 @@ export class LinkCreate extends OpenAPIRoute {
 			return c.json(
 				{
 					success: false,
-					error:
-						`custom slug is a reserved alias (one of ${reservedSlugs.join(', ')})`,
+					error: `custom slug is a reserved alias (one of ${reservedSlugs.join(", ")})`,
 				},
 				409,
 			);

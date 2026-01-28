@@ -1,6 +1,11 @@
 import { Bool, OpenAPIRoute, Str } from "chanfana";
 import { z } from "zod";
-import { type AppContext, UpdateLink, type KvValue, type KvEntry } from "../types";
+import {
+	type AppContext,
+	UpdateLink,
+	type KvValue,
+	type KvEntry,
+} from "../types";
 import { deleteEntryInCache } from "./linkDelete";
 import { addEntryInCache } from "./linkCreate";
 
