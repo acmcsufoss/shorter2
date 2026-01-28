@@ -5,7 +5,7 @@ import {
 } from "discord-interactions";
 import { Hono } from "hono";
 import { addLink, deleteLink, updateLink } from "./client";
-import { ADD_COMMAND, DELETE_COMMAND, UPDATE_COMMAND } from "./commands";
+import { SHORTER_COMMAND } from "./commands";
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -55,9 +55,19 @@ app.post("/", async (c) => {
 
 	// ==== Our Application Commands ====
 	if (interaction.type === InteractionType.APPLICATION_COMMAND) {
-		switch (interaction.data.name.toLowerCase()) {
-			case ADD_COMMAND.name.toLowerCase(): {
-				const url = interaction.data.options?.find(
+		if (interaction.data.name.toLowerCase() !== "shorter") {
+			return c.json({ error: "Unknown command type" }, 400);
+		}
+
+		const subcommand = interaction.data.options?.[0];
+		if (!subcommand) {
+			return c.json({ error: "No subcommand provided" }, 400);
+		}
+
+		switch (subcommand.name.toLowerCase()) {
+			// ==== Add Subcommand =======================================================================
+			case "add": {
+				const url = subcommand.options?.find(
 					(opt: any) => opt.name === "destination",
 				)?.value as string;
 
@@ -67,11 +77,11 @@ app.post("/", async (c) => {
 					);
 				}
 
-				const slug = interaction.data.options?.find(
+				const slug = subcommand.options?.find(
 					(opt: any) => opt.name === "alias",
 				)?.value as string | undefined;
 
-				const isPermanent = interaction.data.options?.find(
+				const isPermanent = subcommand.options?.find(
 					(opt: any) => opt.name === "is_permanent",
 				)?.value as boolean | undefined;
 
@@ -91,8 +101,9 @@ app.post("/", async (c) => {
 				}
 			}
 
-			case DELETE_COMMAND.name.toLowerCase(): {
-				const slug = interaction.data.options?.find(
+			// ==== Delete Subcommand ====================================================================
+			case "delete": {
+				const slug = subcommand.options?.find(
 					(opt: any) => opt.name === "alias",
 				)?.value as string;
 
@@ -102,12 +113,13 @@ app.post("/", async (c) => {
 				);
 			}
 
-			case UPDATE_COMMAND.name.toLowerCase(): {
-				const slug = interaction.data.options?.find(
+			// ==== Update Subcommand ====================================================================
+			case "update": {
+				const slug = subcommand.options?.find(
 					(opt: any) => opt.name === "alias",
 				)?.value as string;
 
-				const url = interaction.data.options?.find(
+				const url = subcommand.options?.find(
 					(opt: any) => opt.name === "destination",
 				)?.value as string | undefined;
 
@@ -117,7 +129,7 @@ app.post("/", async (c) => {
 					);
 				}
 
-				const isPermanent = interaction.data.options?.find(
+				const isPermanent = subcommand.options?.find(
 					(opt: any) => opt.name === "is_permanent",
 				)?.value as boolean | undefined;
 
