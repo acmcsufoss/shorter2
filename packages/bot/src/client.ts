@@ -9,7 +9,10 @@ const setHeaders = (authToken: string) => {
 	};
 };
 
-export async function addLink(link: AddLinkModel, authToken: string): Promise<AddLinkModel> {
+export async function addLink(
+	link: AddLinkModel,
+	authToken: string,
+): Promise<AddLinkModel> {
 	const response = await fetch(endpoint, {
 		method: "POST",
 		headers: setHeaders(authToken),
@@ -38,7 +41,11 @@ export async function deleteLink(
 	}
 }
 
-export async function updateLink(slug: string, updateParams: UpdateLinkModel, authToken: string): Promise<UpdateLinkModel> {
+export async function updateLink(
+	slug: string,
+	updateParams: UpdateLinkModel,
+	authToken: string,
+): Promise<UpdateLinkModel> {
 	const updateUrl = `${endpoint}/${slug}`;
 	const response = await fetch(updateUrl, {
 		method: "PUT",
