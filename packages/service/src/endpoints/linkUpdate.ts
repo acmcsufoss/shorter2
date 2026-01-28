@@ -59,7 +59,7 @@ export class LinkUpdate extends OpenAPIRoute {
 
 		const updatedValue = {
 			url: url || existing.url,
-			isPermanent: isPermanent || existing.isPermanent,
+			isPermanent: isPermanent !== undefined ? isPermanent : existing.isPermanent,
 		};
 		await c.env.KV_SHORTLINKS.put(slug, JSON.stringify(updatedValue));
 		c.executionCtx.waitUntil(
