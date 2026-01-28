@@ -10,6 +10,11 @@ export const Link = z.object({
 	isPermanent: Bool({ required: false }).default(false),
 });
 
+export const UpdateLink = z.object({
+	url: z.string().url().optional(),
+	isPermanent: Bool({ required: false }).default(false),
+});
+
 export interface KvValue {
 	url: string;
 	isPermanent: boolean;

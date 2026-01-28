@@ -1,6 +1,6 @@
 import { Bool, OpenAPIRoute, Str } from "chanfana";
 import { z } from "zod";
-import type { AppContext, KvValue, KvEntry } from "../types";
+import { type AppContext, UpdateLink, type KvValue, type KvEntry } from "../types";
 import { deleteEntryInCache } from "./linkDelete";
 import { addEntryInCache } from "./linkCreate";
 
@@ -20,10 +20,7 @@ export class LinkUpdate extends OpenAPIRoute {
 			body: {
 				content: {
 					"application/json": {
-						schema: z.object({
-							url: z.string().url(),
-							isPermanent: Bool(),
-						}),
+						schema: UpdateLink,
 					},
 				},
 			},
