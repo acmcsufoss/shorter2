@@ -130,7 +130,8 @@ app.post("/", async (c) => {
 				try {
 					// NOTE: If you capture the resp and try to read it this shi won't work
 					await updateLink(
-						{ slug: slug, url: url, isPermanent: isPermanent },
+						slug,
+						{ url: url, isPermanent: isPermanent },
 						c.env.SHORTER_API_KEY,
 					);
 					return sendChannelMessage(
