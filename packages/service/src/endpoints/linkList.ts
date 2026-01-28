@@ -45,7 +45,7 @@ export class LinkList extends OpenAPIRoute {
 				min-height: 100vh;
 				margin: 0;
 			}
-			.container = {
+			.container {
 				padding: 2rem;
 				border-radius: 8xp;
 			}
