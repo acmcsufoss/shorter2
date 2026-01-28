@@ -1,8 +1,4 @@
-interface Link {
-	slug?: string;
-	url?: string;
-	isPermanent?: boolean;
-}
+import type { AddLinkModel, UpdateLinkModel } from "./models";
 
 const endpoint = "https://s.acmcsuf.com/links";
 
@@ -13,7 +9,10 @@ const setHeaders = (authToken: string) => {
 	};
 };
 
-export async function addLink(link: Link, authToken: string): Promise<Link> {
+export async function addLink(
+	link: AddLinkModel,
+	authToken: string,
+): Promise<AddLinkModel> {
 	const response = await fetch(endpoint, {
 		method: "POST",
 		headers: setHeaders(authToken),
@@ -21,7 +20,8 @@ export async function addLink(link: Link, authToken: string): Promise<Link> {
 	});
 
 	if (!response.ok) {
-		throw new Error(`HTTP error. Status: ${response.status}`);
+		const errText = await response.text();
+		throw new Error(`HTTP ${response.status}: ${errText}`);
 	}
 
 	return await response.json();
@@ -38,20 +38,26 @@ export async function deleteLink(
 	});
 
 	if (!response.ok) {
-		throw new Error(`HTTP error. Status: ${response.status}`);
+		const errText = await response.text();
+		throw new Error(`HTTP ${response.status}: ${errText}`);
 	}
 }
 
-export async function updateLink(link: Link, authToken: string): Promise<Link> {
-	const updateUrl = `${endpoint}/${link.slug}`;
+export async function updateLink(
+	slug: string,
+	updateParams: UpdateLinkModel,
+	authToken: string,
+): Promise<UpdateLinkModel> {
+	const updateUrl = `${endpoint}/${slug}`;
 	const response = await fetch(updateUrl, {
 		method: "PUT",
 		headers: setHeaders(authToken),
-		body: JSON.stringify(link),
+		body: JSON.stringify(updateParams),
 	});
 
 	if (!response.ok) {
-		throw new Error(`HTTP error. Status: ${response.status}`);
+		const errText = await response.text();
+		throw new Error(`HTTP ${response.status}: ${errText}`);
 	}
 
 	return await response.json();

@@ -1,6 +1,6 @@
 import { Bool, OpenAPIRoute } from "chanfana";
 import { z } from "zod";
-import { type AppContext, Link, type KvEntry } from "../types";
+import { type AppContext, type KvEntry, Link } from "../types";
 
 const generateRandomSlug = (length: number = 5) => {
 	const chars =
@@ -37,7 +37,7 @@ export class LinkCreate extends OpenAPIRoute {
 			},
 		},
 		responses: {
-			"200": {
+			"202": {
 				description: "Returns the created shortlink",
 				content: {
 					"application/json": {
@@ -56,22 +56,18 @@ export class LinkCreate extends OpenAPIRoute {
 	};
 
 	async handle(c: AppContext) {
-		// Get validated data
 		const data = await this.getValidatedData<typeof this.schema>();
-
-		// Retrieve the validated request body
 		const linkToCreate = data.body;
 
 		if (!linkToCreate.slug) {
 			linkToCreate.slug = generateRandomSlug();
 		}
-
-		if (linkToCreate.slug === "links" || linkToCreate.slug === "list") {
+		const reservedSlugs = ["links", "list"]; // update as needed
+		if (reservedSlugs.includes(linkToCreate.slug)) {
 			return c.json(
 				{
 					success: false,
-					error:
-						"Custom slug cannot contain reserved alias. Reserved alias': `links`, `list`",
+					error: `custom slug is a reserved alias (one of ${reservedSlugs.join(", ")})`,
 				},
 				409,
 			);
@@ -92,17 +88,12 @@ export class LinkCreate extends OpenAPIRoute {
 			url: linkToCreate.url,
 			isPermanent: linkToCreate.isPermanent,
 		};
-		// await c.env.KV_SHORTLINKS.put(linkToCreate.slug, JSON.stringify(value));
-		c.executionCtx.waitUntil(
-			c.env.KV_SHORTLINKS.put(linkToCreate.slug, JSON.stringify(value)),
-		);
+		await c.env.KV_SHORTLINKS.put(linkToCreate.slug, JSON.stringify(value));
 
-		// Update cache
-		const entry = {
-			key: linkToCreate.slug,
-			value: value,
-		};
-		c.executionCtx.waitUntil(addEntryInCache(c, entry));
+		// Can't just fire and forget this since workers is serverless
+		c.executionCtx.waitUntil(
+			addEntryInCache(c, { key: linkToCreate.slug, value: value }),
+		);
 
 		return c.json(
 			{

@@ -1,9 +1,9 @@
 import { Bool, OpenAPIRoute } from "chanfana";
-import { z } from "zod";
 import { html } from "hono/html";
-import { type AppContext, Link, type KvEntry } from "../types";
+import { z } from "zod";
+import { type AppContext, type KvEntry, Link } from "../types";
 
-export class LinkList extends OpenAPIRoute {
+export class LinkFetchAll extends OpenAPIRoute {
 	schema = {
 		tags: ["Links"],
 		summary: "List Shortlinks",

@@ -1,8 +1,13 @@
 import { Bool, OpenAPIRoute, Str } from "chanfana";
 import { z } from "zod";
-import { type AppContext, Link, type KvValue, type KvEntry } from "../types";
-import { deleteEntryInCache } from "./linkDelete";
+import {
+	type AppContext,
+	type KvEntry,
+	type KvValue,
+	UpdateLink,
+} from "../types";
 import { addEntryInCache } from "./linkCreate";
+import { deleteEntryInCache } from "./linkDelete";
 
 const updateEntryInCache = async (c: AppContext, entry: KvEntry) => {
 	await deleteEntryInCache(c, entry.key);
@@ -20,16 +25,13 @@ export class LinkUpdate extends OpenAPIRoute {
 			body: {
 				content: {
 					"application/json": {
-						schema: z.object({
-							url: z.string().url(),
-							isPermanent: Bool(),
-						}),
+						schema: UpdateLink,
 					},
 				},
 			},
 		},
 		responses: {
-			"200": {
+			"202": {
 				description: "Returns the updated shortlink",
 				content: {
 					"application/json": {
@@ -37,7 +39,8 @@ export class LinkUpdate extends OpenAPIRoute {
 							series: z.object({
 								success: Bool(),
 								result: z.object({
-									link: Link,
+									url: z.string().url(),
+									isPermanent: Bool(),
 								}),
 							}),
 						}),
@@ -59,9 +62,12 @@ export class LinkUpdate extends OpenAPIRoute {
 
 		const updatedValue = {
 			url: url || existing.url,
-			isPermanent: isPermanent !== undefined ? isPermanent : existing.isPermanent,
+			isPermanent:
+				isPermanent !== undefined ? isPermanent : existing.isPermanent,
 		};
 		await c.env.KV_SHORTLINKS.put(slug, JSON.stringify(updatedValue));
+
+		// Cannot fire and forget in serverless environment
 		c.executionCtx.waitUntil(
 			updateEntryInCache(c, { key: slug, value: updatedValue }),
 		);

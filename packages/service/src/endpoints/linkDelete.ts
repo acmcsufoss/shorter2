@@ -23,7 +23,7 @@ export class LinkDelete extends OpenAPIRoute {
 			}),
 		},
 		responses: {
-			"200": {
+			"202": {
 				description: "Returns if the shortlink was deleted successfully",
 				content: {
 					"application/json": {
@@ -42,13 +42,13 @@ export class LinkDelete extends OpenAPIRoute {
 	async handle(c: AppContext) {
 		// Get validated data
 		const data = await this.getValidatedData<typeof this.schema>();
-
-		// Retrieve the validated slug
 		const { slug } = data.params;
 
 		await c.env.KV_SHORTLINKS.delete(slug);
+
+		// Cannot fire and forget in serverless environment
 		c.executionCtx.waitUntil(deleteEntryInCache(c, slug));
-		// Return the deleted link for confirmation
+
 		return c.json(
 			{
 				success: true,

@@ -1,17 +1,11 @@
-import { Hono } from "hono";
 import {
 	InteractionResponseType,
 	InteractionType,
 	verifyKey,
 } from "discord-interactions";
-import { ADD_COMMAND, DELETE_COMMAND, UPDATE_COMMAND } from "./commands";
+import { Hono } from "hono";
 import { addLink, deleteLink, updateLink } from "./client";
-
-// interface Env {
-// 	DISCORD_APPLICATION_ID: string;
-// 	DISCORD_PUBLIC_KEY: string;
-// 	SHORTER_API_KEY: string;
-// }
+import { ADD_COMMAND, DELETE_COMMAND, UPDATE_COMMAND } from "./commands";
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -136,7 +130,8 @@ app.post("/", async (c) => {
 				try {
 					// NOTE: If you capture the resp and try to read it this shi won't work
 					await updateLink(
-						{ slug: slug, url: url, isPermanent: isPermanent },
+						slug,
+						{ url: url, isPermanent: isPermanent },
 						c.env.SHORTER_API_KEY,
 					);
 					return sendChannelMessage(
