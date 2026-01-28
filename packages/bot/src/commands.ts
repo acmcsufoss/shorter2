@@ -45,7 +45,7 @@ export const DELETE_COMMAND = {
 };
 
 export const UPDATE_COMMAND = {
-	name: "add",
+	name: "update",
 	description: "change an existing shortlink",
 	type: 1,
 	options: [
