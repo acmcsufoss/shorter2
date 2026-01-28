@@ -2,12 +2,12 @@ import { Bool, OpenAPIRoute, Str } from "chanfana";
 import { z } from "zod";
 import {
 	type AppContext,
-	UpdateLink,
-	type KvValue,
 	type KvEntry,
+	type KvValue,
+	UpdateLink,
 } from "../types";
-import { deleteEntryInCache } from "./linkDelete";
 import { addEntryInCache } from "./linkCreate";
+import { deleteEntryInCache } from "./linkDelete";
 
 const updateEntryInCache = async (c: AppContext, entry: KvEntry) => {
 	await deleteEntryInCache(c, entry.key);

@@ -1,6 +1,6 @@
 import { Bool, OpenAPIRoute } from "chanfana";
 import { z } from "zod";
-import { type AppContext, Link, type KvEntry } from "../types";
+import { type AppContext, type KvEntry, Link } from "../types";
 
 const generateRandomSlug = (length: number = 5) => {
 	const chars =

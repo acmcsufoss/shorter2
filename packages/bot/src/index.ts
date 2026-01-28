@@ -1,11 +1,11 @@
-import { Hono } from "hono";
 import {
 	InteractionResponseType,
 	InteractionType,
 	verifyKey,
 } from "discord-interactions";
-import { ADD_COMMAND, DELETE_COMMAND, UPDATE_COMMAND } from "./commands";
+import { Hono } from "hono";
 import { addLink, deleteLink, updateLink } from "./client";
+import { ADD_COMMAND, DELETE_COMMAND, UPDATE_COMMAND } from "./commands";
 
 const app = new Hono<{ Bindings: Env }>();
 
