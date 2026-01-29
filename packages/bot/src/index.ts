@@ -149,7 +149,9 @@ app.post("/", async (c) => {
 					const parts = [];
 					if (url) parts.push(`https://s.acmcsuf.com/${slug} -> ${resp.url}`);
 					if (isPermanent !== undefined)
-						parts.push(`now redirects with HTTP ${resp.isPermanent ? 301 : 302}`);
+						parts.push(
+							`now redirects with HTTP ${resp.isPermanent ? 301 : 302}`,
+						);
 					return sendChannelMessage(
 						`Shortlink created: ${parts.join(" and ")}`,
 					);

@@ -1,4 +1,4 @@
-import type { AddLinkModel, UpdateLinkModel } from "./models";
+import type { Link, UpdateLink } from "@shorter/service";
 
 const endpoint = "https://s.acmcsuf.com/links";
 
@@ -9,10 +9,7 @@ const setHeaders = (authToken: string) => {
 	};
 };
 
-export async function addLink(
-	link: AddLinkModel,
-	authToken: string,
-): Promise<AddLinkModel> {
+export async function addLink(link: Link, authToken: string): Promise<Link> {
 	const response = await fetch(endpoint, {
 		method: "POST",
 		headers: setHeaders(authToken),
@@ -45,9 +42,9 @@ export async function deleteLink(
 
 export async function updateLink(
 	slug: string,
-	updateParams: UpdateLinkModel,
+	updateParams: UpdateLink,
 	authToken: string,
-): Promise<UpdateLinkModel> {
+): Promise<UpdateLink> {
 	const updateUrl = `${endpoint}/${slug}`;
 	const response = await fetch(updateUrl, {
 		method: "PUT",
