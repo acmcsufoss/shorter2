@@ -10,14 +10,16 @@ export const Link = z.object({
 	isPermanent: Bool({ required: false }).default(false),
 });
 
-export type Link = z.input<typeof Link>;
+export type Link = z.infer<typeof Link>;
+export type LinkInput = z.input<typeof Link>;
 
 export const UpdateLink = z.object({
 	url: z.string().url().optional(),
 	isPermanent: Bool({ required: false }).default(false),
 });
 
-export type UpdateLink = z.input<typeof UpdateLink>;
+export type UpdateLink = z.infer<typeof UpdateLink>;
+export type UpdateLinkInput = z.input<typeof UpdateLink>;
 
 export interface KvValue {
 	url: string;

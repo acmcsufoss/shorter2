@@ -1,4 +1,9 @@
-import type { Link, UpdateLink } from "@shorter/service";
+import type {
+	Link,
+	LinkInput,
+	UpdateLink,
+	UpdateLinkInput,
+} from "@shorter/service";
 
 const endpoint = "https://s.acmcsuf.com/links";
 
@@ -9,7 +14,10 @@ const setHeaders = (authToken: string) => {
 	};
 };
 
-export async function addLink(link: Link, authToken: string): Promise<Link> {
+export async function addLink(
+	link: LinkInput,
+	authToken: string,
+): Promise<Link> {
 	const response = await fetch(endpoint, {
 		method: "POST",
 		headers: setHeaders(authToken),
@@ -21,7 +29,8 @@ export async function addLink(link: Link, authToken: string): Promise<Link> {
 		throw new Error(`HTTP ${response.status}: ${errText}`);
 	}
 
-	return await response.json();
+	const data = (await response.json()) as { success: boolean; link: Link };
+	return data.link;
 }
 
 export async function deleteLink(
@@ -42,7 +51,7 @@ export async function deleteLink(
 
 export async function updateLink(
 	slug: string,
-	updateParams: UpdateLink,
+	updateParams: UpdateLinkInput,
 	authToken: string,
 ): Promise<UpdateLink> {
 	const updateUrl = `${endpoint}/${slug}`;
@@ -57,5 +66,9 @@ export async function updateLink(
 		throw new Error(`HTTP ${response.status}: ${errText}`);
 	}
 
-	return await response.json();
+	const data = (await response.json()) as {
+		success: boolean;
+		link: UpdateLink;
+	};
+	return data.link;
 }

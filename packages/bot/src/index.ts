@@ -86,12 +86,12 @@ app.post("/", async (c) => {
 
 				try {
 					// NOTE: If you capture the resp and try to read it this shi won't work
-					await addLink(
+					const result = await addLink(
 						{ slug: slug, url: url, isPermanent: isPermanent },
 						c.env.SHORTER_API_KEY,
 					);
 					return sendChannelMessage(
-						`Shortlink created: https://s.acmcsuf.com/${slug} -> ${url}`,
+						`Shortlink created: https://s.acmcsuf.com/${result.slug} -> ${url}`,
 					);
 				} catch (error: any) {
 					return sendChannelMessage(
