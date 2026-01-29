@@ -140,14 +140,18 @@ app.post("/", async (c) => {
 				}
 
 				try {
-					// NOTE: If you capture the resp and try to read it this shi won't work
-					await updateLink(
+					const resp = await updateLink(
 						slug,
 						{ url: url, isPermanent: isPermanent },
 						c.env.SHORTER_API_KEY,
 					);
+
+					const parts = [];
+					if (url) parts.push(`https://s.acmcsuf.com/${slug} -> ${resp.url}`);
+					if (isPermanent !== undefined)
+						parts.push(`now redirects with HTTP ${resp.isPermanent ? 301 : 302}`);
 					return sendChannelMessage(
-						`Shortlink created: https://s.acmcsuf.com/${slug} -> ${url}`,
+						`Shortlink created: ${parts.join(" and ")}`,
 					);
 				} catch (error: any) {
 					return sendChannelMessage(
