@@ -155,7 +155,7 @@ app.post("/", async (c) => {
 					);
 				} catch (error: any) {
 					return sendChannelMessage(
-						`Failed to create shortlink: ${error instanceof Error ? error.message : "Unknown error"}`,
+						`Failed to update shortlink: ${error instanceof Error ? error.message : "Unknown error"}`,
 					);
 				}
 			}
