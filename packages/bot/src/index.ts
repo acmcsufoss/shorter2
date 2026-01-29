@@ -5,7 +5,6 @@ import {
 } from "discord-interactions";
 import { Hono } from "hono";
 import { addLink, deleteLink, updateLink } from "./client";
-import { SHORTER_COMMAND } from "./commands";
 
 const app = new Hono<{ Bindings: Env }>();
 
