@@ -30,6 +30,5 @@ openapi.get("/list", LinkFetchAll); // public
 openapi.get("/:slug", LinkRedirect); // public
 openapi.delete("/links/:slug", LinkDelete);
 
-export type AppType = typeof app;
-// Export the Hono app
 export default app;
+export * from "./types";

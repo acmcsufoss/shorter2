@@ -1,3 +1,4 @@
+import type { APIApplicationCommandInteractionDataSubcommandOption } from "discord-api-types/v10";
 import {
 	InteractionResponseType,
 	InteractionType,
@@ -5,7 +6,6 @@ import {
 } from "discord-interactions";
 import { Hono } from "hono";
 import { addLink, deleteLink, updateLink } from "./client";
-import { SHORTER_COMMAND } from "./commands";
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -59,7 +59,8 @@ app.post("/", async (c) => {
 			return c.json({ error: "Unknown command type" }, 400);
 		}
 
-		const subcommand = interaction.data.options?.[0];
+		const subcommand = interaction.data
+			.options?.[0] as APIApplicationCommandInteractionDataSubcommandOption;
 		if (!subcommand) {
 			return c.json({ error: "No subcommand provided" }, 400);
 		}
@@ -68,7 +69,7 @@ app.post("/", async (c) => {
 			// ==== Add Subcommand =======================================================================
 			case "add": {
 				const url = subcommand.options?.find(
-					(opt: any) => opt.name === "destination",
+					(opt) => opt.name === "destination",
 				)?.value as string;
 
 				if (!isValidUrl(url)) {
@@ -77,24 +78,22 @@ app.post("/", async (c) => {
 					);
 				}
 
-				const slug = subcommand.options?.find(
-					(opt: any) => opt.name === "alias",
-				)?.value as string | undefined;
+				const slug = subcommand.options?.find((opt) => opt.name === "alias")
+					?.value as string | undefined;
 
 				const isPermanent = subcommand.options?.find(
-					(opt: any) => opt.name === "is_permanent",
+					(opt) => opt.name === "is_permanent",
 				)?.value as boolean | undefined;
 
 				try {
-					// NOTE: If you capture the resp and try to read it this shi won't work
-					await addLink(
+					const result = await addLink(
 						{ slug: slug, url: url, isPermanent: isPermanent },
 						c.env.SHORTER_API_KEY,
 					);
 					return sendChannelMessage(
-						`Shortlink created: https://s.acmcsuf.com/${slug} -> ${url}`,
+						`Shortlink created: https://s.acmcsuf.com/${result.slug} -> ${url}`,
 					);
-				} catch (error: any) {
+				} catch (error: unknown) {
 					return sendChannelMessage(
 						`Failed to create shortlink: ${error instanceof Error ? error.message : "Unknown error"}`,
 					);
@@ -103,9 +102,8 @@ app.post("/", async (c) => {
 
 			// ==== Delete Subcommand ====================================================================
 			case "delete": {
-				const slug = subcommand.options?.find(
-					(opt: any) => opt.name === "alias",
-				)?.value as string;
+				const slug = subcommand.options?.find((opt) => opt.name === "alias")
+					?.value as string;
 
 				await deleteLink(slug, c.env.SHORTER_API_KEY);
 				return sendChannelMessage(
@@ -115,12 +113,11 @@ app.post("/", async (c) => {
 
 			// ==== Update Subcommand ====================================================================
 			case "update": {
-				const slug = subcommand.options?.find(
-					(opt: any) => opt.name === "alias",
-				)?.value as string;
+				const slug = subcommand.options?.find((opt) => opt.name === "alias")
+					?.value as string;
 
 				const url = subcommand.options?.find(
-					(opt: any) => opt.name === "destination",
+					(opt) => opt.name === "destination",
 				)?.value as string | undefined;
 
 				if (url && !isValidUrl(url)) {
@@ -130,28 +127,34 @@ app.post("/", async (c) => {
 				}
 
 				const isPermanent = subcommand.options?.find(
-					(opt: any) => opt.name === "is_permanent",
+					(opt) => opt.name === "is_permanent",
 				)?.value as boolean | undefined;
 
-				if (!url && !isPermanent) {
+				if (!url && isPermanent === undefined) {
 					return sendChannelMessage(
 						"Error: no modifications to shortlink provided",
 					);
 				}
 
 				try {
-					// NOTE: If you capture the resp and try to read it this shi won't work
-					await updateLink(
+					const resp = await updateLink(
 						slug,
 						{ url: url, isPermanent: isPermanent },
 						c.env.SHORTER_API_KEY,
 					);
+
+					const parts = [];
+					if (url) parts.push(`https://s.acmcsuf.com/${slug} -> ${resp.url}`);
+					if (isPermanent !== undefined)
+						parts.push(
+							`now redirects with HTTP ${resp.isPermanent ? 301 : 302}`,
+						);
 					return sendChannelMessage(
-						`Shortlink created: https://s.acmcsuf.com/${slug} -> ${url}`,
+						`Shortlink created: ${parts.join(" and ")}`,
 					);
-				} catch (error: any) {
+				} catch (error: unknown) {
 					return sendChannelMessage(
-						`Failed to create shortlink: ${error instanceof Error ? error.message : "Unknown error"}`,
+						`Failed to update shortlink: ${error instanceof Error ? error.message : "Unknown error"}`,
 					);
 				}
 			}
