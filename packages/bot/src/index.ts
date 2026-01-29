@@ -133,7 +133,7 @@ app.post("/", async (c) => {
 					(opt: any) => opt.name === "is_permanent",
 				)?.value as boolean | undefined;
 
-				if (!url && !isPermanent) {
+				if (!url && isPermanent !== undefined) {
 					return sendChannelMessage(
 						"Error: no modifications to shortlink provided",
 					);
