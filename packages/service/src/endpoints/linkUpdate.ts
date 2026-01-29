@@ -76,8 +76,8 @@ export class LinkUpdate extends OpenAPIRoute {
 			{
 				success: true,
 				link: {
-					slug: slug,
-					url: url,
+					url: updatedValue.url,
+					isPermanent: updatedValue.isPermanent,
 				},
 			},
 			202,
