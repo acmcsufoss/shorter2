@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { ADD_COMMAND, DELETE_COMMAND, UPDATE_COMMAND } from "./commands";
+import { SHORTER_COMMAND } from "./commands";
 
 /**
  * This file is meant to be run from the command line, and is not used by the
@@ -33,7 +33,7 @@ const response = await fetch(url, {
 		Authorization: `Bot ${token}`,
 	},
 	method: "PUT",
-	body: JSON.stringify([ADD_COMMAND, DELETE_COMMAND, UPDATE_COMMAND]),
+	body: JSON.stringify([SHORTER_COMMAND]),
 });
 
 if (response.ok) {
