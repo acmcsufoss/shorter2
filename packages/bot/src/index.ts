@@ -56,6 +56,12 @@ app.post("/", async (c) => {
 
 	// ==== Our Application Commands ====
 	if (interaction.type === InteractionType.APPLICATION_COMMAND) {
+		// This ensures that resources can only be modified from the appropriate discord server
+		// Role or user specific auth should be configured from the Discord client
+		if (interaction.guild_id !== c.env.DISCORD_GUILD_ID) {
+			return c.json({ error: "Resource cannot be modified from this Discord server" }, 401)
+		}
+
 		if (interaction.data.name.toLowerCase() !== SHORTER_COMMAND.name.toLowerCase()) {
 			return c.json({ error: "Unknown command type" }, 400);
 		}
