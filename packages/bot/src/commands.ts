@@ -4,7 +4,7 @@
  */
 
 export const SHORTER_COMMAND = {
-	name: "shorter",
+	name: "shorter2",
 	description: "Manage shortlinks",
 	type: 1,
 	options: [
