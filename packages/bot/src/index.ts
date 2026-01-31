@@ -59,7 +59,9 @@ app.post("/", async (c) => {
 		// This ensures that resources can only be modified from the appropriate discord server
 		// Role or user specific auth should be configured from the Discord client
 		if (interaction.guild_id !== c.env.DISCORD_GUILD_ID) {
-			return c.json({ error: "Resource cannot be modified from this Discord server" }, 401)
+			return sendChannelMessage(
+				"Error: resource cannot be modified from this Discord server",
+			);
 		}
 
 		if (interaction.data.name.toLowerCase() !== SHORTER_COMMAND.name.toLowerCase()) {
@@ -81,7 +83,7 @@ app.post("/", async (c) => {
 
 				if (!isValidUrl(url)) {
 					return sendChannelMessage(
-						"Error: invalid URL. Does your URL start with http:// or https:// ?",
+						"Error: invalid URL. Does the destination URL start with `http://` or `https://`?",
 					);
 				}
 
@@ -129,7 +131,7 @@ app.post("/", async (c) => {
 
 				if (url && !isValidUrl(url)) {
 					return sendChannelMessage(
-						"Error: invalid URL. Does your URL start with http:// or https:// ?",
+						"Error: invalid URL. Does the destination URL start with `http://` or `https://`?",
 					);
 				}
 
