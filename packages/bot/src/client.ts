@@ -4,8 +4,9 @@ import type {
 	UpdateLink,
 	UpdateLinkInput,
 } from "@shorter/service";
+import { env } from "cloudflare:workers";
 
-const endpoint = "https://s.acmcsuf.com/links";
+const endpoint = `${env.SHORTER_ENDPOINT}/links`;
 
 const setHeaders = (authToken: string) => {
 	return {
