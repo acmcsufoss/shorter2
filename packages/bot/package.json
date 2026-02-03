@@ -4,13 +4,13 @@
 	"private": true,
 	"scripts": {
 		"deploy": "wrangler deploy",
-		"dev": "wrangler dev",
+		"dev": "wrangler dev --port 8787",
 		"start": "wrangler dev",
 		"cf-typegen": "wrangler types",
 		"format": "biome format --write ./src",
 		"lint": "biome lint --write ./src",
 		"check": "biome check ./src",
-		"ngrok": "ngrok http 8787",
+		"tunnel": "ngrok http 8787",
 		"register": "bun run src/register.ts"
 	},
 	"devDependencies": {
