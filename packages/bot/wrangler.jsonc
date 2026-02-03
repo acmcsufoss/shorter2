@@ -17,7 +17,7 @@
 	"env": {
 		"production": {
 			"vars": {
-				"DICORD_GUILD_ID": "710225099923521558",
+				"DISCORD_GUILD_ID": "710225099923521558",
 				"SHORTER_ENDPOINT": "https://s.acmcsuf.com"
 			},
 			"routes": [
