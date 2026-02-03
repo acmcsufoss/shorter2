@@ -6,7 +6,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "deploy": "wrangler deploy",
+    "deploy": "wrangler deploy -e production",
     "dev": "wrangler dev --port 8788",
     "start": "wrangler dev",
     "cf-typegen": "wrangler types",

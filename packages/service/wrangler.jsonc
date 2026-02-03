@@ -10,19 +10,31 @@
 	"observability": {
 		"enabled": true
 	},
+	"env": {
+		"production": {
+			"kv_namespaces": [
+				{
+					"binding": "KV_SHORTLINKS",
+					"id": "e941f6969dad41c8bd4caf4a46c4ad8d",
+					"remote": true
+				}
+			],
+			"routes": [
+				{
+					"pattern": "s.acmcsuf.com",
+					"custom_domain": true
+				}
+			]
+		}
+	},
+	// for local dev
 	"kv_namespaces": [
 		{
 			"binding": "KV_SHORTLINKS",
 			"id": "e941f6969dad41c8bd4caf4a46c4ad8d",
-			"remote": true
+			"remote": false
 		}
 	],
-	"routes": [
-		{
-			"pattern": "s.acmcsuf.com",
-			"custom_domain": true
-		}
-	]
 	/**
 	 * Smart Placement
 	 * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
