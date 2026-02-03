@@ -6,8 +6,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "deploy": "wrangler deploy",
-    "dev": "wrangler dev",
+    "deploy": "wrangler deploy -e production",
+    "dev": "wrangler dev --port 8788",
     "start": "wrangler dev",
     "cf-typegen": "wrangler types",
     "format": "biome format --write ./src",

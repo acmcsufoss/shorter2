@@ -10,12 +10,24 @@
 	"observability": {
 		"enabled": true
 	},
-	"routes": [
-		{
-			"pattern": "shorter-bot.acmcsuf.com",
-			"custom_domain": true
+	// local dev
+	"vars": {
+		"SHORTER_ENDPOINT": "http://localhost:8788"
+	},
+	"env": {
+		"production": {
+			"vars": {
+				"DISCORD_GUILD_ID": "710225099923521558",
+				"SHORTER_ENDPOINT": "https://s.acmcsuf.com"
+			},
+			"routes": [
+				{
+					"pattern": "shorter-bot.acmcsuf.com",
+					"custom_domain": true
+				}
+			]
 		}
-	]
+	}
 	/**
 	 * Smart Placement
 	 * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
