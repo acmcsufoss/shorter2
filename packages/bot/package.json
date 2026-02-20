@@ -11,6 +11,7 @@
 		"lint": "biome lint --write ./src",
 		"check": "biome check ./src",
 		"tunnel": "ngrok http 8787",
+		"dev-tunnel": "bun run dev & bun run tunnel && fg",
 		"register": "bun run src/register.ts"
 	},
 	"devDependencies": {
