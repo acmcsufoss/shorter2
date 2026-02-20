@@ -5,19 +5,20 @@
 	"scripts": {
 		"deploy": "wrangler deploy -e production",
 		"dev": "wrangler dev --port 8787",
-		"start": "wrangler dev",
+		"start": "bun run dev",
 		"cf-typegen": "wrangler types",
 		"format": "biome format --write ./src",
 		"lint": "biome lint --write ./src",
 		"check": "biome check ./src",
 		"tunnel": "ngrok http 8787",
-		"dev-tunnel": "bun run dev & bun run tunnel && fg",
+		"dev-tunnel": "concurrently -k 'bun run tunnel' 'bun run dev'",
 		"register": "bun run src/register.ts"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.3.12",
 		"@cloudflare/vitest-pool-workers": "^0.12.4",
 		"ngrok": "^5.0.0-beta.2",
+		"concurrently": "^9.2.1",
 		"typescript": "^5.5.2",
 		"vitest": "~3.2.0",
 		"wrangler": "^4.67.0"
