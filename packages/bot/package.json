@@ -10,6 +10,7 @@
 		"format": "biome format --write ./src",
 		"lint": "biome lint --write ./src",
 		"check": "biome check ./src",
+		"check:write": "biome check --write ./src",
 		"tunnel": "ssh -p 443 -R0:localhost:8787 free.pinggy.io",
 		"register": "bun run scripts/register.ts",
 		"invite": "bun run scripts/invite.ts"

@@ -12,7 +12,8 @@
     "cf-typegen": "wrangler types",
     "format": "biome format --write ./src",
     "lint": "biome lint --write ./src",
-    "check": "biome check ./src"
+    "check": "biome check ./src",
+		"check:write": "biome check --write ./src"
   },
   "dependencies": {
     "chanfana": "^2.6.3",
