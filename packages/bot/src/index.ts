@@ -5,8 +5,8 @@ import {
 	verifyKey,
 } from "discord-interactions";
 import { Hono } from "hono";
-import { addLink, deleteLink, updateLink } from "./client";
-import { SHORTER_COMMAND } from "./commands";
+import { addLink, deleteLink, updateLink } from "./shorter-client";
+import { SHORTER_COMMAND } from "../constants";
 
 const app = new Hono<{ Bindings: Env }>();
 

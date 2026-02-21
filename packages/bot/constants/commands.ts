@@ -74,4 +74,4 @@ export const SHORTER_COMMAND = {
 			],
 		},
 	],
-};
+} as const;

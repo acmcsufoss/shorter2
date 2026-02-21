@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { SHORTER_COMMAND } from "./commands";
+import { SHORTER_COMMAND } from "../constants";
 
 /**
  * This file is meant to be run from the command line, and is not used by the
