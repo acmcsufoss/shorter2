@@ -25,10 +25,10 @@ const openapi = fromHono(app, {
 
 // Register OpenAPI endpoints
 openapi.post("/links", LinkCreate);
-openapi.put("/links/:slug", LinkUpdate);
+openapi.put("/links/:slug{.+}", LinkUpdate);
 openapi.get("/list", LinkFetchAll); // public
-openapi.get("/:slug", LinkRedirect); // public
-openapi.delete("/links/:slug", LinkDelete);
+openapi.get("/:slug{.+}", LinkRedirect); // public
+openapi.delete("/links/:slug{.+}", LinkDelete);
 
 export default app;
 export * from "./types";
