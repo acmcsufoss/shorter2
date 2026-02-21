@@ -5,8 +5,8 @@ import {
 	verifyKey,
 } from "discord-interactions";
 import { Hono } from "hono";
-import { addLink, deleteLink, updateLink } from "./shorter-client";
 import { SHORTER_COMMAND } from "../constants";
+import { addLink, deleteLink, updateLink } from "./shorter-client";
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -64,7 +64,9 @@ app.post("/", async (c) => {
 			);
 		}
 
-		if (interaction.data.name.toLowerCase() !== SHORTER_COMMAND.name.toLowerCase()) {
+		if (
+			interaction.data.name.toLowerCase() !== SHORTER_COMMAND.name.toLowerCase()
+		) {
 			return c.json({ error: "Unknown command type" }, 400);
 		}
 

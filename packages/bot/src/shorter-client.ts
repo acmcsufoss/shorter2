@@ -1,10 +1,10 @@
+import { env } from "cloudflare:workers";
 import type {
 	Link,
 	LinkInput,
 	UpdateLink,
 	UpdateLinkInput,
 } from "@shorter/service";
-import { env } from "cloudflare:workers";
 
 const endpoint = `${env.SHORTER_ENDPOINT}/links`;
 
