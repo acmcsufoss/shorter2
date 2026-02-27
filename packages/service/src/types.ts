@@ -10,8 +10,8 @@ export const Link = z.object({
 	isPermanent: Bool({ required: false }).default(false),
 });
 
-export type Link = z.infer<typeof Link>;
-export type LinkInput = z.input<typeof Link>;
+export type Link = z.infer<typeof Link>; // For validated data
+export type LinkInput = z.input<typeof Link>; // Unvalidated data
 
 export const UpdateLink = z.object({
 	url: z.string().url().optional(),
