@@ -1,7 +1,7 @@
 import { Bool, OpenAPIRoute, Str } from "chanfana";
 import { z } from "zod";
-import type { AppContext } from "../types";
 import { DeleteEntryInCache } from "../cache";
+import type { AppContext } from "../types";
 
 export class LinkDelete extends OpenAPIRoute {
 	schema = {

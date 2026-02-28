@@ -1,11 +1,7 @@
 import { Bool, OpenAPIRoute, Str } from "chanfana";
 import { z } from "zod";
-import {
-	type AppContext,
-	type KvValue,
-	UpdateLinkDto,
-} from "../types";
 import { UpdateEntryInCache } from "../cache";
+import { type AppContext, type KvValue, UpdateLinkDto } from "../types";
 
 export class LinkUpdate extends OpenAPIRoute {
 	schema = {
