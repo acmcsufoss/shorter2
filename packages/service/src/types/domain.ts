@@ -1,9 +1,9 @@
 export interface KvValue {
-  destination: string;
-  isPermanent: boolean;
+	destination: string;
+	isPermanent: boolean;
 }
 
 export interface KvEntry {
-  key: string; // slug
-  value: KvValue;
+	key: string; // slug
+	value: KvValue;
 }

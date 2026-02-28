@@ -1,7 +1,7 @@
 import { Bool, OpenAPIRoute } from "chanfana";
 import { html } from "hono/html";
 import { z } from "zod";
-import { type AppContext, type KvEntry, CreateLinkDto } from "../types";
+import { type AppContext, CreateLinkDto, type KvEntry } from "../types";
 
 export class LinkFetchAll extends OpenAPIRoute {
 	schema = {
