@@ -60,7 +60,7 @@ export class LinkFetchAll extends OpenAPIRoute {
 					<li>
 						<a href="https://s.acmcsuf.com/${link.key}">${link.key}</a>
 						➫
-						<a href="${link.value.url}">${link.value.url}</a>
+						<a href="${link.value.destination}">${link.value.destination}</a>
 					</li>
 				`,
 				)}

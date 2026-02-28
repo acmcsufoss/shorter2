@@ -61,7 +61,7 @@ export class LinkUpdate extends OpenAPIRoute {
 		}
 
 		const updatedValue = {
-			url: url || existing.url,
+			destination: url || existing.destination,
 			isPermanent:
 				isPermanent !== undefined ? isPermanent : existing.isPermanent,
 		};
@@ -76,7 +76,7 @@ export class LinkUpdate extends OpenAPIRoute {
 			{
 				success: true,
 				link: {
-					url: updatedValue.url,
+					url: updatedValue.destination,
 					isPermanent: updatedValue.isPermanent,
 				},
 			},
