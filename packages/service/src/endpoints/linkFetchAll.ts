@@ -1,7 +1,7 @@
 import { Bool, OpenAPIRoute } from "chanfana";
 import { html } from "hono/html";
 import { z } from "zod";
-import { type AppContext, type KvEntry, Link } from "../types";
+import { type AppContext, type KvEntry, CreateLinkDto } from "../types";
 
 export class LinkFetchAll extends OpenAPIRoute {
 	schema = {
@@ -16,7 +16,7 @@ export class LinkFetchAll extends OpenAPIRoute {
 							series: z.object({
 								success: Bool(),
 								result: z.object({
-									tasks: Link.array(),
+									tasks: CreateLinkDto.array(),
 								}),
 							}),
 						}),

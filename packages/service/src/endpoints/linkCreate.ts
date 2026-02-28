@@ -1,6 +1,6 @@
 import { Bool, OpenAPIRoute } from "chanfana";
 import { z } from "zod";
-import { type AppContext, type KvEntry, Link } from "../types";
+import { type AppContext, type KvEntry, CreateLinkDto } from "../types";
 
 const generateRandomSlug = (length: number = 5) => {
 	const chars =
@@ -31,7 +31,7 @@ export class LinkCreate extends OpenAPIRoute {
 			body: {
 				content: {
 					"application/json": {
-						schema: Link,
+						schema: CreateLinkDto,
 					},
 				},
 			},
@@ -45,7 +45,7 @@ export class LinkCreate extends OpenAPIRoute {
 							series: z.object({
 								success: Bool(),
 								result: z.object({
-									link: Link,
+									link: CreateLinkDto,
 								}),
 							}),
 						}),

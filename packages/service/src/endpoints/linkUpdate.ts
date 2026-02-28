@@ -4,7 +4,7 @@ import {
 	type AppContext,
 	type KvEntry,
 	type KvValue,
-	UpdateLink,
+	UpdateLinkDto,
 } from "../types";
 import { addEntryInCache } from "./linkCreate";
 import { deleteEntryInCache } from "./linkDelete";
@@ -25,7 +25,7 @@ export class LinkUpdate extends OpenAPIRoute {
 			body: {
 				content: {
 					"application/json": {
-						schema: UpdateLink,
+						schema: UpdateLinkDto,
 					},
 				},
 			},
