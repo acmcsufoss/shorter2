@@ -1,18 +1,7 @@
 import { Bool, OpenAPIRoute, Str } from "chanfana";
 import { z } from "zod";
-import {
-	type AppContext,
-	type KvEntry,
-	type KvValue,
-	UpdateLink,
-} from "../types";
-import { addEntryInCache } from "./linkCreate";
-import { deleteEntryInCache } from "./linkDelete";
-
-const updateEntryInCache = async (c: AppContext, entry: KvEntry) => {
-	await deleteEntryInCache(c, entry.key);
-	await addEntryInCache(c, entry);
-};
+import { UpdateEntryInCache } from "../cache";
+import { type AppContext, type KvValue, UpdateLinkDto } from "../types";
 
 export class LinkUpdate extends OpenAPIRoute {
 	schema = {
@@ -25,7 +14,7 @@ export class LinkUpdate extends OpenAPIRoute {
 			body: {
 				content: {
 					"application/json": {
-						schema: UpdateLink,
+						schema: UpdateLinkDto,
 					},
 				},
 			},
@@ -61,7 +50,7 @@ export class LinkUpdate extends OpenAPIRoute {
 		}
 
 		const updatedValue = {
-			url: url || existing.url,
+			destination: url || existing.destination,
 			isPermanent:
 				isPermanent !== undefined ? isPermanent : existing.isPermanent,
 		};
@@ -69,14 +58,14 @@ export class LinkUpdate extends OpenAPIRoute {
 
 		// Cannot fire and forget in serverless environment
 		c.executionCtx.waitUntil(
-			updateEntryInCache(c, { key: slug, value: updatedValue }),
+			UpdateEntryInCache(c, { key: slug, value: updatedValue }),
 		);
 
 		return c.json(
 			{
 				success: true,
 				link: {
-					url: updatedValue.url,
+					url: updatedValue.destination,
 					isPermanent: updatedValue.isPermanent,
 				},
 			},

@@ -49,9 +49,9 @@ export class LinkRedirect extends OpenAPIRoute {
 				404,
 			);
 		}
-		const { url, isPermanent } = value;
+		const { destination, isPermanent } = value;
 
 		const redirectCode = isPermanent ? 301 : 302;
-		return c.redirect(url, redirectCode);
+		return c.redirect(destination, redirectCode);
 	}
 }
