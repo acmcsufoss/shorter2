@@ -37,7 +37,7 @@ export class ShortlinkQR extends OpenAPIRoute {
 		// Get validated data
 		const data = await this.getValidatedData<typeof this.schema>();
 		const rawSlug = data.params.slug;
-		const slug = rawSlug.replace("/\.svg$/", "");
+		const slug = rawSlug.replace(/\.svg$/, "");
 
 		const res = await getShortlinkBySlug(c, slug);
 		if (!res) {
@@ -49,10 +49,11 @@ export class ShortlinkQR extends OpenAPIRoute {
 				404,
 			);
 		}
-		const targetUrl = `https://${new URL(c.req.url).hostname}/${slug}`;
+		const targetUrl = res.url;
 		const QRCode = require("qrcode-svg");
 		const svg = new QRCode(targetUrl).svg();
 
-		return c.body(svg, 200, { "Contenty-Type": "image/svg+xml" });
+
+		return c.body(svg, 200, { "Content-Type": "image/svg+xml" });
 	}
 }
