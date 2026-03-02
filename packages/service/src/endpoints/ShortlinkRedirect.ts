@@ -13,10 +13,10 @@ export class ShortlinkRedirect extends OpenAPIRoute {
 		},
 		responses: {
 			"301": {
-				description: "Redirects client to mapped url (permanent redirect)",
+				description: "Redirects client to mapped url with permanent redirect",
 			},
 			"302": {
-				description: "Redirects client to mapped url (temporary redirect)",
+				description: "Redirects client to mapped url with temporary redirect",
 			},
 			"404": {
 				description: "Link not found",
