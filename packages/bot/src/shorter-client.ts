@@ -1,10 +1,9 @@
 import { env } from "cloudflare:workers";
 import type {
-	CreateLinkDto,
-	CreateLinkInputDto,
-	UpdateLinkDto,
-	UpdateLinkInputDto,
-} from "@shorter/service";
+	ShortlinkModel,
+	ShortlinkCreateRequest,
+	ShortlinkUpdateRequest
+} from "./types";
 
 const endpoint = `${env.SHORTER_ENDPOINT}/links`;
 
@@ -16,13 +15,13 @@ const setHeaders = (authToken: string) => {
 };
 
 export async function addLink(
-	link: CreateLinkInputDto,
+	shortlink: ShortlinkCreateRequest,
 	authToken: string,
-): Promise<CreateLinkDto> {
+): Promise<ShortlinkModel> {
 	const response = await fetch(endpoint, {
 		method: "POST",
 		headers: setHeaders(authToken),
-		body: JSON.stringify(link),
+		body: JSON.stringify(shortlink),
 	});
 
 	if (!response.ok) {
@@ -30,8 +29,7 @@ export async function addLink(
 		throw new Error(`HTTP ${response.status}: ${errText}`);
 	}
 
-	const data = (await response.json()) as { success: boolean; link: CreateLinkDto };
-	return data.link;
+	return (await response.json()) as ShortlinkModel;
 }
 
 export async function deleteLink(
@@ -52,12 +50,12 @@ export async function deleteLink(
 
 export async function updateLink(
 	slug: string,
-	updateParams: UpdateLinkInputDto,
+	updateParams: ShortlinkUpdateRequest,
 	authToken: string,
-): Promise<UpdateLinkDto> {
+): Promise<ShortlinkModel> {
 	const updateUrl = `${endpoint}/${slug}`;
 	const response = await fetch(updateUrl, {
-		method: "PUT",
+		method: "",
 		headers: setHeaders(authToken),
 		body: JSON.stringify(updateParams),
 	});
@@ -67,9 +65,5 @@ export async function updateLink(
 		throw new Error(`HTTP ${response.status}: ${errText}`);
 	}
 
-	const data = (await response.json()) as {
-		success: boolean;
-		link: UpdateLinkDto;
-	};
-	return data.link;
+	return (await response.json()) as ShortlinkModel;
 }
