@@ -27,12 +27,12 @@ const openapi = fromHono(app, {
 });
 
 // Register OpenAPI endpoints
-openapi.post("/_links", ShortlinkCreate);
 openapi.put("/_links/:slug{.+}", ShortlinkUpdate);
-openapi.get("/", ShortlinkList); // public
 openapi.get("/_links/:slug{.+}", ShortlinkGet);
 openapi.delete("/_links/:slug{.+}", ShortlinkDelete);
+openapi.post("/_links", ShortlinkCreate);
 openapi.get("/:slug{.+}", ShortlinkRedirect); // public
+openapi.get("/", ShortlinkList); // public
 
 export default app;
 export * from "./types";
