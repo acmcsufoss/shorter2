@@ -1,6 +1,7 @@
 import { Bool, OpenAPIRoute } from "chanfana";
 import { z } from "zod";
-import { type AppContext, type KvEntry, Link } from "../types";
+import { AddEntryInCache } from "../cache";
+import { type AppContext, CreateLinkDto } from "../types";
 
 const generateRandomSlug = (length: number = 5) => {
 	const chars =
@@ -15,14 +16,6 @@ const generateRandomSlug = (length: number = 5) => {
 	return slug;
 };
 
-export const addEntryInCache = async (c: AppContext, newEntry: KvEntry) => {
-	const data = await c.env.KV_SHORTLINKS.get<KvEntry[]>("list", "json");
-	const currentList = data || [];
-	const updatedList = [...currentList, newEntry];
-
-	await c.env.KV_SHORTLINKS.put("list", JSON.stringify(updatedList));
-};
-
 export class LinkCreate extends OpenAPIRoute {
 	schema = {
 		tags: ["Links"],
@@ -31,7 +24,7 @@ export class LinkCreate extends OpenAPIRoute {
 			body: {
 				content: {
 					"application/json": {
-						schema: Link,
+						schema: CreateLinkDto,
 					},
 				},
 			},
@@ -45,7 +38,7 @@ export class LinkCreate extends OpenAPIRoute {
 							series: z.object({
 								success: Bool(),
 								result: z.object({
-									link: Link,
+									link: CreateLinkDto,
 								}),
 							}),
 						}),
@@ -85,14 +78,14 @@ export class LinkCreate extends OpenAPIRoute {
 			);
 		}
 		const value = {
-			url: linkToCreate.url,
+			destination: linkToCreate.url,
 			isPermanent: linkToCreate.isPermanent,
 		};
 		await c.env.KV_SHORTLINKS.put(linkToCreate.slug, JSON.stringify(value));
 
 		// Can't just fire and forget this since workers is serverless
 		c.executionCtx.waitUntil(
-			addEntryInCache(c, { key: linkToCreate.slug, value: value }),
+			AddEntryInCache(c, { key: linkToCreate.slug, value: value }),
 		);
 
 		return c.json(

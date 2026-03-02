@@ -1,9 +1,9 @@
 import { env } from "cloudflare:workers";
 import type {
-	Link,
-	LinkInput,
-	UpdateLink,
-	UpdateLinkInput,
+	CreateLinkDto,
+	CreateLinkInputDto,
+	UpdateLinkDto,
+	UpdateLinkInputDto,
 } from "@shorter/service";
 
 const endpoint = `${env.SHORTER_ENDPOINT}/links`;
@@ -16,9 +16,9 @@ const setHeaders = (authToken: string) => {
 };
 
 export async function addLink(
-	link: LinkInput,
+	link: CreateLinkInputDto,
 	authToken: string,
-): Promise<Link> {
+): Promise<CreateLinkDto> {
 	const response = await fetch(endpoint, {
 		method: "POST",
 		headers: setHeaders(authToken),
@@ -30,7 +30,7 @@ export async function addLink(
 		throw new Error(`HTTP ${response.status}: ${errText}`);
 	}
 
-	const data = (await response.json()) as { success: boolean; link: Link };
+	const data = (await response.json()) as { success: boolean; link: CreateLinkDto };
 	return data.link;
 }
 
@@ -52,9 +52,9 @@ export async function deleteLink(
 
 export async function updateLink(
 	slug: string,
-	updateParams: UpdateLinkInput,
+	updateParams: UpdateLinkInputDto,
 	authToken: string,
-): Promise<UpdateLink> {
+): Promise<UpdateLinkDto> {
 	const updateUrl = `${endpoint}/${slug}`;
 	const response = await fetch(updateUrl, {
 		method: "PUT",
@@ -69,7 +69,7 @@ export async function updateLink(
 
 	const data = (await response.json()) as {
 		success: boolean;
-		link: UpdateLink;
+		link: UpdateLinkDto;
 	};
 	return data.link;
 }

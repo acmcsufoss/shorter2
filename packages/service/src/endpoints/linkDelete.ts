@@ -1,17 +1,7 @@
 import { Bool, OpenAPIRoute, Str } from "chanfana";
 import { z } from "zod";
-import type { AppContext, KvEntry } from "../types";
-
-export const deleteEntryInCache = async (
-	c: AppContext,
-	slugToDelete: string,
-) => {
-	const data = await c.env.KV_SHORTLINKS.get<KvEntry[]>("list", "json");
-	if (!data) return;
-	const updatedList = data.filter((entry) => entry.key !== slugToDelete);
-
-	await c.env.KV_SHORTLINKS.put("list", JSON.stringify(updatedList));
-};
+import { DeleteEntryInCache } from "../cache";
+import type { AppContext } from "../types";
 
 export class LinkDelete extends OpenAPIRoute {
 	schema = {
@@ -47,7 +37,7 @@ export class LinkDelete extends OpenAPIRoute {
 		await c.env.KV_SHORTLINKS.delete(slug);
 
 		// Cannot fire and forget in serverless environment
-		c.executionCtx.waitUntil(deleteEntryInCache(c, slug));
+		c.executionCtx.waitUntil(DeleteEntryInCache(c, slug));
 
 		return c.json(
 			{

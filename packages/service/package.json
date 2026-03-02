@@ -13,7 +13,8 @@
     "format": "biome format --write ./src",
     "lint": "biome lint --write ./src",
     "check": "biome check ./src",
-		"check:write": "biome check --write ./src"
+		"check:write": "biome check --write ./src",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "chanfana": "^2.6.3",
