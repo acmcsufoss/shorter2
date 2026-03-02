@@ -2,6 +2,7 @@ import { fromHono, D1CreateEndpoint, D1ReadEndpoint, D1UpdateEndpoint, D1DeleteE
 import { Hono } from "hono";
 import { bearerAuth } from "hono/bearer-auth";
 import { ShortlinkModel } from "./types";
+import { ShortlinkRedirect } from "./endpoints/linkRedirect";
 
 const shortlinkMeta = {
 	model: {
@@ -37,7 +38,8 @@ const openapi = fromHono(app, {
 openapi.post("/_links", ShortlinkCreate);
 openapi.put("/_links/:slug{.+}", ShortlinkUpdate);
 openapi.get("/", ShortlinkList); // public
-openapi.get("/:slug{.+}", ShortlinkGet); // public
+openapi.get("/:slug{.+}", ShortlinkRedirect); // public
+openapi.get("/_links/:slug{.+}", ShortlinkGet);
 openapi.delete("/_links/:slug{.+}", ShortlinkDelete);
 
 export default app;

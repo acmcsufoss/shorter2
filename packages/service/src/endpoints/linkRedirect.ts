@@ -1,14 +1,14 @@
-import { Bool, OpenAPIRoute, Str } from "chanfana";
+import { OpenAPIRoute } from "chanfana";
 import { z } from "zod";
-import type { AppContext, KvValue } from "../types";
+import type { AppContext } from "../types";
 
-export class LinkRedirect extends OpenAPIRoute {
+export class ShortlinkRedirect extends OpenAPIRoute {
 	schema = {
-		tags: ["Links"],
-		summary: "Get a single URL by slug",
+		tags: ["Public"],
+		summary: "Redirect to a saved URL",
 		request: {
 			params: z.object({
-				slug: Str({ description: "Link slug" }),
+				slug: z.string()
 			}),
 		},
 		responses: {
@@ -24,8 +24,8 @@ export class LinkRedirect extends OpenAPIRoute {
 					"application/json": {
 						schema: z.object({
 							series: z.object({
-								success: Bool(),
-								error: Str(),
+								success: z.boolean(),
+								error: z.string(),
 							}),
 						}),
 					},
@@ -39,8 +39,11 @@ export class LinkRedirect extends OpenAPIRoute {
 		const data = await this.getValidatedData<typeof this.schema>();
 		const { slug } = data.params;
 
-		const value = await c.env.KV_SHORTLINKS.get<KvValue>(slug, "json");
-		if (!value) {
+		const res = await c.env.DB
+			.prepare("SELECT s.url FROM shortlinks s WHERE s.slug = ?")
+			.bind(slug)
+			.first<{ url: string; isPermanent: number }>();
+		if (!res) {
 			return c.json(
 				{
 					success: false,
@@ -49,9 +52,9 @@ export class LinkRedirect extends OpenAPIRoute {
 				404,
 			);
 		}
-		const { destination, isPermanent } = value;
+		const { url, isPermanent } = res;
 
 		const redirectCode = isPermanent ? 301 : 302;
-		return c.redirect(destination, redirectCode);
+		return c.redirect(url, redirectCode);
 	}
 }
