@@ -37,4 +37,3 @@ openapi.get("/:slug{.+}", ShortlinkRedirect); // public
 openapi.get("/", ShortlinkList); // public
 
 export default app;
-export * from "./types";

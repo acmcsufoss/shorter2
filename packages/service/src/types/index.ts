@@ -1,3 +1,2 @@
 export * from "./context";
-export * from "./domain";
-export * from "./dto";
+export * from "@shorter2/types";

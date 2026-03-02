@@ -1,5 +1,5 @@
 {
-	"name": "@shorter/bot",
+	"name": "@shorter2/bot",
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
@@ -25,7 +25,7 @@
     "@types/bun": "latest"
 	},
 	"dependencies": {
-		"@shorter/service": "workspace:*",
+		"@shorter2/types": "workspace:*",
 		"discord-api-types": "^0.38.37",
 		"discord-interactions": "^4.4.0",
 		"dotenv": "^17.2.3",
