@@ -1,9 +1,4 @@
-export interface KvValue {
-	destination: string;
+export interface ShortlinkDomain {
+	url: string;
 	isPermanent: boolean;
-}
-
-export interface KvEntry {
-	key: string; // slug
-	value: KvValue;
 }

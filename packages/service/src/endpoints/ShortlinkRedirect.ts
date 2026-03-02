@@ -1,22 +1,23 @@
-import { Bool, OpenAPIRoute, Str } from "chanfana";
+import { OpenAPIRoute } from "chanfana";
 import { z } from "zod";
-import type { AppContext, KvValue } from "../types";
+import { getShortlinkBySlug } from "../repository";
+import type { AppContext } from "../types";
 
-export class LinkRedirect extends OpenAPIRoute {
+export class ShortlinkRedirect extends OpenAPIRoute {
 	schema = {
-		tags: ["Links"],
-		summary: "Get a single URL by slug",
+		tags: ["Public"],
+		summary: "Redirect client to a saved URL",
 		request: {
 			params: z.object({
-				slug: Str({ description: "Link slug" }),
+				slug: z.string(),
 			}),
 		},
 		responses: {
 			"301": {
-				description: "Redirects client to mapped url (permanent redirect)",
+				description: "Redirects client to mapped url with permanent redirect",
 			},
 			"302": {
-				description: "Redirects client to mapped url (temporary redirect)",
+				description: "Redirects client to mapped url with temporary redirect",
 			},
 			"404": {
 				description: "Link not found",
@@ -24,8 +25,8 @@ export class LinkRedirect extends OpenAPIRoute {
 					"application/json": {
 						schema: z.object({
 							series: z.object({
-								success: Bool(),
-								error: Str(),
+								success: z.boolean(),
+								error: z.string(),
 							}),
 						}),
 					},
@@ -39,8 +40,8 @@ export class LinkRedirect extends OpenAPIRoute {
 		const data = await this.getValidatedData<typeof this.schema>();
 		const { slug } = data.params;
 
-		const value = await c.env.KV_SHORTLINKS.get<KvValue>(slug, "json");
-		if (!value) {
+		const res = await getShortlinkBySlug(c, slug);
+		if (!res) {
 			return c.json(
 				{
 					success: false,
@@ -49,9 +50,9 @@ export class LinkRedirect extends OpenAPIRoute {
 				404,
 			);
 		}
-		const { destination, isPermanent } = value;
+		const { url, isPermanent } = res;
 
 		const redirectCode = isPermanent ? 301 : 302;
-		return c.redirect(destination, redirectCode);
+		return c.redirect(url, redirectCode);
 	}
 }

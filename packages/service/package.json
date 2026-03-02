@@ -13,18 +13,19 @@
     "format": "biome format --write ./src",
     "lint": "biome lint --write ./src",
     "check": "biome check ./src",
-		"check:write": "biome check --write ./src",
+    "check:write": "biome check --write ./src",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "chanfana": "^2.6.3",
-    "hono": "^4.6.20",
-    "zod": "^3.24.1"
+    "chanfana": "^3.2.1",
+    "hono": "^4.12.3",
+    "typescript": "^5.9.3",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.3.12",
+    "@biomejs/biome": "^2.4.4",
     "@types/node": "22.13.0",
     "@types/service-worker-mock": "^2.0.4",
-    "wrangler": "^4.60.0"
+    "wrangler": "^4.69.0"
   }
 }
