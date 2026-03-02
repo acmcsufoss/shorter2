@@ -1,6 +1,6 @@
 import { D1CreateEndpoint } from "chanfana";
-import { ShortlinkCreateRequest } from "../types";
 import { shortlinkMeta } from "../repository";
+import { ShortlinkCreateRequest } from "../types";
 
 export class ShortlinkCreate extends D1CreateEndpoint {
 	_meta = shortlinkMeta;

@@ -2,12 +2,12 @@ import { fromHono } from "chanfana";
 import { Hono } from "hono";
 import { bearerAuth } from "hono/bearer-auth";
 import {
-	ShortlinkRedirect,
 	ShortlinkCreate,
+	ShortlinkDelete,
 	ShortlinkGet,
 	ShortlinkList,
+	ShortlinkRedirect,
 	ShortlinkUpdate,
-	ShortlinkDelete,
 } from "./endpoints";
 
 // Start a Hono app

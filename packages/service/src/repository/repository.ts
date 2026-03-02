@@ -1,4 +1,8 @@
-import { ShortlinkModel, ShortlinkDomain, AppContext } from "../types";
+import {
+	type AppContext,
+	type ShortlinkDomain,
+	ShortlinkModel,
+} from "../types";
 
 export const shortlinkMeta = {
 	model: {
@@ -19,7 +23,7 @@ export const getShortlinkBySlug = async (
 		.first<{ url: string; isPermanent: number }>();
 
 	if (!res) {
-		return null
+		return null;
 	}
 	return { url: res.url, isPermanent: Boolean(res.isPermanent) };
 };

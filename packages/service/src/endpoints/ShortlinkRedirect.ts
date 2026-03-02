@@ -1,7 +1,7 @@
 import { OpenAPIRoute } from "chanfana";
 import { z } from "zod";
-import type { AppContext } from "../types";
 import { getShortlinkBySlug } from "../repository";
+import type { AppContext } from "../types";
 
 export class ShortlinkRedirect extends OpenAPIRoute {
 	schema = {
