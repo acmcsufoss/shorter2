@@ -1,10 +1,10 @@
 import { D1CreateEndpoint } from "chanfana";
 import { ShortlinkCreateRequest } from "../types";
-import { shortlinkMeta } from '../repository';
+import { shortlinkMeta } from "../repository";
 
 export class ShortlinkCreate extends D1CreateEndpoint {
 	_meta = shortlinkMeta;
-	dbname = 'DB'
+	dbname = "DB";
 	schema = {
 		tags: ["Protected"],
 		summary: "Create a new shortlink",
@@ -17,6 +17,5 @@ export class ShortlinkCreate extends D1CreateEndpoint {
 				},
 			},
 		},
-	}
+	};
 }
-

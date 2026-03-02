@@ -1,7 +1,14 @@
 import { fromHono } from "chanfana";
 import { Hono } from "hono";
 import { bearerAuth } from "hono/bearer-auth";
-import { ShortlinkRedirect, ShortlinkCreate, ShortlinkGet, ShortlinkList, ShortlinkUpdate, ShortlinkDelete } from "./endpoints";
+import {
+	ShortlinkRedirect,
+	ShortlinkCreate,
+	ShortlinkGet,
+	ShortlinkList,
+	ShortlinkUpdate,
+	ShortlinkDelete,
+} from "./endpoints";
 import { AppError } from "./errors";
 import { ContentfulStatusCode } from "hono/utils/http-status";
 
@@ -9,16 +16,16 @@ import { ContentfulStatusCode } from "hono/utils/http-status";
 const app = new Hono<{ Bindings: Env }>();
 app.onError((err, c) => {
 	if (err instanceof AppError) {
-		return c.json({
-			success: false,
-			errors: [
-				{ message: err.message, code: err.code },
-			]
-		},
-			err.status as ContentfulStatusCode);
+		return c.json(
+			{
+				success: false,
+				errors: [{ message: err.message, code: err.code }],
+			},
+			err.status as ContentfulStatusCode,
+		);
 	}
 	console.error(err);
-	return c.json({ error: "Internal server error", code: "INTERNAL" })
+	return c.json({ error: "Internal server error", code: "INTERNAL" });
 });
 
 app.use("/_links/*", async (c, next) => {

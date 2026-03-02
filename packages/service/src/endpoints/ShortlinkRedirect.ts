@@ -8,7 +8,7 @@ export class ShortlinkRedirect extends OpenAPIRoute {
 		summary: "Redirect client to a saved URL",
 		request: {
 			params: z.object({
-				slug: z.string()
+				slug: z.string(),
 			}),
 		},
 		responses: {
@@ -39,8 +39,9 @@ export class ShortlinkRedirect extends OpenAPIRoute {
 		const data = await this.getValidatedData<typeof this.schema>();
 		const { slug } = data.params;
 
-		const res = await c.env.DB
-			.prepare("SELECT s.url FROM shortlinks s WHERE s.slug = ?")
+		const res = await c.env.DB.prepare(
+			"SELECT s.url FROM shortlinks s WHERE s.slug = ?",
+		)
 			.bind(slug)
 			.first<{ url: string; isPermanent: number }>();
 		if (!res) {
