@@ -5,7 +5,7 @@ import type { AppContext } from "../types";
 export class ShortlinkRedirect extends OpenAPIRoute {
 	schema = {
 		tags: ["Public"],
-		summary: "Redirect to a saved URL",
+		summary: "Redirect client to a saved URL",
 		request: {
 			params: z.object({
 				slug: z.string()

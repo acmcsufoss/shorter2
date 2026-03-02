@@ -6,6 +6,6 @@ export class ShortlinkList extends D1ListEndpoint {
 	dbname = 'DB';
 	schema = {
 		tags: ["Public"],
-		summary: "List Shortlinks",
+		summary: "List shortlinks",
 	};
 }
