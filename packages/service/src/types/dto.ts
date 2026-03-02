@@ -1,10 +1,9 @@
-import { Bool, Str } from "chanfana";
 import { z } from "zod";
 
 export const CreateLinkDto = z.object({
-	slug: Str({ required: false }).optional(),
+	slug: z.string().optional(),
 	url: z.string().url(),
-	isPermanent: Bool({ required: false }).default(false),
+	isPermanent: z.boolean().optional().default(false),
 });
 
 export type CreateLinkDto = z.infer<typeof CreateLinkDto>; // For validated data
@@ -12,7 +11,7 @@ export type CreateLinkInputDto = z.input<typeof CreateLinkDto>; // Unvalidated d
 
 export const UpdateLinkDto = z.object({
 	url: z.string().url().optional(),
-	isPermanent: Bool({ required: false }).default(false),
+	isPermanent: z.boolean().optional(),
 });
 
 export type UpdateLinkDto = z.infer<typeof UpdateLinkDto>;
