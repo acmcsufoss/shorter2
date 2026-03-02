@@ -14,11 +14,11 @@
 	"vars": {
 		"ENVIRONMENT": "development"
 	},
-	"kv_namespaces": [
+	"d1_databases": [
 		{
-			"binding": "KV_SHORTLINKS",
-			"id": "e941f6969dad41c8bd4caf4a46c4ad8d",
-			"remote": false
+			"binding": "dev_d1_shortlinks",
+			"database_name": "dev-d1-shortlinks",
+			"database_id": "f83b9d6f-359d-4a46-99f8-3c6a7e038826"
 		}
 	],
 	// production
@@ -27,17 +27,17 @@
 			"vars": {
 				"ENVIRONMENT": "production"
 			},
-			"kv_namespaces": [
-				{
-					"binding": "KV_SHORTLINKS",
-					"id": "e941f6969dad41c8bd4caf4a46c4ad8d",
-					"remote": true
-				}
-			],
 			"routes": [
 				{
 					"pattern": "s.acmcsuf.com",
 					"custom_domain": true
+				}
+			],
+			"d1_databases": [
+				{
+					"binding": "prod_d1_shortlinks",
+					"database_name": "prod-d1-shortlinks",
+					"database_id": "ee0d28cd-a85e-45bc-822c-0a4e75d245bc"
 				}
 			]
 		}
