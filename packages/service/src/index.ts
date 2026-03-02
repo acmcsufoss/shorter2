@@ -3,6 +3,8 @@ import { Hono } from "hono";
 import { bearerAuth } from "hono/bearer-auth";
 import { ShortlinkModel } from "./types";
 import { ShortlinkRedirect, ShortlinkCreate, ShortlinkGet } from "./endpoints";
+import { AppError } from "./errors";
+import { ContentfulStatusCode } from "hono/utils/http-status";
 
 const shortlinkMeta = {
 	model: {
@@ -14,6 +16,19 @@ const shortlinkMeta = {
 
 // Start a Hono app
 const app = new Hono<{ Bindings: Env }>();
+app.onError((err, c) => {
+	if (err instanceof AppError) {
+		return c.json({
+			success: false,
+			errors: [
+				{ message: err.message, code: err.code },
+			]
+		},
+			err.status as ContentfulStatusCode);
+	}
+	console.error(err);
+	return c.json({ error: "Internal server error", code: "INTERNAL" })
+});
 
 app.use("/_links/*", async (c, next) => {
 	if (c.env.ENVIRONMENT === "development") return next();
