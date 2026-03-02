@@ -10,8 +10,8 @@ import { LinkUpdate } from "./endpoints/linkUpdate";
 // Start a Hono app
 const app = new Hono<{ Bindings: Env }>();
 
-// TODO: Add functionality to skip this in local dev
 app.use("/links/*", async (c, next) => {
+	if (c.env.ENVIRONMENT === "development") return next();
 	const auth = bearerAuth({
 		token: c.env.SHORTER_API_KEY,
 	});
