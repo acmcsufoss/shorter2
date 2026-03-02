@@ -1,8 +1,8 @@
-import { fromHono, D1CreateEndpoint, D1ReadEndpoint, D1UpdateEndpoint, D1DeleteEndpoint, D1ListEndpoint } from "chanfana";
+import { fromHono, D1ReadEndpoint, D1UpdateEndpoint, D1DeleteEndpoint, D1ListEndpoint } from "chanfana";
 import { Hono } from "hono";
 import { bearerAuth } from "hono/bearer-auth";
 import { ShortlinkModel } from "./types";
-import { ShortlinkRedirect } from "./endpoints/linkRedirect";
+import { ShortlinkRedirect, ShortlinkCreate } from "./endpoints";
 
 const shortlinkMeta = {
 	model: {
@@ -23,11 +23,16 @@ app.use("/_links/*", async (c, next) => {
 	return auth(c, next);
 });
 
-class ShortlinkCreate extends D1CreateEndpoint { _meta = shortlinkMeta; dbname = 'DB' }
 class ShortlinkGet extends D1ReadEndpoint { _meta = shortlinkMeta; dbname = 'DB' }
 class ShortlinkUpdate extends D1UpdateEndpoint { _meta = shortlinkMeta; dbname = 'DB' }
 class ShortlinkDelete extends D1DeleteEndpoint { _meta = shortlinkMeta; dbname = 'DB' }
-class ShortlinkList extends D1ListEndpoint { _meta = shortlinkMeta; dbname = 'DB' }
+class ShortlinkList extends D1ListEndpoint {
+	_meta = shortlinkMeta;
+	dbname = 'DB';
+	schema = {
+		tags: ["Public"],
+	};
+}
 
 // Setup OpenAPI registry
 const openapi = fromHono(app, {
