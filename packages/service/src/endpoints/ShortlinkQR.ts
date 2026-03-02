@@ -1,8 +1,8 @@
 import { OpenAPIRoute } from "chanfana";
+import QRCode from "qrcode-svg";
 import { z } from "zod";
 import { getShortlinkBySlug } from "../repository";
 import type { AppContext } from "../types";
-import QRCode from 'qrcode-svg';
 
 export class ShortlinkQR extends OpenAPIRoute {
 	schema = {
@@ -51,7 +51,6 @@ export class ShortlinkQR extends OpenAPIRoute {
 		}
 		const targetUrl = res.url;
 		const svg = new QRCode(targetUrl).svg();
-
 
 		return c.body(svg, 200, { "Content-Type": "image/svg+xml" });
 	}

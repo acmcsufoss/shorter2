@@ -10,9 +10,9 @@ importers:
 
   packages/bot:
     dependencies:
-      '@shorter/service':
+      '@shorter2/types':
         specifier: workspace:*
-        version: link:../service
+        version: link:../types
       discord-api-types:
         specifier: ^0.38.37
         version: 0.38.40
@@ -50,6 +50,9 @@ importers:
 
   packages/service:
     dependencies:
+      '@shorter2/types':
+        specifier: workspace:*
+        version: link:../types
       chanfana:
         specifier: ^3.2.1
         version: 3.2.1
@@ -81,6 +84,12 @@ importers:
       wrangler:
         specifier: ^4.69.0
         version: 4.69.0
+
+  packages/types:
+    dependencies:
+      zod:
+        specifier: ^4.3.6
+        version: 4.3.6
 
 packages:
 

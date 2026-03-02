@@ -6,9 +6,9 @@ import {
 	ShortlinkDelete,
 	ShortlinkGet,
 	ShortlinkList,
+	ShortlinkQR,
 	ShortlinkRedirect,
 	ShortlinkUpdate,
-	ShortlinkQR,
 } from "./endpoints";
 
 // Start a Hono app
@@ -37,4 +37,3 @@ openapi.get("/:slug{.+}", ShortlinkRedirect); // public
 openapi.get("/", ShortlinkList); // public
 
 export default app;
-export * from "./types";
