@@ -1,18 +1,9 @@
 import { fromHono } from "chanfana";
 import { Hono } from "hono";
 import { bearerAuth } from "hono/bearer-auth";
-import { ShortlinkModel } from "./types";
 import { ShortlinkRedirect, ShortlinkCreate, ShortlinkGet, ShortlinkList, ShortlinkUpdate, ShortlinkDelete } from "./endpoints";
 import { AppError } from "./errors";
 import { ContentfulStatusCode } from "hono/utils/http-status";
-
-const shortlinkMeta = {
-	model: {
-		schema: ShortlinkModel,
-		primaryKeys: ['slug'],
-		tableName: 'shortlinks',
-	}
-}
 
 // Start a Hono app
 const app = new Hono<{ Bindings: Env }>();
