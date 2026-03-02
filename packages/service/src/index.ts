@@ -45,9 +45,9 @@ const openapi = fromHono(app, {
 openapi.post("/_links", ShortlinkCreate);
 openapi.put("/_links/:slug{.+}", ShortlinkUpdate);
 openapi.get("/", ShortlinkList); // public
-openapi.get("/:slug{.+}", ShortlinkRedirect); // public
 openapi.get("/_links/:slug{.+}", ShortlinkGet);
 openapi.delete("/_links/:slug{.+}", ShortlinkDelete);
+openapi.get("/:slug{.+}", ShortlinkRedirect); // public
 
 export default app;
 export * from "./types";
