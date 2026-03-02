@@ -1,16 +1,20 @@
-import { fromHono } from "chanfana";
+import { fromHono, D1CreateEndpoint, D1ReadEndpoint, D1UpdateEndpoint, D1DeleteEndpoint, D1ListEndpoint } from "chanfana";
 import { Hono } from "hono";
 import { bearerAuth } from "hono/bearer-auth";
-import { LinkCreate } from "./endpoints/linkCreate";
-import { LinkDelete } from "./endpoints/linkDelete";
-import { LinkFetchAll } from "./endpoints/linkFetchAll";
-import { LinkRedirect } from "./endpoints/linkRedirect";
-import { LinkUpdate } from "./endpoints/linkUpdate";
+import { ShortlinkModel } from "./types";
+
+const shortlinkMeta = {
+	model: {
+		schema: ShortlinkModel,
+		primaryKeys: ['slug'],
+		tableName: 'shortlinks',
+	}
+}
 
 // Start a Hono app
 const app = new Hono<{ Bindings: Env }>();
 
-app.use("/links/*", async (c, next) => {
+app.use("/_links/*", async (c, next) => {
 	if (c.env.ENVIRONMENT === "development") return next();
 	const auth = bearerAuth({
 		token: c.env.SHORTER_API_KEY,
@@ -18,17 +22,23 @@ app.use("/links/*", async (c, next) => {
 	return auth(c, next);
 });
 
+class ShortlinkCreate extends D1CreateEndpoint { _meta = shortlinkMeta; dbname = 'DB' }
+class ShortlinkGet extends D1ReadEndpoint { _meta = shortlinkMeta; dbname = 'DB' }
+class ShortlinkUpdate extends D1UpdateEndpoint { _meta = shortlinkMeta; dbname = 'DB' }
+class ShortlinkDelete extends D1DeleteEndpoint { _meta = shortlinkMeta; dbname = 'DB' }
+class ShortlinkList extends D1ListEndpoint { _meta = shortlinkMeta; dbname = 'DB' }
+
 // Setup OpenAPI registry
 const openapi = fromHono(app, {
-	docs_url: "/",
+	docs_url: "/docs",
 });
 
 // Register OpenAPI endpoints
-openapi.post("/links", LinkCreate);
-openapi.put("/links/:slug{.+}", LinkUpdate);
-openapi.get("/list", LinkFetchAll); // public
-openapi.get("/:slug{.+}", LinkRedirect); // public
-openapi.delete("/links/:slug{.+}", LinkDelete);
+openapi.post("/_links", ShortlinkCreate);
+openapi.put("/_links/:slug{.+}", ShortlinkUpdate);
+openapi.get("/", ShortlinkList); // public
+openapi.get("/:slug{.+}", ShortlinkGet); // public
+openapi.delete("/_links/:slug{.+}", ShortlinkDelete);
 
 export default app;
 export * from "./types";
