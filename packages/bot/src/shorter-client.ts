@@ -5,7 +5,7 @@ import type {
 	ShortlinkUpdateRequest
 } from "./types";
 
-const endpoint = `${env.SHORTER_ENDPOINT}/links`;
+const endpoint = `${env.SHORTER_ENDPOINT}/_links`;
 
 const setHeaders = (authToken: string) => {
 	return {
