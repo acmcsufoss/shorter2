@@ -56,6 +56,9 @@ importers:
       hono:
         specifier: ^4.12.3
         version: 4.12.3
+      qrcode-svg:
+        specifier: ^1.1.0
+        version: 1.1.0
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -69,6 +72,9 @@ importers:
       '@types/node':
         specifier: 22.13.0
         version: 22.13.0
+      '@types/qrcode-svg':
+        specifier: ^1.1.5
+        version: 1.1.5
       '@types/service-worker-mock':
         specifier: ^2.0.4
         version: 2.0.4
@@ -652,6 +658,9 @@ packages:
   '@types/node@22.13.0':
     resolution: {integrity: sha512-ClIbNe36lawluuvq3+YYhnIN2CELi+6q8NpnM7PYp4hBn/TatfboPgVSm2rwKRfnV2M+Ty9GWDFI64KEe+kysA==}
 
+  '@types/qrcode-svg@1.1.5':
+    resolution: {integrity: sha512-GjkD+HB8S1wrIsf3skHDtcYBjzNhTxocMbX+wG166xDkaVOnLiMUla7bLjbwxo6mMvqqWQNP0Dk8nkIeizSmnw==}
+
   '@types/service-worker-mock@2.0.4':
     resolution: {integrity: sha512-MEBT2eiqYfhxjqYm/oAf2AvKLbPTPwJJAYrMdheKnGyz1yG9XBRfxCzi93h27qpSvI7jOYfXqFLVMLBXFDqo4A==}
 
@@ -880,6 +889,10 @@ packages:
   powershell-utils@0.1.0:
     resolution: {integrity: sha512-dM0jVuXJPsDN6DvRpea484tCUaMiXWjuCn++HGTqUWzGDjv5tZkEZldAJ/UMlqRYGFrD/etByo4/xOuC/snX2A==}
     engines: {node: '>=20'}
+
+  qrcode-svg@1.1.0:
+    resolution: {integrity: sha512-XyQCIXux1zEIA3NPb0AeR8UMYvXZzWEhgdBgBjH9gO7M48H9uoHzviNz8pXw3UzrAcxRRRn9gxHewAVK7bn9qw==}
+    hasBin: true
 
   rollup@4.59.0:
     resolution: {integrity: sha512-2oMpl67a3zCH9H79LeMcbDhXW/UmWG/y2zuqnF2jQq5uq9TbM9TVyXvA4+t+ne2IIkBdrLpAaRQAvo7YI/Yyeg==}
@@ -1465,6 +1478,8 @@ snapshots:
     dependencies:
       undici-types: 6.20.0
 
+  '@types/qrcode-svg@1.1.5': {}
+
   '@types/service-worker-mock@2.0.4': {}
 
   '@vitest/expect@3.2.4':
@@ -1690,6 +1705,8 @@ snapshots:
       source-map-js: 1.2.1
 
   powershell-utils@0.1.0: {}
+
+  qrcode-svg@1.1.0: {}
 
   rollup@4.59.0:
     dependencies:

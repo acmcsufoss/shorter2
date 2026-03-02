@@ -4,3 +4,4 @@ export * from "./ShortlinkGet";
 export * from "./ShortlinkList";
 export * from "./ShortlinkRedirect";
 export * from "./ShortlinkUpdate";
+export * from "./ShortlinkQR";
