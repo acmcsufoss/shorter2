@@ -4,12 +4,6 @@
   "workspaces": {
     "": {
       "name": "shorter2",
-      "devDependencies": {
-        "@types/bun": "latest",
-      },
-      "peerDependencies": {
-        "typescript": "^5",
-      },
     },
     "packages/bot": {
       "name": "@shorter/bot",
@@ -25,6 +19,7 @@
       "devDependencies": {
         "@biomejs/biome": "^2.3.12",
         "@cloudflare/vitest-pool-workers": "^0.12.4",
+        "@types/bun": "latest",
         "typescript": "^5.5.2",
         "vitest": "~3.2.0",
         "wrangler": "^4.67.0",
