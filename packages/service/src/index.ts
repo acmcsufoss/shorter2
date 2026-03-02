@@ -6,9 +6,9 @@ import {
 	ShortlinkDelete,
 	ShortlinkGet,
 	ShortlinkList,
+	ShortlinkQR,
 	ShortlinkRedirect,
 	ShortlinkUpdate,
-	ShortlinkQR,
 } from "./endpoints";
 
 // Start a Hono app
