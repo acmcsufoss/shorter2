@@ -34,7 +34,7 @@
       "name": "@shorter/service",
       "version": "0.0.1",
       "dependencies": {
-        "chanfana": "^2.6.3",
+        "chanfana": "^3.2.1",
         "hono": "^4.6.20",
         "zod": "^4.3.6",
       },
@@ -47,7 +47,7 @@
     },
   },
   "packages": {
-    "@asteasolutions/zod-to-openapi": ["@asteasolutions/zod-to-openapi@7.3.4", "", { "dependencies": { "openapi3-ts": "^4.1.2" }, "peerDependencies": { "zod": "^3.20.2" } }, "sha512-/2rThQ5zPi9OzVwes6U7lK1+Yvug0iXu25olp7S0XsYmOqnyMfxH7gdSQjn/+DSOHRg7wnotwGJSyL+fBKdnEA=="],
+    "@asteasolutions/zod-to-openapi": ["@asteasolutions/zod-to-openapi@8.4.1", "", { "dependencies": { "openapi3-ts": "^4.1.2" }, "peerDependencies": { "zod": "^4.0.0" } }, "sha512-WmJUsFINbnWxGvHSd16aOjgKf+5GsfdxruO2YDLcgplsidakCauik1lhlk83YDH06265Yd1XtUyF24o09uygpw=="],
 
     "@biomejs/biome": ["@biomejs/biome@2.3.12", "", { "optionalDependencies": { "@biomejs/cli-darwin-arm64": "2.3.12", "@biomejs/cli-darwin-x64": "2.3.12", "@biomejs/cli-linux-arm64": "2.3.12", "@biomejs/cli-linux-arm64-musl": "2.3.12", "@biomejs/cli-linux-x64": "2.3.12", "@biomejs/cli-linux-x64-musl": "2.3.12", "@biomejs/cli-win32-arm64": "2.3.12", "@biomejs/cli-win32-x64": "2.3.12" }, "bin": { "biome": "bin/biome" } }, "sha512-AR7h4aSlAvXj7TAajW/V12BOw2EiS0AqZWV5dGozf4nlLoUF/ifvD0+YgKSskT0ylA6dY1A8AwgP8kZ6yaCQnA=="],
 
@@ -299,7 +299,7 @@
 
     "chai": ["chai@5.3.3", "", { "dependencies": { "assertion-error": "^2.0.1", "check-error": "^2.1.1", "deep-eql": "^5.0.1", "loupe": "^3.1.0", "pathval": "^2.0.0" } }, "sha512-4zNhdJD/iOjSH0A05ea+Ke6MU5mmpQcbQsSOkgdaUMJ9zTlDTD/GYlwohmIE2u0gaxHYiVHEn1Fw9mZ/ktJWgw=="],
 
-    "chanfana": ["chanfana@2.8.3", "", { "dependencies": { "@asteasolutions/zod-to-openapi": "^7.2.0", "js-yaml": "^4.1.0", "openapi3-ts": "^4.4.0", "yargs-parser": "^22.0.0", "zod": "^3.23.8" }, "bin": { "chanfana": "dist/cli.js" } }, "sha512-OBefbT8n+CeRYkC6lUoRgySTFbth+3LetxiNrCe0t+WgpQhhoIxPlo+lDYvNrLJgtsQr7XuPazm8yyxR8zwB7g=="],
+    "chanfana": ["chanfana@3.2.1", "", { "dependencies": { "@asteasolutions/zod-to-openapi": "^8.4.1", "js-yaml": "^4.1.1", "openapi3-ts": "^4.5.0", "yargs-parser": "^22.0.0", "zod": "^4.3.6" }, "bin": { "chanfana": "dist/cli.js" } }, "sha512-SHi6AYErJwS5C2iQx12AsCY1w0ztQcxWOI4yC+G2BGguLuuLGixTrUu7dP6apuPMjL04iwZALUT/m1+5+26+xw=="],
 
     "check-error": ["check-error@2.1.3", "", {}, "sha512-PAJdDJusoxnwm1VwW07VWwUN1sl7smmC3OKggvndJFadxxDRyFJBX/ggnu/KE4kQAB7a3Dp8f/YXC1FlUprWmA=="],
 
@@ -451,15 +451,11 @@
 
     "zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
 
-    "@asteasolutions/zod-to-openapi/zod": ["zod@3.25.76", "", {}, "sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ=="],
-
     "@cloudflare/vitest-pool-workers/wrangler": ["wrangler@4.60.0", "", { "dependencies": { "@cloudflare/kv-asset-handler": "0.4.2", "@cloudflare/unenv-preset": "2.11.0", "blake3-wasm": "2.1.5", "esbuild": "0.27.0", "miniflare": "4.20260120.0", "path-to-regexp": "6.3.0", "unenv": "2.0.0-rc.24", "workerd": "1.20260120.0" }, "optionalDependencies": { "fsevents": "~2.3.2" }, "peerDependencies": { "@cloudflare/workers-types": "^4.20260120.0" }, "optionalPeers": ["@cloudflare/workers-types"], "bin": { "wrangler": "bin/wrangler.js", "wrangler2": "bin/wrangler.js" } }, "sha512-n4kibm/xY0Qd5G2K/CbAQeVeOIlwPNVglmFjlDRCCYk3hZh8IggO/rg8AXt/vByK2Sxsugl5Z7yvgWxrUbmS6g=="],
 
     "@cloudflare/vitest-pool-workers/zod": ["zod@3.25.76", "", {}, "sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ=="],
 
     "bun-types/@types/node": ["@types/node@25.0.10", "", { "dependencies": { "undici-types": "~7.16.0" } }, "sha512-zWW5KPngR/yvakJgGOmZ5vTBemDoSqF3AcV/LrO5u5wTWyEAVVh+IT39G4gtyAkh3CtTZs8aX/yRM82OfzHJRg=="],
-
-    "chanfana/zod": ["zod@3.25.76", "", {}, "sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ=="],
 
     "miniflare/workerd": ["workerd@1.20260120.0", "", { "optionalDependencies": { "@cloudflare/workerd-darwin-64": "1.20260120.0", "@cloudflare/workerd-darwin-arm64": "1.20260120.0", "@cloudflare/workerd-linux-64": "1.20260120.0", "@cloudflare/workerd-linux-arm64": "1.20260120.0", "@cloudflare/workerd-windows-64": "1.20260120.0" }, "bin": { "workerd": "bin/workerd" } }, "sha512-R6X/VQOkwLTBGLp4VRUwLQZZVxZ9T9J8pGiJ6GQUMaRkY7TVWrCSkVfoNMM1/YyFsY5UYhhPoQe5IehnhZ3Pdw=="],
 

@@ -17,7 +17,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "chanfana": "^2.6.3",
+    "chanfana": "^3.2.1",
     "hono": "^4.6.20",
     "zod": "^4.3.6"
   },
