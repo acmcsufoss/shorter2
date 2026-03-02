@@ -29,9 +29,9 @@ Require `Authorization: Bearer <SHORTER_API_KEY>` header:
 ## Development
 
 ```bash
-bun run dev          # Start dev server on localhost:8787
-bun run deploy       # Deploy to Cloudflare Workers
-bun run cf-typegen   # Generate Cloudflare types
+pnpm run dev          # Start dev server on localhost:8787
+pnpm run deploy       # Deploy to Cloudflare Workers
+pnpm run cf-typegen   # Generate Cloudflare types
 ```
 
 ## Configuration
@@ -43,7 +43,7 @@ Set in Cloudflare dashboard or via `wrangler secret put`:
 ## Code Quality
 
 ```bash
-bun run format   # Format with Biome
-bun run lint     # Lint with Biome
-bun run check    # Check formatting and linting
+pnpm run format   # Format with Biome
+pnpm run lint     # Lint with Biome
+pnpm run check    # Check formatting and linting
 ```

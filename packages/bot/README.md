@@ -26,11 +26,11 @@ Discord bot for managing shortlinks via slash commands. Built with Hono, Cloudfl
 ## Development
 
 ```bash
-bun install
-bun run dev        # Start dev server on localhost:8787
-bun run register   # Register slash commands with Discord
-bun run ngrok      # Start ngrok tunnel for local testing
-bun run deploy     # Deploy to Cloudflare Workers
+pnpm install
+pnpm run dev        # Start dev server on localhost:8787
+pnpm run register   # Register slash commands with Discord
+pnpm run ngrok      # Start ngrok tunnel for local testing
+pnpm run deploy     # Deploy to Cloudflare Workers
 ```
 
 ## Configuration
@@ -44,7 +44,7 @@ Set in Cloudflare dashboard or via `wrangler secret put`:
 ## Code Quality
 
 ```bash
-bun run format   # Format with Biome
-bun run lint     # Lint with Biome
-bun run check    # Check formatting and linting
+pnpm run format   # Format with Biome
+pnpm run lint     # Lint with Biome
+pnpm run check    # Check formatting and linting
 ```

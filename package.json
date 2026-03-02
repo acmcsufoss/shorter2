@@ -2,8 +2,5 @@
   "name": "shorter2",
   "module": "index.ts",
   "type": "module",
-  "private": true,
-  "workspaces": [
-    "packages/*"
-  ]
+  "private": true
 }
