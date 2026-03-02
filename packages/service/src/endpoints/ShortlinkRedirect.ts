@@ -1,6 +1,7 @@
 import { OpenAPIRoute } from "chanfana";
 import { z } from "zod";
 import type { AppContext } from "../types";
+import { getShortlinkBySlug } from "../repository";
 
 export class ShortlinkRedirect extends OpenAPIRoute {
 	schema = {
@@ -39,11 +40,7 @@ export class ShortlinkRedirect extends OpenAPIRoute {
 		const data = await this.getValidatedData<typeof this.schema>();
 		const { slug } = data.params;
 
-		const res = await c.env.DB.prepare(
-			"SELECT s.url FROM shortlinks s WHERE s.slug = ?",
-		)
-			.bind(slug)
-			.first<{ url: string; isPermanent: number }>();
+		const res = await getShortlinkBySlug(c, slug);
 		if (!res) {
 			return c.json(
 				{

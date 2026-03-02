@@ -1,5 +1,4 @@
-import { NotFoundException } from "chanfana";
-import { ShortlinkModel, ShortlinkDomain, AppContext } from "./types";
+import { ShortlinkModel, ShortlinkDomain, AppContext } from "../types";
 
 export const shortlinkMeta = {
 	model: {
@@ -9,7 +8,7 @@ export const shortlinkMeta = {
 	},
 };
 
-export const getShortlink = async (
+export const getShortlinkBySlug = async (
 	c: AppContext,
 	slug: string,
 ): Promise<ShortlinkDomain> => {
@@ -20,7 +19,7 @@ export const getShortlink = async (
 		.first<{ url: string; isPermanent: number }>();
 
 	if (!res) {
-		throw new NotFoundException("Link not found");
+		return null
 	}
 	return { url: res.url, isPermanent: Boolean(res.isPermanent) };
 };
