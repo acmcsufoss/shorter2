@@ -16,7 +16,7 @@
 	},
 	"d1_databases": [
 		{
-			"binding": "dev_d1_shortlinks",
+			"binding": "DB",
 			"database_name": "dev-d1-shortlinks",
 			"database_id": "f83b9d6f-359d-4a46-99f8-3c6a7e038826"
 		}
@@ -35,7 +35,7 @@
 			],
 			"d1_databases": [
 				{
-					"binding": "prod_d1_shortlinks",
+					"binding": "DB",
 					"database_name": "prod-d1-shortlinks",
 					"database_id": "ee0d28cd-a85e-45bc-822c-0a4e75d245bc"
 				}
