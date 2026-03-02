@@ -50,7 +50,6 @@ export class ShortlinkQR extends OpenAPIRoute {
 			);
 		}
 		const targetUrl = res.url;
-		const QRCode = require("qrcode-svg");
 		const svg = new QRCode(targetUrl).svg();
 
 
