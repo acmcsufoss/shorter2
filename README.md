@@ -15,15 +15,15 @@ Both services are deployed as Cloudflare Workers and communicate via a shared AP
 
 ```bash
 # Install dependencies
-bun install
+pnpm install
 
 # Development
-cd packages/service && bun run dev
-cd packages/bot && bun run dev
+cd packages/service && pnpm run dev
+cd packages/bot && pnpm run dev
 
 # Deploy
-cd packages/service && bun run deploy
-cd packages/bot && bun run deploy
+cd packages/service && pnpm run deploy
+cd packages/bot && pnpm run deploy
 ```
 
 ## Configuration
