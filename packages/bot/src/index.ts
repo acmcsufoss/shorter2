@@ -96,7 +96,7 @@ app.post("/", async (c) => {
 						);
 					}
 
-					const slug = subcommand.options?.find((opt) => opt.name === "alias")
+					const slug = subcommand.options?.find((opt) => opt.name === "slug")
 						?.value as string;
 
 					const isPermanent = subcommand.options?.find(
@@ -122,7 +122,7 @@ app.post("/", async (c) => {
 
 				// ==== Delete Subcommand ==================================================================
 				case "delete": {
-					const slug = subcommand.options?.find((opt) => opt.name === "alias")
+					const slug = subcommand.options?.find((opt) => opt.name === "slug")
 						?.value as string;
 
 					try {
@@ -140,7 +140,7 @@ app.post("/", async (c) => {
 
 				// ==== Update Subcommand ==================================================================
 				case "update": {
-					const slug = subcommand.options?.find((opt) => opt.name === "alias")
+					const slug = subcommand.options?.find((opt) => opt.name === "slug")
 						?.value as string;
 
 					const url = subcommand.options?.find(
