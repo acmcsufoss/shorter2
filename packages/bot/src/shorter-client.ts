@@ -4,6 +4,7 @@ import type {
 	ShortlinkModel,
 	ShortlinkUpdateRequestInput,
 } from "./types";
+import { formatServiceError, ServiceErrorResponse } from "./types";
 
 export class ShortlinkClient {
 	private authToken = "";
@@ -28,8 +29,9 @@ export class ShortlinkClient {
 		});
 
 		if (!response.ok) {
-			const errText = await response.text();
-			throw new Error(`HTTP ${response.status}: ${errText}`);
+			throw new Error(
+				`HTTP ${response.status}: ${await this.getServiceErrorMessage(response)}`,
+			);
 		}
 
 		return (await response.json()) as ShortlinkModel;
@@ -43,8 +45,9 @@ export class ShortlinkClient {
 		});
 
 		if (!response.ok) {
-			const errText = await response.text();
-			throw new Error(`HTTP ${response.status}: ${errText}`);
+			throw new Error(
+				`HTTP ${response.status}: ${await this.getServiceErrorMessage(response)}`,
+			);
 		}
 	}
 
@@ -54,15 +57,35 @@ export class ShortlinkClient {
 	): Promise<ShortlinkModel> {
 		const updateUrl = `${this.endpoint}/${slug}`;
 		const response = await fetch(updateUrl, {
-			method: "",
+			method: "PUT",
 			headers: this.setHeaders(),
 			body: JSON.stringify(updateParams),
 		});
 		if (!response.ok) {
-			const errText = await response.text();
-			throw new Error(`HTTP ${response.status}: ${errText}`);
+			throw new Error(
+				`HTTP ${response.status}: ${await this.getServiceErrorMessage(response)}`,
+			);
 		}
 
 		return (await response.json()) as ShortlinkModel;
+	}
+
+	private async getServiceErrorMessage(response: Response): Promise<string> {
+		const bodyText = await response.text();
+		if (!bodyText) {
+			return response.statusText || "Request failed";
+		}
+
+		try {
+			const parsed = JSON.parse(bodyText) as unknown;
+			const typedError = ServiceErrorResponse.safeParse(parsed);
+			if (typedError.success) {
+				return formatServiceError(typedError.data);
+			}
+		} catch {
+			// Fall back to raw text below
+		}
+
+		return bodyText;
 	}
 }
