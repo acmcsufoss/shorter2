@@ -68,7 +68,8 @@ app.post("/", async (c) => {
 			}
 
 			if (
-				interaction.data.name.toLowerCase() !== SHORTER_COMMAND.name.toLowerCase()
+				interaction.data.name.toLowerCase() !==
+				SHORTER_COMMAND.name.toLowerCase()
 			) {
 				return sendChannelMessage("Error: unknown command type", true);
 			}
@@ -171,8 +172,7 @@ app.post("/", async (c) => {
 						});
 
 						const parts = [];
-						if (url)
-							parts.push(`https://s.acmcsuf.com/${slug} -> ${resp.url}`);
+						if (url) parts.push(`https://s.acmcsuf.com/${slug} -> ${resp.url}`);
 						if (isPermanent !== undefined)
 							parts.push(
 								`now redirects with HTTP ${resp.isPermanent ? 301 : 302}`,
