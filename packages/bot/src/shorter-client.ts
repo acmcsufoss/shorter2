@@ -1,16 +1,16 @@
 import { env } from "cloudflare:workers";
 import type {
-	ShortlinkModel,
 	ShortlinkCreateRequestInput,
-	ShortlinkUpdateRequestInput
+	ShortlinkModel,
+	ShortlinkUpdateRequestInput,
 } from "./types";
 
 export class ShortlinkClient {
-	private authToken = ""
+	private authToken = "";
 	private endpoint = `${env.SHORTER_ENDPOINT}/_links`;
 
 	constructor(authToken: string) {
-		this.authToken = authToken
+		this.authToken = authToken;
 	}
 
 	setHeaders() {
@@ -18,11 +18,9 @@ export class ShortlinkClient {
 			Authorization: `Bearer ${this.authToken}`,
 			"Content-Type": "application/json",
 		};
-	};
+	}
 
-	async post(
-		shortlink: ShortlinkCreateRequestInput,
-	): Promise<ShortlinkModel> {
+	async post(shortlink: ShortlinkCreateRequestInput): Promise<ShortlinkModel> {
 		const response = await fetch(this.endpoint, {
 			method: "POST",
 			headers: this.setHeaders(),
@@ -37,9 +35,7 @@ export class ShortlinkClient {
 		return (await response.json()) as ShortlinkModel;
 	}
 
-	async delete(
-		slug: string,
-	): Promise<void> {
+	async delete(slug: string): Promise<void> {
 		const deleteUrl = `${this.endpoint}/${slug}`;
 		const response = await fetch(deleteUrl, {
 			method: "DELETE",
@@ -70,4 +66,3 @@ export class ShortlinkClient {
 		return (await response.json()) as ShortlinkModel;
 	}
 }
-
