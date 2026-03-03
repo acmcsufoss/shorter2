@@ -1,8 +1,8 @@
 import { env } from "cloudflare:workers";
 import type {
 	ShortlinkModel,
-	ShortlinkCreateRequest,
-	ShortlinkUpdateRequest
+	ShortlinkCreateRequestInput,
+	ShortlinkUpdateRequestInput
 } from "./types";
 
 export class ShortlinkClient {
@@ -21,7 +21,7 @@ export class ShortlinkClient {
 	};
 
 	async post(
-		shortlink: ShortlinkCreateRequest,
+		shortlink: ShortlinkCreateRequestInput,
 	): Promise<ShortlinkModel> {
 		const response = await fetch(this.endpoint, {
 			method: "POST",
@@ -54,7 +54,7 @@ export class ShortlinkClient {
 
 	async put(
 		slug: string,
-		updateParams: ShortlinkUpdateRequest,
+		updateParams: ShortlinkUpdateRequestInput,
 	): Promise<ShortlinkModel> {
 		const updateUrl = `${this.endpoint}/${slug}`;
 		const response = await fetch(updateUrl, {
