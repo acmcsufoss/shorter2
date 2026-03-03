@@ -20,8 +20,8 @@ export const SHORTER_COMMAND = {
 					type: 3, // string
 				},
 				{
-					name: "alias",
-					description: "[OPTIONAL] custom slug to use in shortlink URL",
+					name: "slug",
+					description: "Custom slug to use in shortlink URL",
 					required: false,
 					type: 3, // string
 				},
@@ -40,7 +40,7 @@ export const SHORTER_COMMAND = {
 			type: 1, // SUB_COMMAND type
 			options: [
 				{
-					name: "alias",
+					name: "slug",
 					description: "Shortlink to delete",
 					required: true,
 					type: 3, // string
