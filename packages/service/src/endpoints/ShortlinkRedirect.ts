@@ -1,7 +1,7 @@
 import { OpenAPIRoute } from "chanfana";
 import { z } from "zod";
 import { getShortlinkBySlug } from "../repository";
-import type { AppContext } from "../types";
+import { ServiceErrorResponse, type AppContext } from "../types";
 
 export class ShortlinkRedirect extends OpenAPIRoute {
 	schema = {
@@ -23,12 +23,7 @@ export class ShortlinkRedirect extends OpenAPIRoute {
 				description: "Link not found",
 				content: {
 					"application/json": {
-						schema: z.object({
-							series: z.object({
-								success: z.boolean(),
-								error: z.string(),
-							}),
-						}),
+						schema: ServiceErrorResponse,
 					},
 				},
 			},
@@ -45,7 +40,12 @@ export class ShortlinkRedirect extends OpenAPIRoute {
 			return c.json(
 				{
 					success: false,
-					error: "Slug not found",
+					errors: [
+						{
+							code: 7002,
+							message: "Slug not found",
+						},
+					],
 				},
 				404,
 			);

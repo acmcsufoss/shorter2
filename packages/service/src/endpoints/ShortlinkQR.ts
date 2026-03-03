@@ -2,7 +2,7 @@ import { OpenAPIRoute } from "chanfana";
 import QRCode from "qrcode-svg";
 import { z } from "zod";
 import { getShortlinkBySlug } from "../repository";
-import type { AppContext } from "../types";
+import { ServiceErrorResponse, type AppContext } from "../types";
 
 export class ShortlinkQR extends OpenAPIRoute {
 	schema = {
@@ -21,12 +21,7 @@ export class ShortlinkQR extends OpenAPIRoute {
 				description: "Slug not found",
 				content: {
 					"application/json": {
-						schema: z.object({
-							series: z.object({
-								success: z.boolean(),
-								error: z.string(),
-							}),
-						}),
+						schema: ServiceErrorResponse,
 					},
 				},
 			},
@@ -44,7 +39,12 @@ export class ShortlinkQR extends OpenAPIRoute {
 			return c.json(
 				{
 					success: false,
-					error: "Slug not found",
+					errors: [
+						{
+							code: 7002,
+							message: "Slug not found",
+						},
+					],
 				},
 				404,
 			);
