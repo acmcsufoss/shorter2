@@ -34,7 +34,8 @@ export class ShortlinkClient {
 			);
 		}
 
-		return (await response.json()) as ShortlinkModel;
+		const payload = (await response.json()) as unknown;
+		return this.unwrapResult<ShortlinkModel>(payload);
 	}
 
 	async delete(slug: string): Promise<void> {
@@ -67,7 +68,21 @@ export class ShortlinkClient {
 			);
 		}
 
-		return (await response.json()) as ShortlinkModel;
+		const payload = (await response.json()) as unknown;
+		return this.unwrapResult<ShortlinkModel>(payload);
+	}
+
+	// Needed since chanfana responses look like { "success": boolean, "result": ShortlinkModel }
+	private unwrapResult<T>(payload: unknown): T {
+		if (
+			payload !== null &&
+			typeof payload === "object" &&
+			"result" in payload
+		) {
+			return (payload as { result: T }).result;
+		}
+
+		return payload as T;
 	}
 
 	private async getServiceErrorMessage(response: Response): Promise<string> {
