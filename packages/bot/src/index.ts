@@ -96,11 +96,10 @@ app.post("/", async (c) => {
 						);
 					}
 
-					const slug = subcommand.options?.find(
-						(opt) => opt.name === "slug",
-					)?.value as string;
+					const slug = subcommand.options?.find((opt) => opt.name === "slug")
+						?.value as string;
 
-					const isPermanent= subcommand.options?.find(
+					const isPermanent = subcommand.options?.find(
 						(opt) => opt.name === "is_permanent",
 					)?.value as boolean | undefined;
 
@@ -141,9 +140,8 @@ app.post("/", async (c) => {
 
 				// ==== Update Subcommand ==================================================================
 				case "update": {
-					const slug = subcommand.options?.find(
-						(opt) => opt.name === "slug",
-					)?.value as string;
+					const slug = subcommand.options?.find((opt) => opt.name === "slug")
+						?.value as string;
 
 					const url = subcommand.options?.find(
 						(opt) => opt.name === "destination",
@@ -173,7 +171,8 @@ app.post("/", async (c) => {
 						});
 
 						const parts = [];
-						if (url) parts.push(`${c.env.SHORTER_ENDPOINT}/${slug} -> ${resp.url}`);
+						if (url)
+							parts.push(`${c.env.SHORTER_ENDPOINT}/${slug} -> ${resp.url}`);
 						if (isPermanent !== undefined)
 							parts.push(
 								`now redirects with HTTP ${resp.isPermanent ? 301 : 302}`,
