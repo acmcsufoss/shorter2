@@ -53,7 +53,7 @@ export const SHORTER_COMMAND = {
 			type: 1, // SUB_COMMAND type
 			options: [
 				{
-					name: "alias",
+					name: "slug",
 					description: "An existing shortlink slug",
 					required: true,
 					type: 3, // string
