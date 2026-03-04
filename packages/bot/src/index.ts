@@ -100,11 +100,9 @@ app.post("/", async (c) => {
 						(opt) => opt.name === "slug",
 					)?.value as string;
 
-					const isPermanentValue = subcommand.options?.find(
+					const isPermanent= subcommand.options?.find(
 						(opt) => opt.name === "is_permanent",
-					)?.value;
-					const isPermanent =
-						typeof isPermanentValue === "boolean" ? isPermanentValue : false;
+					)?.value as boolean | undefined;
 
 					try {
 						const result = await client.post({
@@ -157,13 +155,9 @@ app.post("/", async (c) => {
 						);
 					}
 
-					const isPermanentValue = subcommand.options?.find(
+					const isPermanent = subcommand.options?.find(
 						(opt) => opt.name === "is_permanent",
-					)?.value;
-					const isPermanent =
-						typeof isPermanentValue === "boolean"
-							? isPermanentValue
-							: undefined;
+					)?.value as boolean | undefined;
 
 					if (url === undefined && isPermanent === undefined) {
 						return sendChannelMessage(
