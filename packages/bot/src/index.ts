@@ -194,7 +194,6 @@ app.post("/", async (c) => {
 		}
 
 		console.error("Unknown command type");
-		return c.json({ error: "Unknown command type" }, 400);
 	} catch (error) {
 		console.error("Unhandled interaction error", error);
 		return sendChannelMessage("Error: internal server error", true);
