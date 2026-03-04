@@ -113,7 +113,7 @@ app.post("/", async (c) => {
 							isPermanent: isPermanent,
 						});
 						return sendChannelMessage(
-							`Shortlink created: https://s.acmcsuf.com/${result.slug} -> ${url}`,
+							`Shortlink created: ${c.env.SHORTER_ENDPOINT}/${result.slug} -> ${url}`,
 						);
 					} catch (error: unknown) {
 						return sendChannelMessage(
@@ -131,7 +131,7 @@ app.post("/", async (c) => {
 					try {
 						await client.delete(slug);
 						return sendChannelMessage(
-							`Shortlink https://s.acmcsuf.com/${slug} deleted successfully`,
+							`Shortlink ${c.env.SHORTER_ENDPOINT}/${slug} deleted successfully`,
 						);
 					} catch (error: unknown) {
 						return sendChannelMessage(
@@ -179,7 +179,7 @@ app.post("/", async (c) => {
 						});
 
 						const parts = [];
-						if (url) parts.push(`https://s.acmcsuf.com/${slug} -> ${resp.url}`);
+						if (url) parts.push(`${c.env.SHORTER_ENDPOINT}/${slug} -> ${resp.url}`);
 						if (isPermanent !== undefined)
 							parts.push(
 								`now redirects with HTTP ${resp.isPermanent ? 301 : 302}`,
