@@ -113,7 +113,7 @@ app.post("/", async (c) => {
 							isPermanent: isPermanent,
 						});
 						return sendChannelMessage(
-							`Shortlink created: ${c.env.SHORTER_ENDPOINT}/${result.slug} -> ${url}`,
+							`Shortlink created: ${c.env.SHORTER_ENDPOINT}/${result.slug} -> ${result.url}`,
 						);
 					} catch (error: unknown) {
 						return sendChannelMessage(
