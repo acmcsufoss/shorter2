@@ -16,7 +16,7 @@ export const SHORTER_COMMAND = {
 				{
 					name: "slug",
 					description: "Custom slug to use in shortlink URL",
-					required: false,
+					required: true,
 					type: 3, // string
 				},
 				{
