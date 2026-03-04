@@ -14,15 +14,15 @@ export const SHORTER_COMMAND = {
 			type: 1, // SUB_COMMAND type
 			options: [
 				{
-					name: "destination",
-					description: "URL to redirect to",
-					required: true,
-					type: 3, // string
-				},
-				{
 					name: "slug",
 					description: "Custom slug to use in shortlink URL",
 					required: false,
+					type: 3, // string
+				},
+				{
+					name: "destination",
+					description: "URL to redirect to",
+					required: true,
 					type: 3, // string
 				},
 				{
