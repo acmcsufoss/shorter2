@@ -96,12 +96,15 @@ app.post("/", async (c) => {
 						);
 					}
 
-					const slug = subcommand.options?.find((opt) => opt.name === "slug")
-						?.value as string;
+					const slug = subcommand.options?.find(
+						(opt) => opt.name === "slug",
+					)?.value as string;
 
-					const isPermanent = subcommand.options?.find(
+					const isPermanentValue = subcommand.options?.find(
 						(opt) => opt.name === "is_permanent",
-					)?.value as boolean | undefined;
+					)?.value;
+					const isPermanent =
+						typeof isPermanentValue === "boolean" ? isPermanentValue : false;
 
 					try {
 						const result = await client.post({
@@ -140,13 +143,13 @@ app.post("/", async (c) => {
 
 				// ==== Update Subcommand ==================================================================
 				case "update": {
-					const slug = subcommand.options?.find((opt) => opt.name === "slug")
-						?.value as string;
+					const slug = subcommand.options?.find(
+						(opt) => opt.name === "slug",
+					)?.value as string;
 
 					const url = subcommand.options?.find(
 						(opt) => opt.name === "destination",
 					)?.value as string | undefined;
-
 					if (url && !isValidUrl(url)) {
 						return sendChannelMessage(
 							"Error: invalid URL. Does the destination URL start with `http://` or `https://`?",
@@ -154,11 +157,15 @@ app.post("/", async (c) => {
 						);
 					}
 
-					const isPermanent = subcommand.options?.find(
+					const isPermanentValue = subcommand.options?.find(
 						(opt) => opt.name === "is_permanent",
-					)?.value as boolean | undefined;
+					)?.value;
+					const isPermanent =
+						typeof isPermanentValue === "boolean"
+							? isPermanentValue
+							: undefined;
 
-					if (!url && isPermanent === undefined) {
+					if (url === undefined && isPermanent === undefined) {
 						return sendChannelMessage(
 							"Error: no modifications to shortlink provided",
 							true,
