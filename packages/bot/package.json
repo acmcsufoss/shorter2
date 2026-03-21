@@ -6,6 +6,7 @@
 		"deploy": "wrangler deploy -e production",
 		"dev": "wrangler dev --port 8787",
 		"start": "bun run dev",
+		"test": "vitest run",
 		"cf-typegen": "wrangler types",
 		"format": "biome format --write ./src",
 		"lint": "biome lint --write ./src",

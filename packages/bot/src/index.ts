@@ -96,7 +96,8 @@ app.post("/", async (c) => {
 
 					const isPermanent = subcommand.options?.find(
 						(opt) => opt.name === "is_permanent",
-					)?.value as string | undefined;
+					)?.value as boolean | undefined;
+					console.log(isPermanent, typeof isPermanent)
 
 					const input = ShortlinkCreateRequest.safeParse({
 						slug: slug,
@@ -149,7 +150,7 @@ app.post("/", async (c) => {
 
 					const isPermanent = subcommand.options?.find(
 						(opt) => opt.name === "is_permanent",
-					)?.value as string | undefined;
+					)?.value as boolean | undefined;
 
 					if (url === undefined && isPermanent === undefined) {
 						return sendChannelMessage(
@@ -158,11 +159,12 @@ app.post("/", async (c) => {
 						);
 					}
 
-					const input = ShortlinkUpdateRequest.safeParse({ url: url, isPermanent: isPermanent})
+					const input = ShortlinkUpdateRequest.safeParse({
+						url: url,
+						isPermanent: isPermanent,
+					});
 					if (!input.success) {
-						return sendChannelMessage(
-							z.prettifyError(input.error)
-						)
+						return sendChannelMessage(z.prettifyError(input.error), true);
 					}
 
 					try {
@@ -176,7 +178,7 @@ app.post("/", async (c) => {
 								`now redirects with HTTP ${resp.isPermanent ? 301 : 302}`,
 							);
 						return sendChannelMessage(
-							`Shortlink created: ${parts.join(" and ")}`,
+							`Shortlink updated: ${parts.join(" and ")}`,
 						);
 					} catch (error: unknown) {
 						return sendChannelMessage(
@@ -190,21 +192,12 @@ app.post("/", async (c) => {
 			}
 		}
 
-		console.error("Unknown command type");
+		return sendChannelMessage("Error: unknown interaction type", true);
 	} catch (error) {
 		console.error("Unhandled interaction error", error);
 		return sendChannelMessage("Error: internal server error", true);
 	}
 });
-
-function isValidUrl(url: string): boolean {
-	try {
-		const parsed = new URL(url);
-		return parsed.protocol === "http:" || parsed.protocol === "https:";
-	} catch {
-		return false;
-	}
-}
 
 app.all("*", (c) => c.text("Not Found.", 404));
 
