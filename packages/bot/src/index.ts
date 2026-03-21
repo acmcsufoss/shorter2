@@ -8,7 +8,7 @@ import { Hono } from "hono";
 import { z } from "zod";
 import { SHORTER_COMMAND } from "../constants";
 import { ShortlinkClient } from "./shorter-client";
-import { ShortlinkCreateRequest } from "./types";
+import { ShortlinkCreateRequest, ShortlinkUpdateRequest } from "./types";
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -146,16 +146,10 @@ app.post("/", async (c) => {
 					const url = subcommand.options?.find(
 						(opt) => opt.name === "destination",
 					)?.value as string | undefined;
-					if (url && !isValidUrl(url)) {
-						return sendChannelMessage(
-							"Error: invalid URL. Does the destination URL start with `http://` or `https://`?",
-							true,
-						);
-					}
 
 					const isPermanent = subcommand.options?.find(
 						(opt) => opt.name === "is_permanent",
-					)?.value as boolean | undefined;
+					)?.value as string | undefined;
 
 					if (url === undefined && isPermanent === undefined) {
 						return sendChannelMessage(
@@ -164,11 +158,15 @@ app.post("/", async (c) => {
 						);
 					}
 
+					const input = ShortlinkUpdateRequest.safeParse({ url: url, isPermanent: isPermanent})
+					if (!input.success) {
+						return sendChannelMessage(
+							z.prettifyError(input.error)
+						)
+					}
+
 					try {
-						const resp = await client.put(slug, {
-							url: url,
-							isPermanent: isPermanent,
-						});
+						const resp = await client.put(slug, input.data);
 
 						const parts = [];
 						if (url)
