@@ -97,7 +97,6 @@ app.post("/", async (c) => {
 					const isPermanent = subcommand.options?.find(
 						(opt) => opt.name === "is_permanent",
 					)?.value as boolean | undefined;
-					console.log(isPermanent, typeof isPermanent)
 
 					const input = ShortlinkCreateRequest.safeParse({
 						slug: slug,
