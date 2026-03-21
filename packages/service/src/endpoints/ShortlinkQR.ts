@@ -2,7 +2,7 @@ import { OpenAPIRoute } from "chanfana";
 import QRCode from "qrcode-svg";
 import { z } from "zod";
 import { getShortlinkBySlug } from "../repository";
-import { ServiceErrorResponse, type AppContext } from "../types";
+import { type AppContext, ServiceErrorResponse } from "../types";
 
 export class ShortlinkQR extends OpenAPIRoute {
 	schema = {
