@@ -116,10 +116,16 @@ app.post("/", async (c) => {
 				const slug = subcommand.options?.find((opt) => opt.name === "alias")
 					?.value as string;
 
-				await deleteLink(slug, c.env.SHORTER_API_KEY);
-				return sendChannelMessage(
-					`Shortlink https://s.acmcsuf.com/${slug} deleted successfully`,
-				);
+				try {
+					await deleteLink(slug, c.env.SHORTER_API_KEY);
+					return sendChannelMessage(
+						`Shortlink https://s.acmcsuf.com/${slug} deleted successfully`,
+					);
+				} catch (error: unknown) {
+					return sendChannelMessage(
+						`Failed to delete shortlink: ${error instanceof Error ? error.message : "Unknown error"}`,
+					);
+				}
 			}
 
 			// ==== Update Subcommand ====================================================================
@@ -161,7 +167,7 @@ app.post("/", async (c) => {
 							`now redirects with HTTP ${resp.isPermanent ? 301 : 302}`,
 						);
 					return sendChannelMessage(
-						`Shortlink created: ${parts.join(" and ")}`,
+						`Shortlink updated: ${parts.join(" and ")}`,
 					);
 				} catch (error: unknown) {
 					return sendChannelMessage(

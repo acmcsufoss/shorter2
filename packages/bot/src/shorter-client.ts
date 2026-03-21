@@ -1,12 +1,17 @@
 import { env } from "cloudflare:workers";
-import type {
-	CreateLinkDto,
-	CreateLinkInputDto,
-	UpdateLinkDto,
-	UpdateLinkInputDto,
-} from "@shorter/service";
+import { ShortlinkModel, ShortlinkUpdateRequest } from "@shorter2/types";
+import type { z } from "zod";
 
-const endpoint = `${env.SHORTER_ENDPOINT}/links`;
+type ShortlinkDto = z.infer<typeof ShortlinkModel>;
+type CreateLinkInputDto = {
+	slug?: string;
+	url: string;
+	isPermanent?: boolean;
+};
+type UpdateLinkInputDto = z.input<typeof ShortlinkUpdateRequest>;
+type UpdateLinkDto = Pick<ShortlinkDto, "url" | "isPermanent">;
+
+const endpoint = `${env.SHORTER_ENDPOINT}/_links`;
 
 const setHeaders = (authToken: string) => {
 	return {
@@ -18,7 +23,7 @@ const setHeaders = (authToken: string) => {
 export async function addLink(
 	link: CreateLinkInputDto,
 	authToken: string,
-): Promise<CreateLinkDto> {
+): Promise<ShortlinkDto> {
 	const response = await fetch(endpoint, {
 		method: "POST",
 		headers: setHeaders(authToken),
@@ -30,7 +35,7 @@ export async function addLink(
 		throw new Error(`HTTP ${response.status}: ${errText}`);
 	}
 
-	const data = (await response.json()) as { success: boolean; link: CreateLinkDto };
+	const data = (await response.json()) as { success: boolean; link: ShortlinkDto };
 	return data.link;
 }
 
