@@ -1,4 +1,3 @@
-import { z } from "zod";
 import type { APIApplicationCommandInteractionDataSubcommandOption } from "discord-api-types/v10";
 import {
 	InteractionResponseType,
@@ -6,6 +5,7 @@ import {
 	verifyKey,
 } from "discord-interactions";
 import { Hono } from "hono";
+import { z } from "zod";
 import { SHORTER_COMMAND } from "../constants";
 import { ShortlinkClient } from "./shorter-client";
 import { ShortlinkCreateRequest } from "./types";
@@ -94,34 +94,21 @@ app.post("/", async (c) => {
 						(opt) => opt.name === "destination",
 					)?.value as string;
 
-					if (!isValidUrl(url)) {
-						return sendChannelMessage(
-							"Error: invalid URL. Does the destination URL start with `http://` or `https://`?",
-							true,
-						);
-					}
-
 					const isPermanent = subcommand.options?.find(
 						(opt) => opt.name === "is_permanent",
-					)?.value as boolean | undefined;
+					)?.value as string | undefined;
 
-					try {
-						ShortlinkCreateRequest.parse({ slug: slug, url: url, isPermanent: isPermanent })
-					} catch (error) {
-						if (error instanceof z.ZodError) {
-							return sendChannelMessage(
-								`Error: ${error}`,
-								true,
-							);
-						}
+					const input = ShortlinkCreateRequest.safeParse({
+						slug: slug,
+						url: url,
+						isPermanent: isPermanent,
+					});
+					if (!input.success) {
+						return sendChannelMessage(z.prettifyError(input.error), true);
 					}
 
 					try {
-						const result = await client.post({
-							slug: slug,
-							url: url,
-							isPermanent: isPermanent,
-						});
+						const result = await client.post(input.data);
 						return sendChannelMessage(
 							`Shortlink created: ${c.env.SHORTER_ENDPOINT}/${result.slug} -> ${result.url}`,
 						);
