@@ -17,7 +17,7 @@ export const getShortlinkBySlug = async (
 	slug: string,
 ): Promise<ShortlinkDomain> => {
 	const res = await c.env.DB.prepare(
-		"SELECT s.url FROM shortlinks s WHERE s.slug = ?",
+		"SELECT s.url, s.isPermanent FROM shortlinks s WHERE s.slug = ?",
 	)
 		.bind(slug)
 		.first<{ url: string; isPermanent: number }>();

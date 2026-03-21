@@ -9,6 +9,7 @@
     "deploy": "wrangler deploy -e production",
     "dev": "wrangler dev --port 8788",
     "start": "wrangler dev",
+    "test": "vitest run",
     "cf-typegen": "wrangler types",
     "format": "biome format --write ./src",
     "lint": "biome lint --write ./src",
@@ -29,6 +30,7 @@
     "@types/node": "22.13.0",
     "@types/qrcode-svg": "^1.1.5",
     "@types/service-worker-mock": "^2.0.4",
+    "vitest": "~3.2.0",
     "wrangler": "^4.69.0"
   }
 }
