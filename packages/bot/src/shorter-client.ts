@@ -1,75 +1,106 @@
 import { env } from "cloudflare:workers";
 import type {
-	CreateLinkDto,
-	CreateLinkInputDto,
-	UpdateLinkDto,
-	UpdateLinkInputDto,
-} from "@shorter/service";
+	ShortlinkCreateRequestInput,
+	ShortlinkModel,
+	ShortlinkUpdateRequestInput,
+} from "./types";
+import { formatServiceError, ServiceErrorResponse } from "./types";
 
-const endpoint = `${env.SHORTER_ENDPOINT}/links`;
+export class ShortlinkClient {
+	private authToken = "";
+	private endpoint = `${env.SHORTER_ENDPOINT}/_links`;
 
-const setHeaders = (authToken: string) => {
-	return {
-		Authorization: `Bearer ${authToken}`,
-		"Content-Type": "application/json",
-	};
-};
-
-export async function addLink(
-	link: CreateLinkInputDto,
-	authToken: string,
-): Promise<CreateLinkDto> {
-	const response = await fetch(endpoint, {
-		method: "POST",
-		headers: setHeaders(authToken),
-		body: JSON.stringify(link),
-	});
-
-	if (!response.ok) {
-		const errText = await response.text();
-		throw new Error(`HTTP ${response.status}: ${errText}`);
+	constructor(authToken: string) {
+		this.authToken = authToken;
 	}
 
-	const data = (await response.json()) as { success: boolean; link: CreateLinkDto };
-	return data.link;
-}
-
-export async function deleteLink(
-	slug: string,
-	authToken: string,
-): Promise<void> {
-	const deleteUrl = `${endpoint}/${slug}`;
-	const response = await fetch(deleteUrl, {
-		method: "DELETE",
-		headers: setHeaders(authToken),
-	});
-
-	if (!response.ok) {
-		const errText = await response.text();
-		throw new Error(`HTTP ${response.status}: ${errText}`);
-	}
-}
-
-export async function updateLink(
-	slug: string,
-	updateParams: UpdateLinkInputDto,
-	authToken: string,
-): Promise<UpdateLinkDto> {
-	const updateUrl = `${endpoint}/${slug}`;
-	const response = await fetch(updateUrl, {
-		method: "PUT",
-		headers: setHeaders(authToken),
-		body: JSON.stringify(updateParams),
-	});
-
-	if (!response.ok) {
-		const errText = await response.text();
-		throw new Error(`HTTP ${response.status}: ${errText}`);
+	setHeaders() {
+		return {
+			Authorization: `Bearer ${this.authToken}`,
+			"Content-Type": "application/json",
+		};
 	}
 
-	const data = (await response.json()) as {
-		success: boolean;
-		link: UpdateLinkDto;
-	};
-	return data.link;
+	async post(shortlink: ShortlinkCreateRequestInput): Promise<ShortlinkModel> {
+		const response = await fetch(this.endpoint, {
+			method: "POST",
+			headers: this.setHeaders(),
+			body: JSON.stringify(shortlink),
+		});
+
+		if (!response.ok) {
+			throw new Error(
+				`HTTP ${response.status}: ${await this.getServiceErrorMessage(response)}`,
+			);
+		}
+
+		const payload = (await response.json()) as unknown;
+		return this.unwrapResult<ShortlinkModel>(payload);
+	}
+
+	async delete(slug: string): Promise<void> {
+		const deleteUrl = `${this.endpoint}/${slug}`;
+		const response = await fetch(deleteUrl, {
+			method: "DELETE",
+			headers: this.setHeaders(),
+		});
+
+		if (!response.ok) {
+			throw new Error(
+				`HTTP ${response.status}: ${await this.getServiceErrorMessage(response)}`,
+			);
+		}
+	}
+
+	async put(
+		slug: string,
+		updateParams: ShortlinkUpdateRequestInput,
+	): Promise<ShortlinkModel> {
+		const updateUrl = `${this.endpoint}/${slug}`;
+		const response = await fetch(updateUrl, {
+			method: "PUT",
+			headers: this.setHeaders(),
+			body: JSON.stringify(updateParams),
+		});
+		if (!response.ok) {
+			throw new Error(
+				`HTTP ${response.status}: ${await this.getServiceErrorMessage(response)}`,
+			);
+		}
+
+		const payload = (await response.json()) as unknown;
+		return this.unwrapResult<ShortlinkModel>(payload);
+	}
+
+	// Needed since chanfana responses look like { "success": boolean, "result": ShortlinkModel }
+	private unwrapResult<T>(payload: unknown): T {
+		if (
+			payload !== null &&
+			typeof payload === "object" &&
+			"result" in payload
+		) {
+			return (payload as { result: T }).result;
+		}
+
+		return payload as T;
+	}
+
+	private async getServiceErrorMessage(response: Response): Promise<string> {
+		const bodyText = await response.text();
+		if (!bodyText) {
+			return response.statusText || "Request failed";
+		}
+
+		try {
+			const parsed = JSON.parse(bodyText) as unknown;
+			const typedError = ServiceErrorResponse.safeParse(parsed);
+			if (typedError.success) {
+				return formatServiceError(typedError.data);
+			}
+		} catch {
+			// Fall back to raw text below
+		}
+
+		return bodyText;
+	}
 }

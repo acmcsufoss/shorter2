@@ -14,15 +14,15 @@ export const SHORTER_COMMAND = {
 			type: 1, // SUB_COMMAND type
 			options: [
 				{
-					name: "destination",
-					description: "URL to redirect to",
+					name: "slug",
+					description: "Custom slug to use in shortlink URL",
 					required: true,
 					type: 3, // string
 				},
 				{
-					name: "alias",
-					description: "[OPTIONAL] custom slug to use in shortlink URL",
-					required: false,
+					name: "destination",
+					description: "URL to redirect to",
+					required: true,
 					type: 3, // string
 				},
 				{
@@ -40,7 +40,7 @@ export const SHORTER_COMMAND = {
 			type: 1, // SUB_COMMAND type
 			options: [
 				{
-					name: "alias",
+					name: "slug",
 					description: "Shortlink to delete",
 					required: true,
 					type: 3, // string
@@ -53,7 +53,7 @@ export const SHORTER_COMMAND = {
 			type: 1, // SUB_COMMAND type
 			options: [
 				{
-					name: "alias",
+					name: "slug",
 					description: "An existing shortlink slug",
 					required: true,
 					type: 3, // string
