@@ -1,3 +1,4 @@
+import { z } from "zod";
 import type { APIApplicationCommandInteractionDataSubcommandOption } from "discord-api-types/v10";
 import {
 	InteractionResponseType,
@@ -7,6 +8,7 @@ import {
 import { Hono } from "hono";
 import { SHORTER_COMMAND } from "../constants";
 import { ShortlinkClient } from "./shorter-client";
+import { ShortlinkCreateRequest } from "./types";
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -85,6 +87,9 @@ app.post("/", async (c) => {
 			switch (subcommand.name.toLowerCase()) {
 				// ==== Add Subcommand =====================================================================
 				case "add": {
+					const slug = subcommand.options?.find((opt) => opt.name === "slug")
+						?.value as string;
+
 					const url = subcommand.options?.find(
 						(opt) => opt.name === "destination",
 					)?.value as string;
@@ -96,12 +101,20 @@ app.post("/", async (c) => {
 						);
 					}
 
-					const slug = subcommand.options?.find((opt) => opt.name === "slug")
-						?.value as string;
-
 					const isPermanent = subcommand.options?.find(
 						(opt) => opt.name === "is_permanent",
 					)?.value as boolean | undefined;
+
+					try {
+						ShortlinkCreateRequest.parse({ slug: slug, url: url, isPermanent: isPermanent })
+					} catch (error) {
+						if (error instanceof z.ZodError) {
+							return sendChannelMessage(
+								`Error: ${error}`,
+								true,
+							);
+						}
+					}
 
 					try {
 						const result = await client.post({
