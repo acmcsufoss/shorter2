@@ -9,6 +9,7 @@
     "deploy": "wrangler deploy -e production",
     "dev": "wrangler dev --port 8788",
     "start": "wrangler dev",
+    "migrate": "bun scripts/migrate.ts",
     "test": "vitest run",
     "cf-typegen": "wrangler types",
     "format": "biome format --write ./src",
