@@ -15,15 +15,15 @@ REST API for creating and managing shortlinks. Built with Hono, Cloudflare Worke
 ### Public Endpoints
 
 - `GET /:slug` - Redirect to destination URL
-- `GET /list` - List all shortlinks (cached)
-- `GET /` - OpenAPI docs
+- `GET /` - List all shortlinks
+- `GET /docs` - OpenAPI docs
 
 ### Authenticated Endpoints
 
 Require `Authorization: Bearer <SHORTER_API_KEY>` header:
 
-- `POST /links` - Create shortlink
-- `DELETE /links/:slug` - Delete shortlink
+- `POST /_links` - Create shortlink
+- `DELETE /_links/:slug` - Delete shortlink
 
 ## Development
 
