@@ -5,7 +5,6 @@ Links stored in Cloudflare D1 (sqlite).
 Routes:
 ```
 POST /_links             # Create new shortlink (auto-generate slug or custom) [protected]
-PUT /_links/{slug}       # Update existing shortlink mapping [protected]
 DELETE /_links/{slug}    # Delete a shortlink [protected]
 GET /                    # List all shortlinks (for easy display on acmcsuf.com)
 GET /{slug}              # Redirect to destination URL

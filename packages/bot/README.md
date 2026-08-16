@@ -17,10 +17,6 @@ Discord bot for managing shortlinks via slash commands. Built with Hono, Cloudfl
 - `/delete <alias>` - Delete an existing shortlink
   - `alias` - Shortlink slug to delete
 
-- `/update <alias> [destination]` - Update an existing shortlink
-  - `alias` - Existing shortlink slug
-  - `destination` - Optional new URL
-
 ## Development
 
 ```bash

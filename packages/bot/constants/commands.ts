@@ -40,24 +40,5 @@ export const SHORTER_COMMAND = {
 				},
 			],
 		},
-		{
-			name: "update",
-			description: "Change an existing shortlink",
-			type: 1, // SUB_COMMAND type
-			options: [
-				{
-					name: "slug",
-					description: "An existing shortlink slug",
-					required: true,
-					type: 3, // string
-				},
-				{
-					name: "destination",
-					description: "[OPTIONAL] new URL to redirect to",
-					required: false,
-					type: 3, // string
-				},
-			],
-		},
 	],
 } as const;

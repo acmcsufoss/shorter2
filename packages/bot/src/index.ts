@@ -8,7 +8,7 @@ import { Hono } from "hono";
 import { z } from "zod";
 import { SHORTER_COMMAND } from "../constants";
 import { ShortlinkClient } from "./shorter-client";
-import { ShortlinkCreateRequest, ShortlinkUpdateRequest } from "./types";
+import { ShortlinkCreateRequest } from "./types";
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -133,45 +133,6 @@ app.post("/", async (c) => {
 					}
 				}
 
-				// ==== Update Subcommand ==================================================================
-				case "update": {
-					const slug = subcommand.options?.find((opt) => opt.name === "slug")
-						?.value as string;
-
-					const url = subcommand.options?.find(
-						(opt) => opt.name === "destination",
-					)?.value as string | undefined;
-
-					if (url === undefined) {
-						return sendChannelMessage(
-							"Error: no modifications to shortlink provided",
-							true,
-						);
-					}
-
-					const input = ShortlinkUpdateRequest.safeParse({
-						url: url,
-					});
-					if (!input.success) {
-						return sendChannelMessage(z.prettifyError(input.error), true);
-					}
-
-					try {
-						const resp = await client.put(slug, input.data);
-
-						const parts = [];
-						if (url)
-							parts.push(`${c.env.SHORTER_ENDPOINT}/${slug} -> ${resp.url}`);
-						return sendChannelMessage(
-							`Shortlink updated: ${parts.join(" and ")}`,
-						);
-					} catch (error: unknown) {
-						return sendChannelMessage(
-							`Failed to update shortlink: ${error instanceof Error ? error.message : "Unknown error"}`,
-							true,
-						);
-					}
-				}
 				default:
 					return sendChannelMessage("Error: unknown subcommand", true);
 			}

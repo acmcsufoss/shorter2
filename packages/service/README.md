@@ -4,7 +4,7 @@ REST API for creating and managing shortlinks. Built with Hono, Cloudflare Worke
 
 ## Features
 
-- Create, read, update, and delete shortlinks
+- Create, read, and delete shortlinks
 - HTTP 302 redirects for all shortlinks
 - Bearer token authentication for write operations
 - OpenAPI documentation at root endpoint
@@ -23,7 +23,6 @@ REST API for creating and managing shortlinks. Built with Hono, Cloudflare Worke
 Require `Authorization: Bearer <SHORTER_API_KEY>` header:
 
 - `POST /links` - Create shortlink
-- `PUT /links/:slug` - Update shortlink
 - `DELETE /links/:slug` - Delete shortlink
 
 ## Development
