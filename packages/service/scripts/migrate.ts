@@ -384,7 +384,6 @@ async function createShortlink(
 		body: JSON.stringify({
 			slug,
 			url,
-			isPermanent: false,
 		} satisfies ShortlinkCreateRequest),
 	});
 

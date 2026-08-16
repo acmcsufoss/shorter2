@@ -25,13 +25,6 @@ export const SHORTER_COMMAND = {
 					required: true,
 					type: 3, // string
 				},
-				{
-					name: "is_permanent",
-					description:
-						"[OPTIONAL] whether to use 301 permanent redirect or 302 temporary redirect",
-					required: false,
-					type: 5, // bool
-				},
 			],
 		},
 		{
@@ -63,13 +56,6 @@ export const SHORTER_COMMAND = {
 					description: "[OPTIONAL] new URL to redirect to",
 					required: false,
 					type: 3, // string
-				},
-				{
-					name: "is_permanent",
-					description:
-						"[OPTIONAL] change to 301 permanent redirect or 302 temporary redirect",
-					required: false,
-					type: 5, // bool
 				},
 			],
 		},

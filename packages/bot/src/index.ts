@@ -94,14 +94,9 @@ app.post("/", async (c) => {
 						(opt) => opt.name === "destination",
 					)?.value as string;
 
-					const isPermanent = subcommand.options?.find(
-						(opt) => opt.name === "is_permanent",
-					)?.value as boolean | undefined;
-
 					const input = ShortlinkCreateRequest.safeParse({
 						slug: slug,
 						url: url,
-						isPermanent: isPermanent,
 					});
 					if (!input.success) {
 						return sendChannelMessage(z.prettifyError(input.error), true);
@@ -147,11 +142,7 @@ app.post("/", async (c) => {
 						(opt) => opt.name === "destination",
 					)?.value as string | undefined;
 
-					const isPermanent = subcommand.options?.find(
-						(opt) => opt.name === "is_permanent",
-					)?.value as boolean | undefined;
-
-					if (url === undefined && isPermanent === undefined) {
+					if (url === undefined) {
 						return sendChannelMessage(
 							"Error: no modifications to shortlink provided",
 							true,
@@ -160,7 +151,6 @@ app.post("/", async (c) => {
 
 					const input = ShortlinkUpdateRequest.safeParse({
 						url: url,
-						isPermanent: isPermanent,
 					});
 					if (!input.success) {
 						return sendChannelMessage(z.prettifyError(input.error), true);
@@ -172,10 +162,6 @@ app.post("/", async (c) => {
 						const parts = [];
 						if (url)
 							parts.push(`${c.env.SHORTER_ENDPOINT}/${slug} -> ${resp.url}`);
-						if (isPermanent !== undefined)
-							parts.push(
-								`now redirects with HTTP ${resp.isPermanent ? 301 : 302}`,
-							);
 						return sendChannelMessage(
 							`Shortlink updated: ${parts.join(" and ")}`,
 						);
