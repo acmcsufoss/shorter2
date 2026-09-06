@@ -105,7 +105,7 @@ app.post("/", async (c) => {
 					try {
 						const result = await client.post(input.data);
 						return sendChannelMessage(
-							`Shortlink created: ${c.env.SHORTER_ENDPOINT}/${result.slug} -> ${result.url}`,
+							`Shortlink created: https://acmcsuf.com/${result.slug}`,
 						);
 					} catch (error: unknown) {
 						return sendChannelMessage(
@@ -123,7 +123,7 @@ app.post("/", async (c) => {
 					try {
 						await client.delete(slug);
 						return sendChannelMessage(
-							`Shortlink ${c.env.SHORTER_ENDPOINT}/${slug} deleted successfully`,
+							`Shortlink https://acmcsuf.com/${slug} deleted successfully`,
 						);
 					} catch (error: unknown) {
 						return sendChannelMessage(
