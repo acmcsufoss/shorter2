@@ -1,9 +1,5 @@
 import { env } from "cloudflare:workers";
-import type {
-	ShortlinkCreateRequestInput,
-	ShortlinkModel,
-	ShortlinkUpdateRequestInput,
-} from "./types";
+import type { ShortlinkCreateRequestInput, ShortlinkModel } from "./types";
 import { formatServiceError, ServiceErrorResponse } from "./types";
 
 export class ShortlinkClient {
@@ -50,26 +46,6 @@ export class ShortlinkClient {
 				`HTTP ${response.status}: ${await this.getServiceErrorMessage(response)}`,
 			);
 		}
-	}
-
-	async put(
-		slug: string,
-		updateParams: ShortlinkUpdateRequestInput,
-	): Promise<ShortlinkModel> {
-		const updateUrl = `${this.endpoint}/${slug}`;
-		const response = await fetch(updateUrl, {
-			method: "PUT",
-			headers: this.setHeaders(),
-			body: JSON.stringify(updateParams),
-		});
-		if (!response.ok) {
-			throw new Error(
-				`HTTP ${response.status}: ${await this.getServiceErrorMessage(response)}`,
-			);
-		}
-
-		const payload = (await response.json()) as unknown;
-		return this.unwrapResult<ShortlinkModel>(payload);
 	}
 
 	// Needed since chanfana responses look like { "success": boolean, "result": ShortlinkModel }

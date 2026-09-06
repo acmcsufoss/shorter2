@@ -8,7 +8,7 @@ import { Hono } from "hono";
 import { z } from "zod";
 import { SHORTER_COMMAND } from "../constants";
 import { ShortlinkClient } from "./shorter-client";
-import { ShortlinkCreateRequest, ShortlinkUpdateRequest } from "./types";
+import { ShortlinkCreateRequest } from "./types";
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -94,14 +94,9 @@ app.post("/", async (c) => {
 						(opt) => opt.name === "destination",
 					)?.value as string;
 
-					const isPermanent = subcommand.options?.find(
-						(opt) => opt.name === "is_permanent",
-					)?.value as boolean | undefined;
-
 					const input = ShortlinkCreateRequest.safeParse({
 						slug: slug,
 						url: url,
-						isPermanent: isPermanent,
 					});
 					if (!input.success) {
 						return sendChannelMessage(z.prettifyError(input.error), true);
@@ -138,54 +133,6 @@ app.post("/", async (c) => {
 					}
 				}
 
-				// ==== Update Subcommand ==================================================================
-				case "update": {
-					const slug = subcommand.options?.find((opt) => opt.name === "slug")
-						?.value as string;
-
-					const url = subcommand.options?.find(
-						(opt) => opt.name === "destination",
-					)?.value as string | undefined;
-
-					const isPermanent = subcommand.options?.find(
-						(opt) => opt.name === "is_permanent",
-					)?.value as boolean | undefined;
-
-					if (url === undefined && isPermanent === undefined) {
-						return sendChannelMessage(
-							"Error: no modifications to shortlink provided",
-							true,
-						);
-					}
-
-					const input = ShortlinkUpdateRequest.safeParse({
-						url: url,
-						isPermanent: isPermanent,
-					});
-					if (!input.success) {
-						return sendChannelMessage(z.prettifyError(input.error), true);
-					}
-
-					try {
-						const resp = await client.put(slug, input.data);
-
-						const parts = [];
-						if (url)
-							parts.push(`${c.env.SHORTER_ENDPOINT}/${slug} -> ${resp.url}`);
-						if (isPermanent !== undefined)
-							parts.push(
-								`now redirects with HTTP ${resp.isPermanent ? 301 : 302}`,
-							);
-						return sendChannelMessage(
-							`Shortlink updated: ${parts.join(" and ")}`,
-						);
-					} catch (error: unknown) {
-						return sendChannelMessage(
-							`Failed to update shortlink: ${error instanceof Error ? error.message : "Unknown error"}`,
-							true,
-						);
-					}
-				}
 				default:
 					return sendChannelMessage("Error: unknown subcommand", true);
 			}

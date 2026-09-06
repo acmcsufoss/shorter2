@@ -10,18 +10,12 @@ Discord bot for managing shortlinks via slash commands. Built with Hono, Cloudfl
 
 ## Commands
 
-- `/add <destination> [alias] [is_permanent]` - Create a new shortlink
+- `/add <destination> [alias]` - Create a new shortlink
   - `destination` - URL to redirect to
   - `alias` - Optional custom slug (auto-generated if omitted)
-  - `is_permanent` - Optional boolean for 301 vs 302 redirect
 
 - `/delete <alias>` - Delete an existing shortlink
   - `alias` - Shortlink slug to delete
-
-- `/update <alias> [destination] [is_permanent]` - Update an existing shortlink
-  - `alias` - Existing shortlink slug
-  - `destination` - Optional new URL
-  - `is_permanent` - Optional redirect type change
 
 ## Development
 

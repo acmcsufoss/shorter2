@@ -4,7 +4,6 @@ import { getShortlinkBySlug } from "../src/repository/repository";
 
 type ShortlinkRow = {
 	url: string;
-	isPermanent: number;
 };
 
 function createDb(
@@ -48,36 +47,38 @@ describe("shorter service", () => {
 		expect(response.status).toBe(401);
 	});
 
-	it("redirects temporary links with HTTP 302", async () => {
+	it("redirects links with HTTP 302", async () => {
 		const response = await app.request(
 			"/temp-link",
 			undefined,
 			createEnv({
 				"temp-link": {
 					url: "https://example.com/temporary",
-					isPermanent: 0,
 				},
 			}),
 		);
 
 		expect(response.status).toBe(302);
-		expect(response.headers.get("Location")).toBe("https://example.com/temporary");
+		expect(response.headers.get("Location")).toBe(
+			"https://example.com/temporary",
+		);
 	});
 
-	it("redirects permanent links with HTTP 301", async () => {
+	it("uses HTTP 302 for every redirect", async () => {
 		const response = await app.request(
 			"/perm-link",
 			undefined,
 			createEnv({
 				"perm-link": {
-					url: "https://example.com/permanent",
-					isPermanent: 1,
+					url: "https://example.com/another-link",
 				},
 			}),
 		);
 
-		expect(response.status).toBe(301);
-		expect(response.headers.get("Location")).toBe("https://example.com/permanent");
+		expect(response.status).toBe(302);
+		expect(response.headers.get("Location")).toBe(
+			"https://example.com/another-link",
+		);
 	});
 
 	it("returns an SVG QR code for an existing shortlink", async () => {
@@ -87,7 +88,6 @@ describe("shorter service", () => {
 			createEnv({
 				"qr-link": {
 					url: "https://example.com/qr-target",
-					isPermanent: 0,
 				},
 			}),
 		);
@@ -103,11 +103,16 @@ describe("shorter service", () => {
 		expect(response.status).toBe(404);
 		await expect(response.json()).resolves.toEqual({
 			success: false,
-			error: "Slug not found",
+			errors: [
+				{
+					code: 7002,
+					message: "Slug not found",
+				},
+			],
 		});
 	});
 
-	it("queries the permanence flag and coerces it to a boolean", async () => {
+	it("queries only the destination URL", async () => {
 		let preparedSql = "";
 		const context = {
 			env: {
@@ -115,7 +120,6 @@ describe("shorter service", () => {
 					{
 						repository: {
 							url: "https://example.com/from-repository",
-							isPermanent: 1,
 						},
 					},
 					(sql) => {
@@ -127,10 +131,9 @@ describe("shorter service", () => {
 
 		const shortlink = await getShortlinkBySlug(context as never, "repository");
 
-		expect(preparedSql).toContain("isPermanent");
+		expect(preparedSql).toBe("SELECT s.url FROM shortlinks s WHERE s.slug = ?");
 		expect(shortlink).toEqual({
 			url: "https://example.com/from-repository",
-			isPermanent: true,
 		});
 	});
 });
